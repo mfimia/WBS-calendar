@@ -1,11 +1,40 @@
 const CALENDAR = document.getElementById("calendar");
-
+const FORM = document.getElementById("input-date");
+let selectedDate;
 // const today = new Date();
 // console.log(today);
 // const currentMonth = today.getMonth();
 // console.log(currentMonth);
 // const currentYear = today.getFullYear();
 // console.log(currentYear);
+
+FORM.addEventListener("submit", (e) => {
+  e.preventDefault();
+  selectedDate = new Date(`${document.getElementById("selectedDate").value}`);
+  getValues(selectedDate);
+});
+
+const getValues = (date) => {
+  const unix = date.getTime();
+  const currentMonth = date.getMonth();
+  const currentYear = date.getFullYear();
+  const currentDayofWeek = date.getDay();
+  const currentDay = date.getDate();
+  const totalMonthDays = getMonthDays(currentMonth, currentYear);
+  const lastDay = currentDayofWeek + (totalMonthDays - 1);
+  console.log(unix, currentMonth, currentYear, currentDayofWeek, currentDay, totalMonthDays, lastDay);
+  drawTableTest();
+};
+
+const drawTableTest = () => {
+    const table = document.getElementById('test-table');
+    
+}
+
+const getMonthDays = (month, year) => {
+  const number = new Date(year, month + 1, 0);
+  return number.getDate();
+};
 
 const nameTitle = () => {
   document.getElementById("month-day-1").innerHTML = "Monday";
