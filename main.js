@@ -8,6 +8,11 @@ let selectedDate;
 // const currentYear = today.getFullYear();
 // console.log(currentYear);
 
+FORM.addEventListener("submit", (e) => {
+  e.preventDefault();
+  selectedDate = document.getElementById("selectedDate").value;
+});
+
 const nameTitle = () => {
   document.getElementById("month-day-1").innerHTML = "Monday";
   document.getElementById("month-day-2").innerHTML = "Tuesday";
@@ -34,13 +39,5 @@ const drawTable = () => {
 
   nameTitle();
 };
-
-FORM.addEventListener("submit", (e) => {
-  e.preventDefault();
-  selectedDate = document.getElementById("selectedDate").value;
-  console.log(selectedDate);
-});
-
-console.log(selectedDate);
 
 drawTable();
