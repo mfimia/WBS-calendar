@@ -35,14 +35,14 @@ margin-bottom: 5vh;
   background-color: yellow;
 }
 
-#month-calendar {
-  /* width: 500px;
-  height: 500px; */
-  /* border: 1px solid black; */
-  /* position: absolute;
+#calendar {
+  width: 500px;
+  height: 500px;
+  border: 1px solid black;
+  position: absolute;
   left: 50%;
   top: 20%;
-  transform: translate(-50%); */
+  transform: translate(-50%); 
   grid-area: main;
   background-color: blue;
 }
@@ -58,11 +58,40 @@ margin-bottom: 5vh;
   background-color: grey;
 }
 
-#month-calendar td {
+#calendar td {
   height: 15.5%;
   /* background-color: blue; */
 }
 
-#month-calendar * {
+#calendar * {
   border: black 1px solid;
+}
+
+/* #calendar { */
+  /* width: 800px;
+  height: 800px; */
+  /* border: 1px solid black;
+  position: absolute; */
+  /* left: 50%;
+  top: 5%; */
+  /* transform: translate(-50%); */
+/* } */
+
+.weekday, .month-day {
+    display: inline-flex;
+    width: 14.25%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    height: 5%;
+}
+
+.month-day {
+    height: 15.83%;
+    display: inline-flex;
+    width: 14.2858%;
+    justify-content: flex-end;
+    align-items: flex-end;
+    border: solid thin black;
+    padding: 0.3vmin;
 }
