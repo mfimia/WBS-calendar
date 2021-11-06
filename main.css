@@ -51,7 +51,7 @@ body {
   display: none;
 }
 
-#test-table {
+#month-calendar {
   width: 500px;
   height: 500px;
   border: 1px solid black;
@@ -92,7 +92,9 @@ body {
   color: red;
 }
 
-.month-day, .test-day, .prev-test-day {
+.month-day,
+.day,
+.extra-day {
   height: 15.83%;
   display: inline-flex;
   width: 14.2858%;
@@ -103,8 +105,8 @@ body {
   color: red;
 }
 
-.prev-test-day {
-    color: grey;
+.extra-day {
+  color: grey;
 }
 
 #input-date {
