@@ -22,14 +22,41 @@ const getValues = (date) => {
   const currentDay = date.getDate();
   const totalMonthDays = getMonthDays(currentMonth, currentYear);
   const lastDay = currentDayofWeek + (totalMonthDays - 1);
-  console.log(unix, currentMonth, currentYear, currentDayofWeek, currentDay, totalMonthDays, lastDay);
-  drawTableTest();
+  console.log(
+    unix,
+    currentMonth,
+    currentYear,
+    currentDayofWeek,
+    currentDay,
+    totalMonthDays,
+    lastDay
+  );
+  drawTableTest(totalMonthDays, currentDayofWeek, lastDay);
 };
 
-const drawTableTest = () => {
-    const table = document.getElementById('test-table');
-    
-}
+const drawTableTest = (monthDays, startingDay, lastDay) => {
+  const table = document.getElementById("test-table");
+  console.log(monthDays);
+  for (j = 1; j < startingDay; j++) {
+    const prevDay = document.createElement("div");
+    prevDay.setAttribute("class", "prev-test-day");
+    prevDay.innerHTML = `${j}`;
+    table.appendChild(prevDay);
+  }
+  for (i = 1; i <= monthDays; i++) {
+    const day = document.createElement("div");
+    day.setAttribute("class", "test-day");
+    day.innerHTML = `${i}`;
+    table.appendChild(day);
+  }
+  const remainingDays = 42 - lastDay;
+  for (k = 1; k <= remainingDays; k++) {
+    const prevDay = document.createElement("div");
+    prevDay.setAttribute("class", "prev-test-day");
+    prevDay.innerHTML = `${k}`;
+    table.appendChild(prevDay);
+  }
+};
 
 const getMonthDays = (month, year) => {
   const number = new Date(year, month + 1, 0);

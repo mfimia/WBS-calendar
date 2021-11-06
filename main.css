@@ -35,7 +35,7 @@ body {
   background-color: yellow;
 }
 
-#calendar, #test-table {
+#calendar {
   width: 500px;
   height: 500px;
   border: 1px solid black;
@@ -48,7 +48,19 @@ body {
 }
 
 #calendar {
-    /* display: none; */
+  display: none;
+}
+
+#test-table {
+  width: 500px;
+  height: 500px;
+  border: 1px solid black;
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translate(-50%);
+  grid-area: main;
+  /* background-color: blue; */
 }
 
 /* td {
@@ -80,7 +92,7 @@ body {
   color: red;
 }
 
-.month-day {
+.month-day, .test-day, .prev-test-day {
   height: 15.83%;
   display: inline-flex;
   width: 14.2858%;
@@ -88,7 +100,11 @@ body {
   align-items: flex-end;
   border: solid thin black;
   padding: 0.3vmin;
-  color: white;
+  color: red;
+}
+
+.prev-test-day {
+    color: grey;
 }
 
 #input-date {
