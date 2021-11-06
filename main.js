@@ -10,7 +10,7 @@ let selectedDate;
 
 FORM.addEventListener("submit", (e) => {
   e.preventDefault();
-  selectedDate = document.getElementById("selectedDate").value;
+  selectedDate = new Date(`${document.getElementById("selectedDate").value}`).getTime() / 1000
 });
 
 const nameTitle = () => {
