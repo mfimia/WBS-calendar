@@ -10,8 +10,17 @@ let selectedDate;
 
 FORM.addEventListener("submit", (e) => {
   e.preventDefault();
-  selectedDate = new Date(`${document.getElementById("selectedDate").value}`).getTime() / 1000
+  selectedDate = new Date(`${document.getElementById("selectedDate").value}`);
+  getValues(selectedDate);
 });
+
+const getValues = (date) => {
+  const unix = date.getTime();
+  const currentMonth = date.getMonth();
+  const currentYear = date.getFullYear();
+  const currentDayofWeek = date.getDay();
+  console.log(unix, currentMonth, currentYear, currentDayofWeek);
+};
 
 const nameTitle = () => {
   document.getElementById("month-day-1").innerHTML = "Monday";
