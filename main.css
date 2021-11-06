@@ -35,7 +35,7 @@ body {
   background-color: yellow;
 }
 
-#calendar {
+#calendar, #test-table {
   width: 500px;
   height: 500px;
   border: 1px solid black;
@@ -45,6 +45,10 @@ body {
   /* transform: translate(-50%);  */
   grid-area: main;
   background-color: blue;
+}
+
+#calendar {
+    /* display: none; */
 }
 
 /* td {

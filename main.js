@@ -19,7 +19,21 @@ const getValues = (date) => {
   const currentMonth = date.getMonth();
   const currentYear = date.getFullYear();
   const currentDayofWeek = date.getDay();
-  console.log(unix, currentMonth, currentYear, currentDayofWeek);
+  const currentDay = date.getDate();
+  const totalMonthDays = getMonthDays(currentMonth, currentYear);
+  const lastDay = currentDayofWeek + (totalMonthDays - 1);
+  console.log(unix, currentMonth, currentYear, currentDayofWeek, currentDay, totalMonthDays, lastDay);
+  drawTableTest();
+};
+
+const drawTableTest = () => {
+    const table = document.getElementById('test-table');
+    
+}
+
+const getMonthDays = (month, year) => {
+  const number = new Date(year, month + 1, 0);
+  return number.getDate();
 };
 
 const nameTitle = () => {
