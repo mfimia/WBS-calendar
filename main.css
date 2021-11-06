@@ -103,6 +103,7 @@ body {
   border: solid thin black;
   padding: 0.3vmin;
   color: red;
+  font-weight: 900;
 }
 
 .extra-day {
