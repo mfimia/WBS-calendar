@@ -1,11 +1,11 @@
 const CALENDAR = document.getElementById("calendar");
 
-const today = new Date();
-console.log(today);
-const currentMonth = today.getMonth();
-console.log(currentMonth);
-const currentYear = today.getFullYear();
-console.log(currentYear);
+// const today = new Date();
+// console.log(today);
+// const currentMonth = today.getMonth();
+// console.log(currentMonth);
+// const currentYear = today.getFullYear();
+// console.log(currentYear);
 
 const nameTitle = () => {
   document.getElementById("month-day-1").innerHTML = "Monday";
