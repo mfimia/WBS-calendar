@@ -1,5 +1,6 @@
 const CALENDAR = document.getElementById("calendar");
-
+const FORM = document.getElementById("input-date");
+let selectedDate;
 // const today = new Date();
 // console.log(today);
 // const currentMonth = today.getMonth();
@@ -33,5 +34,13 @@ const drawTable = () => {
 
   nameTitle();
 };
+
+FORM.addEventListener("submit", (e) => {
+  e.preventDefault();
+  selectedDate = document.getElementById("selectedDate").value;
+  console.log(selectedDate);
+});
+
+console.log(selectedDate);
 
 drawTable();
