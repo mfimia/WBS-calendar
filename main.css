@@ -11,18 +11,18 @@ body {
 }
 
 .container {
-display: grid;
-height: 90vh;
-grid-template-columns: 1fr 1fr 1fr 1fr;
-grid-template-rows: .6fr 1fr 1fr 1fr;
-grid-template-areas:
-  "title title title title"
-  "nav main main main"
-  "nav main main main"
-  "nav main main main";
-grid-gap: .5rem;
-margin-top: 5vh;
-margin-bottom: 5vh;
+  display: grid;
+  height: 90vh;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 0.6fr 1fr 1fr 1fr;
+  grid-template-areas:
+    "title title title title"
+    "nav main main main"
+    "nav main main main"
+    "nav main main main";
+  grid-gap: 0.5rem;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
 }
 
 #month-main-navbar {
@@ -39,10 +39,10 @@ margin-bottom: 5vh;
   width: 500px;
   height: 500px;
   border: 1px solid black;
-  position: absolute;
+  /* position: absolute;
   left: 50%;
-  top: 20%;
-  transform: translate(-50%); 
+  top: 20%; */
+  /* transform: translate(-50%);  */
   grid-area: main;
   background-color: blue;
 }
@@ -52,46 +52,43 @@ margin-bottom: 5vh;
     height: 30px;
 } */
 
-#weekdays th {
-  height: 5%;
-  width: 14.2%;
-  background-color: grey;
-}
-
-#calendar td {
-  height: 15.5%;
-  /* background-color: blue; */
-}
-
 #calendar * {
   border: black 1px solid;
 }
 
 /* #calendar { */
-  /* width: 800px;
+/* width: 800px;
   height: 800px; */
-  /* border: 1px solid black;
+/* border: 1px solid black;
   position: absolute; */
-  /* left: 50%;
+/* left: 50%;
   top: 5%; */
-  /* transform: translate(-50%); */
+/* transform: translate(-50%); */
 /* } */
 
-.weekday, .month-day {
-    display: inline-flex;
-    width: 14.25%;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    height: 5%;
+.weekday {
+  display: inline-flex;
+  width: 14.2858%;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  height: 5%;
+  color: red;
 }
 
 .month-day {
-    height: 15.83%;
-    display: inline-flex;
-    width: 14.2858%;
-    justify-content: flex-end;
-    align-items: flex-end;
-    border: solid thin black;
-    padding: 0.3vmin;
+  height: 15.83%;
+  display: inline-flex;
+  width: 14.2858%;
+  justify-content: flex-end;
+  align-items: flex-end;
+  border: solid thin black;
+  padding: 0.3vmin;
+  color: white;
+}
+
+#input-date {
+  position: absolute;
+  right: 20%;
+  top: 10%;
 }
