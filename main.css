@@ -2,16 +2,49 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  border: 1px solid red;
+}
+
+body {
+  width: 85%;
+  margin: 0 auto;
+}
+
+.container {
+display: grid;
+height: 90vh;
+grid-template-columns: 1fr 1fr 1fr 1fr;
+grid-template-rows: .6fr 1fr 1fr 1fr;
+grid-template-areas:
+  "title title title title"
+  "nav main main main"
+  "nav main main main"
+  "nav main main main";
+grid-gap: .5rem;
+margin-top: 5vh;
+margin-bottom: 5vh;
+}
+
+#month-main-navbar {
+  grid-area: title;
+  background-color: green;
+}
+
+#month-left-navbar {
+  grid-area: nav;
+  background-color: yellow;
 }
 
 #month-calendar {
-  width: 500px;
-  height: 500px;
+  /* width: 500px;
+  height: 500px; */
   /* border: 1px solid black; */
-  position: absolute;
+  /* position: absolute;
   left: 50%;
   top: 20%;
-  transform: translate(-50%);
+  transform: translate(-50%); */
+  grid-area: main;
+  background-color: blue;
 }
 
 /* td {
