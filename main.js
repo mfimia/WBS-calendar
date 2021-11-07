@@ -76,7 +76,7 @@ const drawMonthCalendar = (
   const lastDay = startingDay + monthDays;
   const table = document.getElementById("month-calendar");
   if (emptySpots) {
-    for (j = prevStartingDay; j <= previousMonthDays; j++) {
+    for (j = prevStartingDay + 1; j <= previousMonthDays; j++) {
       const prevDay = document.createElement("div");
       prevDay.setAttribute("class", "extra-day");
       prevDay.innerHTML = `${j}`;
