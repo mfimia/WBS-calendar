@@ -21,20 +21,33 @@ const MONTHS = [
   "November",
   "December",
 ];
-const getValues = (date) => {
-  const unix = date.getTime();
-  const currentMonth = date.getMonth();
-  const currentYear = date.getFullYear();
-  const currentDayofWeek = date.getDay();
-  const currentDay = date.getDate();
-  const totalMonthDays = getMonthDays(currentMonth, currentYear);
+const WEEKDAYS = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
+const getValues = (input) => {
+  const date = {
+    year: input.getFullYear(),
+    month: input.getMonth(),
+    day: input.getDate(),
+    unix: input.getTime(),
+    weekday: input.getDay(),
+    totalMonthDays: getMonthDays(input.getMonth(), input.getFullYear()),
+  };
+
   const firstDayMonth = new Date(
-    currentYear + "-" + (currentMonth + 1) + "-01"
+    date.year + "-" + (date.month + 1) + "-01"
   ).getDay();
-  drawMonthCalendar(totalMonthDays, firstDayMonth, currentDay);
-  document.getElementById(
-    "displayed-date-text"
-  ).innerHTML = `${currentDay} ${MONTHS[currentMonth]} ${currentYear}`;
+  drawMonthCalendar(date.totalMonthDays, firstDayMonth, date.day);
+  document.getElementById("displayed-date-text").innerHTML = `${
+    WEEKDAYS[date.weekday]
+  }, ${date.day} ${MONTHS[date.month]} ${date.year}`;
 };
 
 const drawMonthCalendar = (monthDays, startingDay, selectedDay) => {
@@ -57,11 +70,18 @@ const drawMonthCalendar = (monthDays, startingDay, selectedDay) => {
   }
   const remainingDays = 43 - lastDay;
   for (k = 1; k <= remainingDays; k++) {
-    const prevDay = document.createElement("div");
-    prevDay.setAttribute("class", "extra-day");
-    prevDay.innerHTML = `${k}`;
-    table.appendChild(prevDay);
+    const nextDay = document.createElement("div");
+    nextDay.setAttribute("class", "extra-day");
+    nextDay.innerHTML = `${k}`;
+    nextDay.addEventListener("mousedown", (e) => {
+      displayMenu(e);
+    });
+    table.appendChild(nextDay);
   }
+};
+
+const displayMenu = (e) => {
+  console.log(e);
 };
 
 const getMonthDays = (month, year) => {
