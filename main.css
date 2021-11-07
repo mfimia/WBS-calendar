@@ -60,6 +60,7 @@ body {
   top: 20%;
   transform: translate(-50%);
   grid-area: main;
+  cursor: pointer;
   /* background-color: blue; */
 }
 
@@ -106,6 +107,12 @@ body {
   font-weight: 900;
 }
 
+.month-day:hover,
+.day:hover,
+.extra-day:hover {
+  background-color: lightgrey;
+}
+
 .extra-day {
   color: grey;
 }
@@ -114,4 +121,9 @@ body {
   position: absolute;
   right: 20%;
   top: 10%;
+}
+
+#input-date *,
+#selectedDate * {
+  cursor: pointer;
 }
