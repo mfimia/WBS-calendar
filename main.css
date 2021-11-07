@@ -95,7 +95,7 @@ body {
 
 .month-day,
 .day,
-.extra-day {
+.extra-day, .chosen-day {
   height: 16.66666%;
   display: inline-flex;
   width: 14.2858%;
@@ -111,6 +111,14 @@ body {
 .day:hover,
 .extra-day:hover {
   background-color: lightgrey;
+}
+
+.chosen-day {
+  background-color: rgb(209, 233, 248);
+}
+
+.chosen-day:hover {
+  background-color: lightskyblue;
 }
 
 .extra-day {

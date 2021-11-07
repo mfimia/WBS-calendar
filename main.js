@@ -16,10 +16,10 @@ const getValues = (date) => {
   const firstDayMonth = new Date(
     currentYear + "-" + (currentMonth + 1) + "-01"
   ).getDay();
-  drawMonthCalendar(totalMonthDays, firstDayMonth);
+  drawMonthCalendar(totalMonthDays, firstDayMonth, currentDay);
 };
 
-const drawMonthCalendar = (monthDays, startingDay) => {
+const drawMonthCalendar = (monthDays, startingDay, selectedDay) => {
   document.getElementById("month-calendar").innerHTML = "";
   const lastDay = startingDay + monthDays;
   const table = document.getElementById("month-calendar");
@@ -31,7 +31,7 @@ const drawMonthCalendar = (monthDays, startingDay) => {
   }
   for (i = 1; i <= monthDays; i++) {
     const day = document.createElement("div");
-    day.setAttribute("class", "day");
+    i === selectedDay ? day.setAttribute('class', 'chosen-day') : day.setAttribute("class", "day");
     day.innerHTML = `${i}`;
     table.appendChild(day);
   }
