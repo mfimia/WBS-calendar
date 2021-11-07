@@ -1,11 +1,26 @@
 let INPUT_DATE = new Date();
-document.getElementById('selectedDate').setAttribute('value', `${INPUT_DATE.toISOString().split('T')[0]}`);
+document
+  .getElementById("selectedDate")
+  .setAttribute("value", `${INPUT_DATE.toISOString().split("T")[0]}`);
 document.getElementById("input-date").addEventListener("submit", (e) => {
   e.preventDefault();
   INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
   getValues(INPUT_DATE);
 });
-
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 const getValues = (date) => {
   const unix = date.getTime();
   const currentMonth = date.getMonth();
@@ -17,6 +32,9 @@ const getValues = (date) => {
     currentYear + "-" + (currentMonth + 1) + "-01"
   ).getDay();
   drawMonthCalendar(totalMonthDays, firstDayMonth, currentDay);
+  document.getElementById(
+    "displayed-date-text"
+  ).innerHTML = `${currentDay} ${MONTHS[currentMonth]} ${currentYear}`;
 };
 
 const drawMonthCalendar = (monthDays, startingDay, selectedDay) => {
@@ -31,7 +49,9 @@ const drawMonthCalendar = (monthDays, startingDay, selectedDay) => {
   }
   for (i = 1; i <= monthDays; i++) {
     const day = document.createElement("div");
-    i === selectedDay ? day.setAttribute('class', 'chosen-day') : day.setAttribute("class", "day");
+    i === selectedDay
+      ? day.setAttribute("class", "chosen-day")
+      : day.setAttribute("class", "day");
     day.innerHTML = `${i}`;
     table.appendChild(day);
   }

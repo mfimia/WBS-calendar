@@ -95,7 +95,8 @@ body {
 
 .month-day,
 .day,
-.extra-day, .chosen-day {
+.extra-day,
+.chosen-day {
   height: 16.66666%;
   display: inline-flex;
   width: 14.2858%;
@@ -134,4 +135,17 @@ body {
 #input-date *,
 #selectedDate * {
   cursor: pointer;
+}
+
+#displayed-date-text {
+  position: absolute;
+  top: 16%;
+  width: 250px;
+  left: 50%;
+  transform: translate(-50%);
+  font-family: "Times New Roman", Times, serif;
+  font-weight: 700;
+  font-size: x-large;
+  text-align: center;
+  border: none;
 }
