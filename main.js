@@ -1,4 +1,5 @@
 let INPUT_DATE = new Date();
+document.getElementById('selectedDate').setAttribute('value', `${INPUT_DATE.toISOString().split('T')[0]}`);
 document.getElementById("input-date").addEventListener("submit", (e) => {
   e.preventDefault();
   INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
