@@ -119,17 +119,20 @@ const drawMonthCalendar = (
   const remainingDays = 43 - lastDay;
   // The for loop just runs from 1 until there are no more empty spots
   for (k = 1; k <= remainingDays; k++) {
-    const nextDay = document.createElement("div");
-    nextDay.setAttribute("class", "extra-day");
-    nextDay.innerHTML = `${k}`;
-    // Day, month and year values calculated and stored in variables
-    const day = Number(nextDay.innerHTML);
     let nextMonth = selectedMonth + 2;
     let nextYear = selectedYear;
     if (nextMonth === 13) {
       nextMonth = 1;
       nextYear = nextYear + 1;
     }
+    const nextDay =
+      document.getElementById(`${Number(k)}-${nextMonth}-${nextYear}`) ||
+      document.createElement("div");
+      console.log(nextDay)
+    nextDay.setAttribute("class", "extra-day");
+    nextDay.innerHTML = `${k}`;
+    // Day, month and year values calculated and stored in variables
+    const day = Number(nextDay.innerHTML);
     // Unique id generated based on DD-MM-YYYY format
     nextDay.setAttribute("id", `${day}-${nextMonth}-${nextYear}`);
     // Adding event listener to display options menu on click. Naming the function so it can be removed
@@ -146,13 +149,17 @@ let backToggler = false;
 
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (event, day, month, year) => {
-  console.log(event);
-  const menu = document.createElement("div");
+  console.log(event.target);
+  let menu =
+    document.getElementById("add-events-menu") || document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
-  const addButton = document.createElement("button");
+  menu.setAttribute("id", "add-events-menu");
+  let addButton =
+    document.getElementById("add-button") || document.createElement("button");
   addButton.setAttribute("id", "add-event");
   addButton.innerHTML = "Add event";
-  const backButton = document.createElement("button");
+  let backButton =
+    document.getElementById("back-button") || document.createElement("button");
   backButton.setAttribute("id", "back-button");
   backButton.innerHTML = "Back";
   menu.innerHTML = backToggler ? "" : `${day}.${month}.${year}`;
@@ -168,11 +175,24 @@ const displayMenu = (event, day, month, year) => {
     backToggler = !backToggler;
     displayMenu(event, day, month, year);
   });
+  document.body.addEventListener("mouseup", function eventHandler(event) {
+    if (event.target != menu) {
+      menu.remove();
+      document.body.removeEventListener("mouseup", eventHandler);
+      document
+        .getElementById(`${day}-${month}-${year}`)
+        .addEventListener("mousedown", function eventHandler(event) {
+          // Removing event handler when it is used to avoid unwanted extra menus
+          event.target.removeEventListener("mousedown", eventHandler);
+          displayMenu(event, day, month, year);
+        });
+    }
+  });
 };
 
 // Back button currently not working as expected
 const addEvent = (event, menu, day, month, year) => {
-  console.log(menu, day, month, year);
+  // console.log(menu, day, month, year);
   // menu.innerHTML = "";
 };
 
