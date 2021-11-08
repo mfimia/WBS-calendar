@@ -142,6 +142,8 @@ const drawMonthCalendar = (
   }
 };
 
+let backToggler = false;
+
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (event, day, month, year) => {
   console.log(event);
@@ -150,26 +152,28 @@ const displayMenu = (event, day, month, year) => {
   const addButton = document.createElement("button");
   addButton.setAttribute("id", "add-event");
   addButton.innerHTML = "Add event";
-  menu.innerHTML = `${day}.${month}.${year}`;
-  menu.appendChild(addButton);
+  const backButton = document.createElement("button");
+  backButton.setAttribute("id", "back-button");
+  backButton.innerHTML = "Back";
+  menu.innerHTML = backToggler ? "" : `${day}.${month}.${year}`;
+  backToggler ? menu.appendChild(backButton) : menu.appendChild(addButton);
   event.target.appendChild(menu);
   addButton.addEventListener("mousedown", () => {
-    addEvent(menu, day, month, year);
+    addEvent(event, menu, day, month, year);
+    backToggler = !backToggler;
+    menu.innerHTML = "";
+    displayMenu(event, day, month, year);
+  });
+  backButton.addEventListener("mousedown", () => {
+    backToggler = !backToggler;
+    displayMenu(event, day, month, year);
   });
 };
 
 // Back button currently not working as expected
-const addEvent = (menu, day, month, year) => {
+const addEvent = (event, menu, day, month, year) => {
   console.log(menu, day, month, year);
-  menu.innerHTML = "";
-  const backButton = document.createElement("button");
-  backButton.innerHTML = "Back";
-  backButton.addEventListener("mousedown", () => {
-    const selectedDate = document.getElementById(`${day}-${month}-${year}`);
-    menu.style.display = "none";
-    displayMenu(selectedDate, day, month, year);
-  });
-  menu.appendChild(backButton);
+  // menu.innerHTML = "";
 };
 
 // This function takes chosen month and year as parameters and returns the total days the month has
