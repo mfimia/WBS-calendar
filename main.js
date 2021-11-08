@@ -1,7 +1,7 @@
 // Create new date everytime the code runs
 let INPUT_DATE = new Date();
 // Array to store event data
-let CURRENT_VIEW = [];
+let EVENTS = [];
 // Setting up the value attribute of <input> type date to display today's date on default
 document
   .getElementById("selectedDate")
@@ -122,17 +122,28 @@ const drawMonthCalendar = (
     const nextDay = document.createElement("div");
     nextDay.setAttribute("class", "extra-day");
     nextDay.innerHTML = `${k}`;
-    nextDay.addEventListener("mousedown", (e) => {
-      displayMenu(e);
+    // Adding event listener to display options menu on click
+    nextDay.addEventListener("mousedown", (event) => {
+      // Converting event target into a number
+      const targetDay = Number(event.target.innerHTML);
+      // Adding 2 to selected month (0-11) to convert it into normal format of next month
+      let nextMonth = selectedMonth + 2;
+      let nextYear = selectedYear;
+      // Adding logic to correctly display month and year if selected next month is in the next year
+      if (nextMonth === 13) {
+        nextMonth = 1;
+        nextYear = nextYear + 1;
+      }
+      // Display the menu passing the information about the selected event, day, month, and year
+      displayMenu(event, targetDay, nextMonth, nextYear);
     });
     table.appendChild(nextDay);
   }
-  // console.log(CURRENT_VIEW);
 };
 
-// const displayMenu = (e, day, month, year) => {
-//   console.log(e, day, month, year);
-// };
+const displayMenu = (event, day, month, year) => {
+  console.log(day, month, year);
+};
 
 // This function takes chosen month and year as parameters and returns the total days the month has
 // Returns a number
