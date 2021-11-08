@@ -185,8 +185,21 @@ const displayMenu = (event, day, month, year) => {
     document.getElementById("back-button") || document.createElement("button");
   backButton.setAttribute("id", "back-button");
   backButton.innerHTML = "Back";
-  menu.innerHTML = backToggler ? "" : `${day}.${month}.${year}`;
-  backToggler ? menu.appendChild(backButton) : menu.appendChild(addButton);
+  // menu.innerHTML = backToggler ? "" : `${day}.${month}.${year}`;
+  // backToggler ? menu.appendChild(backButton) : menu.appendChild(addButton);
+  if (!backToggler) {
+    menu.innerHTML = `${day}.${month}.${year}`;
+    menu.appendChild(addButton);
+  } else if (backToggler) {
+    menu.innerHTML = "";
+    menu.appendChild(backButton);
+    const eventInput = document.createElement("input");
+    eventInput.setAttribute("type", "text");
+    eventInput.setAttribute("placeholder", "What's coming up?");
+    eventInput.setAttribute("id", `input-${day}-${month}-${year}`);
+    eventInput.setAttribute("class", "input-event-month");
+    menu.appendChild(eventInput);
+  }
   event.target.appendChild(menu);
   addButton.addEventListener("mousedown", () => {
     addEvent(event, menu, day, month, year);
@@ -199,11 +212,14 @@ const displayMenu = (event, day, month, year) => {
     displayMenu(event, day, month, year);
   });
   // Listener event. User clicks outside the menu and whole calendar gets drawn again
-  document.body.addEventListener("mouseup", function eventHandler(event) {
-    if (event.target != menu) {
+  document.body.addEventListener("mouseup", function exitMenu(event) {
+    if (
+      event.target != menu &&
+      event.target != document.getElementById(`input-${day}-${month}-${year}`)
+    ) {
       INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
       // This function gets the display process started
-      document.body.removeEventListener("mouseup", eventHandler);
+      document.body.removeEventListener("mouseup", exitMenu);
       getValues(INPUT_DATE);
       backToggler = false;
     }

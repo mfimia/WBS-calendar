@@ -165,3 +165,7 @@ body {
 #add-event {
   cursor: pointer;
 }
+
+.input-event-month {
+  height: 40%;
+}
