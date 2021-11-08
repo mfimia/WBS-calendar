@@ -149,3 +149,19 @@ body {
   text-align: center;
   border: none;
 }
+
+.displayed-menu {
+  position: absolute;
+  /* border: none; */
+  width: 200px;
+  height: 100px;
+  /* left: 50%;
+  transform: translate(-50%);
+  top: 30%; */
+  background-color: white;
+  z-index: 5;
+}
+
+#add-event {
+  cursor: pointer;
+}

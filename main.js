@@ -122,8 +122,10 @@ const drawMonthCalendar = (
     const nextDay = document.createElement("div");
     nextDay.setAttribute("class", "extra-day");
     nextDay.innerHTML = `${k}`;
-    // Adding event listener to display options menu on click
-    nextDay.addEventListener("mousedown", (event) => {
+    // Adding event listener to display options menu on click. Naming the function so it can be removed
+    nextDay.addEventListener("mousedown", function eventHandler(event) {
+      // Removing event handler when it is used to avoid unwanted extra menus
+      event.target.removeEventListener("mousedown", eventHandler);
       // Converting event target into a number
       const targetDay = Number(event.target.innerHTML);
       // Adding 2 to selected month (0-11) to convert it into normal format of next month
@@ -142,7 +144,19 @@ const drawMonthCalendar = (
 };
 
 const displayMenu = (event, day, month, year) => {
-  console.log(day, month, year);
+  const menu = document.createElement("div");
+  menu.setAttribute("class", "displayed-menu");
+  menu.innerHTML = `${day}.${month}.${year}
+  <button id="add-event" onmousedown="addEvent()">Add event</button>`;
+  event.target.appendChild(menu);
+
+  // if (menu) {
+
+  // }
+};
+
+const addEvent = () => {
+  console.log("hi!");
 };
 
 // This function takes chosen month and year as parameters and returns the total days the month has
