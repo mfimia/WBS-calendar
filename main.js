@@ -109,9 +109,9 @@ const drawMonthCalendar = (
       prevDay.innerHTML = `${j}`;
       prevDay.setAttribute("id", `${numDay}-${prevMonth}-${prevYear}`);
       prevDay.setAttribute("class", "extra-day");
-      prevDay.addEventListener("mousedown", function eventHandler(event) {
+      prevDay.addEventListener("click", function eventHandler(event) {
         // Removing event handler when it is used to avoid unwanted extra menus
-        event.target.removeEventListener("mousedown", eventHandler);
+        event.target.removeEventListener("click", eventHandler);
         displayMenu(event, numDay, prevMonth, prevYear);
       });
       console.log(prevDay);
@@ -132,9 +132,9 @@ const drawMonthCalendar = (
       : day.setAttribute("class", "day");
     day.innerHTML = `${i}`;
     day.setAttribute("id", `${numDay}-${selectedMonth + 1}-${selectedYear}`);
-    day.addEventListener("mousedown", function eventHandler(event) {
+    day.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
-      event.target.removeEventListener("mousedown", eventHandler);
+      event.target.removeEventListener("click", eventHandler);
       displayMenu(event, numDay, selectedMonth + 1, selectedYear);
     });
     table.appendChild(day);
@@ -160,9 +160,9 @@ const drawMonthCalendar = (
     // Unique id generated based on DD-MM-YYYY format
     nextDay.setAttribute("id", `${day}-${nextMonth}-${nextYear}`);
     // Adding event listener to display options menu on click. Naming the function so it can be removed
-    nextDay.addEventListener("mousedown", function eventHandler(event) {
+    nextDay.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
-      event.target.removeEventListener("mousedown", eventHandler);
+      event.target.removeEventListener("click", eventHandler);
       displayMenu(event, day, nextMonth, nextYear);
     });
     table.appendChild(nextDay);
@@ -173,6 +173,7 @@ let backToggler = false;
 
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (event, day, month, year) => {
+  console.log(event.target);
   let menu =
     document.getElementById("add-events-menu") || document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
@@ -199,6 +200,7 @@ const displayMenu = (event, day, month, year) => {
     eventInput.setAttribute("id", `input-${day}-${month}-${year}`);
     eventInput.setAttribute("class", "input-event-month");
     menu.appendChild(eventInput);
+    // console.log(backToggler);
   }
   event.target.appendChild(menu);
   addButton.addEventListener("mousedown", () => {
@@ -218,10 +220,10 @@ const displayMenu = (event, day, month, year) => {
       event.target != document.getElementById(`input-${day}-${month}-${year}`)
     ) {
       INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
+      backToggler = false;
       // This function gets the display process started
       document.body.removeEventListener("mouseup", exitMenu);
       getValues(INPUT_DATE);
-      backToggler = false;
     }
   });
 };
