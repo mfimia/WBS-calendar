@@ -122,6 +122,7 @@ const drawMonthCalendar = (
     const nextDay = document.createElement("div");
     nextDay.setAttribute("class", "extra-day");
     nextDay.innerHTML = `${k}`;
+    // Day, month and year values calculated and stored in variables
     const day = Number(nextDay.innerHTML);
     let nextMonth = selectedMonth + 2;
     let nextYear = selectedYear;
@@ -129,6 +130,7 @@ const drawMonthCalendar = (
       nextMonth = 1;
       nextYear = nextYear + 1;
     }
+    // Unique id generated based on DD-MM-YYYY format
     nextDay.setAttribute("id", `${day}-${nextMonth}-${nextYear}`);
     // Adding event listener to display options menu on click. Naming the function so it can be removed
     nextDay.addEventListener("mousedown", function eventHandler(event) {
@@ -140,6 +142,7 @@ const drawMonthCalendar = (
   }
 };
 
+// Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (event, day, month, year) => {
   console.log(event);
   const menu = document.createElement("div");
@@ -155,6 +158,7 @@ const displayMenu = (event, day, month, year) => {
   });
 };
 
+// Back button currently not working as expected
 const addEvent = (menu, day, month, year) => {
   console.log(menu, day, month, year);
   menu.innerHTML = "";
