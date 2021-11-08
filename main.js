@@ -194,12 +194,8 @@ const displayMenu = (event, day, month, year) => {
   } else if (backToggler) {
     menu.innerHTML = "";
     menu.appendChild(backButton);
-    const eventInput = document.createElement("input");
-    eventInput.setAttribute("type", "text");
-    eventInput.setAttribute("placeholder", "What's coming up?");
-    eventInput.setAttribute("id", `input-${day}-${month}-${year}`);
-    eventInput.setAttribute("class", "input-event-month");
-    menu.appendChild(eventInput);
+    const eventForm = generateForm(day, month, year);
+    menu.appendChild(eventForm);
     // console.log(backToggler);
   }
   event.target.appendChild(menu);
@@ -215,9 +211,20 @@ const displayMenu = (event, day, month, year) => {
   });
   // Listener event. User clicks outside the menu and whole calendar gets drawn again
   document.body.addEventListener("mouseup", function exitMenu(event) {
+    // Adding conditions to the event listener that exits the menu
+    // It will only trigger when user doesnt click in any of these places below (all menu related)
     if (
       event.target != menu &&
-      event.target != document.getElementById(`input-${day}-${month}-${year}`)
+      event.target !=
+        document.getElementById(`input-month-${day}-${month}-${year}`) &&
+      event.target !=
+        document.getElementById(`submit-event-month-${day}-${month}-${year}`) &&
+      event.target !=
+        document.getElementById(`start-time-month-${day}-${month}-${year}`) &&
+      event.target !=
+        document.getElementById(`end-time-month-${day}-${month}-${year}`) &&
+      event.target !=
+        document.getElementById(`form-month-${day}-${month}-${year}`)
     ) {
       INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
       backToggler = false;
@@ -226,6 +233,37 @@ const displayMenu = (event, day, month, year) => {
       getValues(INPUT_DATE);
     }
   });
+};
+
+// This is just very repetite code that generates a form inside the display menu
+const generateForm = (day, month, year) => {
+  const eventForm = document.createElement("form");
+  eventForm.setAttribute("id", `form-month-${day}-${month}-${year}`);
+  const eventInput = document.createElement("input");
+  eventInput.setAttribute("type", "text");
+  eventInput.setAttribute("placeholder", "What's coming up?");
+  eventInput.setAttribute("id", `input-month-${day}-${month}-${year}`);
+  eventInput.setAttribute("class", "input-event-month");
+  eventInput.setAttribute("autocomplete", "off");
+  const eventStartDate = document.createElement("input");
+  eventStartDate.setAttribute("type", "time");
+  eventStartDate.setAttribute("step", "900");
+  eventStartDate.setAttribute("id", `start-time-month-${day}-${month}-${year}`);
+  const eventEndDate = document.createElement("input");
+  eventEndDate.setAttribute("type", "time");
+  eventEndDate.setAttribute("step", "900");
+  eventEndDate.setAttribute("id", `end-time-month-${day}-${month}-${year}`);
+  const submitEvent = document.createElement("input");
+  submitEvent.setAttribute("type", "submit");
+  submitEvent.setAttribute("id", `submit-event-month-${day}-${month}-${year}`);
+  eventForm.appendChild(eventInput);
+  eventForm.appendChild(eventStartDate);
+  eventForm.appendChild(eventEndDate);
+  eventForm.appendChild(submitEvent);
+  eventForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+  });
+  return eventForm;
 };
 
 // Back button currently not working as expected
