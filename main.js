@@ -2,6 +2,9 @@
 let INPUT_DATE = new Date();
 // Array to store event data
 let EVENTS = [];
+const TOGGLERS = {
+  back: false,
+};
 // Setting up the value attribute of <input> type date to display today's date on default
 document
   .getElementById("selectedDate")
@@ -166,8 +169,6 @@ const drawMonthCalendar = (
   }
 };
 
-let backToggler = false;
-
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (event, day, month, year) => {
   let menu =
@@ -182,12 +183,12 @@ const displayMenu = (event, day, month, year) => {
     document.getElementById("back-button") || document.createElement("button");
   backButton.setAttribute("id", "back-button");
   backButton.innerHTML = "Back";
-  // menu.innerHTML = backToggler ? "" : `${day}.${month}.${year}`;
-  // backToggler ? menu.appendChild(backButton) : menu.appendChild(addButton);
-  if (!backToggler) {
+  // menu.innerHTML = TOGGLERS.back ? "" : `${day}.${month}.${year}`;
+  // TOGGLERS.back ? menu.appendChild(backButton) : menu.appendChild(addButton);
+  if (!TOGGLERS.back) {
     menu.innerHTML = `${day}.${month}.${year}`;
     menu.appendChild(addButton);
-  } else if (backToggler) {
+  } else if (TOGGLERS.back) {
     menu.innerHTML = "";
     menu.appendChild(backButton);
     const eventForm = generateForm(day, month, year);
@@ -196,12 +197,12 @@ const displayMenu = (event, day, month, year) => {
   event.target.appendChild(menu);
   addButton.addEventListener("mousedown", () => {
     addEvent(event, menu, day, month, year);
-    backToggler = !backToggler;
+    TOGGLERS.back = !TOGGLERS.back;
     menu.innerHTML = "";
     displayMenu(event, day, month, year);
   });
   backButton.addEventListener("mousedown", () => {
-    backToggler = !backToggler;
+    TOGGLERS.back = !TOGGLERS.back;
     displayMenu(event, day, month, year);
   });
   // Listener event. User clicks outside the menu and whole calendar gets drawn again
@@ -222,7 +223,7 @@ const displayMenu = (event, day, month, year) => {
         document.getElementById(`form-month-${day}-${month}-${year}`)
     ) {
       INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
-      backToggler = false;
+      TOGGLERS.back = false;
       // This function gets the display process started
       document.body.removeEventListener("mouseup", exitMenu);
       getValues(INPUT_DATE);
