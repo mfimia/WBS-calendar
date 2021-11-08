@@ -97,10 +97,8 @@ const drawMonthCalendar = (
     // The previous month starts to be drawn from previousstarting day + 1 and runs until it reaches its last day
     for (j = prevStartingDay + 1; j <= previousMonthDays; j++) {
       const numDay = Number(j);
-      console.log(j);
       const prevMonth = selectedMonth;
       const prevYear = selectedMonth ? selectedYear : selectedYear - 1;
-      console.log(prevYear);
       const prevDay =
         document.getElementById(`${numDay}-${prevMonth}-${prevYear}`) ||
         document.createElement("div");
@@ -114,7 +112,6 @@ const drawMonthCalendar = (
         event.target.removeEventListener("click", eventHandler);
         displayMenu(event, numDay, prevMonth, prevYear);
       });
-      console.log(prevDay);
       table.appendChild(prevDay);
       // CURRENT_VIEW.push(`${j}`);
     }
@@ -173,7 +170,6 @@ let backToggler = false;
 
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (event, day, month, year) => {
-  console.log(event.target);
   let menu =
     document.getElementById("add-events-menu") || document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
@@ -196,7 +192,6 @@ const displayMenu = (event, day, month, year) => {
     menu.appendChild(backButton);
     const eventForm = generateForm(day, month, year);
     menu.appendChild(eventForm);
-    // console.log(backToggler);
   }
   event.target.appendChild(menu);
   addButton.addEventListener("mousedown", () => {
