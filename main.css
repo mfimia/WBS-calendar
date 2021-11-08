@@ -35,7 +35,7 @@ body {
   background-color: yellow;
 }
 
-#calendar, #test-table {
+#calendar {
   width: 500px;
   height: 500px;
   border: 1px solid black;
@@ -48,7 +48,20 @@ body {
 }
 
 #calendar {
-    /* display: none; */
+  display: none;
+}
+
+#month-calendar {
+  width: 500px;
+  height: 500px;
+  border: 1px solid black;
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translate(-50%);
+  grid-area: main;
+  cursor: pointer;
+  /* background-color: blue; */
 }
 
 /* td {
@@ -80,19 +93,79 @@ body {
   color: red;
 }
 
-.month-day {
-  height: 15.83%;
+.month-day,
+.day,
+.extra-day,
+.chosen-day {
+  height: 16.66666%;
   display: inline-flex;
   width: 14.2858%;
   justify-content: flex-end;
   align-items: flex-end;
   border: solid thin black;
   padding: 0.3vmin;
-  color: white;
+  color: red;
+  font-weight: 900;
+}
+
+.month-day:hover,
+.day:hover,
+.extra-day:hover {
+  background-color: lightgrey;
+}
+
+.chosen-day {
+  background-color: rgb(209, 233, 248);
+}
+
+.chosen-day:hover {
+  background-color: lightskyblue;
+}
+
+.extra-day {
+  color: grey;
 }
 
 #input-date {
   position: absolute;
   right: 20%;
   top: 10%;
+}
+
+#input-date *,
+#selectedDate * {
+  cursor: pointer;
+}
+
+#displayed-date-text {
+  position: absolute;
+  top: 16%;
+  width: 500px;
+  left: 50%;
+  transform: translate(-50%);
+  font-family: "Times New Roman", Times, serif;
+  font-weight: 700;
+  font-size: x-large;
+  text-align: center;
+  border: none;
+}
+
+.displayed-menu {
+  position: absolute;
+  /* border: none; */
+  width: 200px;
+  height: 100px;
+  /* left: 50%;
+  transform: translate(-50%);
+  top: 30%; */
+  background-color: white;
+  z-index: 5;
+}
+
+#add-event {
+  cursor: pointer;
+}
+
+.input-event-month {
+  height: 40%;
 }
