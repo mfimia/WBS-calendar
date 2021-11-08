@@ -128,7 +128,7 @@ const drawMonthCalendar = (
     const nextDay =
       document.getElementById(`${Number(k)}-${nextMonth}-${nextYear}`) ||
       document.createElement("div");
-      console.log(nextDay)
+    // console.log(nextDay);
     nextDay.setAttribute("class", "extra-day");
     nextDay.innerHTML = `${k}`;
     // Day, month and year values calculated and stored in variables
@@ -175,17 +175,13 @@ const displayMenu = (event, day, month, year) => {
     backToggler = !backToggler;
     displayMenu(event, day, month, year);
   });
+  // Listener event. User clicks outside the menu and whole calendar gets drawn again
   document.body.addEventListener("mouseup", function eventHandler(event) {
     if (event.target != menu) {
-      menu.remove();
+      INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
+      // This function gets the display process started
       document.body.removeEventListener("mouseup", eventHandler);
-      document
-        .getElementById(`${day}-${month}-${year}`)
-        .addEventListener("mousedown", function eventHandler(event) {
-          // Removing event handler when it is used to avoid unwanted extra menus
-          event.target.removeEventListener("mousedown", eventHandler);
-          displayMenu(event, day, month, year);
-        });
+      getValues(INPUT_DATE);
     }
   });
 };
