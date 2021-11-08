@@ -146,17 +146,24 @@ const drawMonthCalendar = (
 const displayMenu = (event, day, month, year) => {
   const menu = document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
-  menu.innerHTML = `${day}.${month}.${year}
-  <button id="add-event" onmousedown="addEvent()">Add event</button>`;
+  const addButton = document.createElement("button");
+  addButton.setAttribute("id", "add-event");
+  addButton.innerHTML = "Add event";
+
+  menu.innerHTML = `${day}.${month}.${year}`;
+  menu.appendChild(addButton);
   event.target.appendChild(menu);
-
-  // if (menu) {
-
-  // }
+  addButton.addEventListener("mousedown", () => {
+    addEvent(menu, day, month, year);
+  });
 };
 
-const addEvent = () => {
-  console.log("hi!");
+const addEvent = (menu, day, month, year) => {
+  console.log(menu, day, month, year);
+  menu.innerHTML = "";
+  const backButton = document.createElement("button");
+  backButton.innerHTML = "Back";
+  backButton.addEventListener("mousedown");
 };
 
 // This function takes chosen month and year as parameters and returns the total days the month has
