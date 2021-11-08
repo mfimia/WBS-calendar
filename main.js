@@ -106,12 +106,21 @@ const drawMonthCalendar = (
   }
   // This for loop generates the chosen month days. It just runs from 1 until the last day of the month
   for (i = 1; i <= monthDays; i++) {
-    const day = document.createElement("div");
+    const numDay = Number(i);
+    const day =
+      document.getElementById(`${numDay}-${selectedMonth}-${selectedYear}`) ||
+      document.createElement("div");
     // This ternary operator highlights the day chosen by user
     i === selectedDay
       ? day.setAttribute("class", "chosen-day")
       : day.setAttribute("class", "day");
     day.innerHTML = `${i}`;
+    day.setAttribute("id", `${numDay}-${selectedMonth + 1}-${selectedYear}`);
+    day.addEventListener("mousedown", function eventHandler(event) {
+      // Removing event handler when it is used to avoid unwanted extra menus
+      event.target.removeEventListener("mousedown", eventHandler);
+      displayMenu(event, numDay, selectedMonth + 1, selectedYear);
+    });
     table.appendChild(day);
   }
   // Last, we draw the days of the next month.
@@ -128,7 +137,6 @@ const drawMonthCalendar = (
     const nextDay =
       document.getElementById(`${Number(k)}-${nextMonth}-${nextYear}`) ||
       document.createElement("div");
-    // console.log(nextDay);
     nextDay.setAttribute("class", "extra-day");
     nextDay.innerHTML = `${k}`;
     // Day, month and year values calculated and stored in variables
@@ -149,7 +157,6 @@ let backToggler = false;
 
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (event, day, month, year) => {
-  console.log(event.target);
   let menu =
     document.getElementById("add-events-menu") || document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
@@ -188,7 +195,6 @@ const displayMenu = (event, day, month, year) => {
 
 // Back button currently not working as expected
 const addEvent = (event, menu, day, month, year) => {
-  // console.log(menu, day, month, year);
   // menu.innerHTML = "";
 };
 
