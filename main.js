@@ -122,34 +122,31 @@ const drawMonthCalendar = (
     const nextDay = document.createElement("div");
     nextDay.setAttribute("class", "extra-day");
     nextDay.innerHTML = `${k}`;
+    const day = Number(nextDay.innerHTML);
+    let nextMonth = selectedMonth + 2;
+    let nextYear = selectedYear;
+    if (nextMonth === 13) {
+      nextMonth = 1;
+      nextYear = nextYear + 1;
+    }
+    nextDay.setAttribute("id", `${day}-${nextMonth}-${nextYear}`);
     // Adding event listener to display options menu on click. Naming the function so it can be removed
     nextDay.addEventListener("mousedown", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("mousedown", eventHandler);
-      // Converting event target into a number
-      const targetDay = Number(event.target.innerHTML);
-      // Adding 2 to selected month (0-11) to convert it into normal format of next month
-      let nextMonth = selectedMonth + 2;
-      let nextYear = selectedYear;
-      // Adding logic to correctly display month and year if selected next month is in the next year
-      if (nextMonth === 13) {
-        nextMonth = 1;
-        nextYear = nextYear + 1;
-      }
-      // Display the menu passing the information about the selected event, day, month, and year
-      displayMenu(event, targetDay, nextMonth, nextYear);
+      displayMenu(event, day, nextMonth, nextYear);
     });
     table.appendChild(nextDay);
   }
 };
 
 const displayMenu = (event, day, month, year) => {
+  console.log(event);
   const menu = document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
   const addButton = document.createElement("button");
   addButton.setAttribute("id", "add-event");
   addButton.innerHTML = "Add event";
-
   menu.innerHTML = `${day}.${month}.${year}`;
   menu.appendChild(addButton);
   event.target.appendChild(menu);
@@ -163,7 +160,12 @@ const addEvent = (menu, day, month, year) => {
   menu.innerHTML = "";
   const backButton = document.createElement("button");
   backButton.innerHTML = "Back";
-  backButton.addEventListener("mousedown");
+  backButton.addEventListener("mousedown", () => {
+    const selectedDate = document.getElementById(`${day}-${month}-${year}`);
+    menu.style.display = "none";
+    displayMenu(selectedDate, day, month, year);
+  });
+  menu.appendChild(backButton);
 };
 
 // This function takes chosen month and year as parameters and returns the total days the month has
