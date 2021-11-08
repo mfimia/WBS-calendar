@@ -96,10 +96,25 @@ const drawMonthCalendar = (
   if (emptySpots) {
     // The previous month starts to be drawn from previousstarting day + 1 and runs until it reaches its last day
     for (j = prevStartingDay + 1; j <= previousMonthDays; j++) {
-      const prevDay = document.createElement("div");
+      const numDay = Number(j);
+      console.log(j);
+      const prevMonth = selectedMonth;
+      const prevYear = selectedMonth ? selectedYear : selectedYear - 1;
+      console.log(prevYear);
+      const prevDay =
+        document.getElementById(`${numDay}-${prevMonth}-${prevYear}`) ||
+        document.createElement("div");
       // Days generated in this way are classified as "extra-days"
-      prevDay.setAttribute("class", "extra-day");
+
       prevDay.innerHTML = `${j}`;
+      prevDay.setAttribute("id", `${numDay}-${prevMonth}-${prevYear}`);
+      prevDay.setAttribute("class", "extra-day");
+      prevDay.addEventListener("mousedown", function eventHandler(event) {
+        // Removing event handler when it is used to avoid unwanted extra menus
+        event.target.removeEventListener("mousedown", eventHandler);
+        displayMenu(event, numDay, prevMonth, prevYear);
+      });
+      console.log(prevDay);
       table.appendChild(prevDay);
       // CURRENT_VIEW.push(`${j}`);
     }
@@ -108,8 +123,9 @@ const drawMonthCalendar = (
   for (i = 1; i <= monthDays; i++) {
     const numDay = Number(i);
     const day =
-      document.getElementById(`${numDay}-${selectedMonth}-${selectedYear}`) ||
-      document.createElement("div");
+      document.getElementById(
+        `${numDay}-${selectedMonth + 1}-${selectedYear}`
+      ) || document.createElement("div");
     // This ternary operator highlights the day chosen by user
     i === selectedDay
       ? day.setAttribute("class", "chosen-day")
@@ -189,6 +205,7 @@ const displayMenu = (event, day, month, year) => {
       // This function gets the display process started
       document.body.removeEventListener("mouseup", eventHandler);
       getValues(INPUT_DATE);
+      backToggler = false;
     }
   });
 };
