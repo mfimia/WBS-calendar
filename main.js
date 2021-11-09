@@ -284,7 +284,7 @@ const createEvent = (event, text, day, month, year) => {
   ).value;
   const durationMinutes =
     (convertToSeconds(endTime) - convertToSeconds(startTime)) / 60;
-
+  const startTimeNum = convertToNumber(startTime);
   const monthEvent = {
     title: text,
     numWeekday: new Date(`${year}-${month}-${day}`).getDay(),
@@ -297,7 +297,16 @@ const createEvent = (event, text, day, month, year) => {
     startTime: startTime,
     endTime: endTime,
     durationMinutes: durationMinutes,
+    // Generating unique unix ID using start time
+    unixID: new Date(
+      year,
+      month - 1,
+      day,
+      startTimeNum.hours,
+      startTimeNum.minutes
+    ).getTime(),
   };
+
   EVENTS.push(monthEvent);
   localStorage.setItem(`month-events`, JSON.stringify(EVENTS));
 };
@@ -307,6 +316,17 @@ const convertToSeconds = (time) => {
   const seconds =
     parseInt(array[0], 10) * 60 * 60 + parseInt(array[1], 10) * 60;
   return seconds;
+};
+
+const convertToNumber = (time) => {
+  const array = time.split(":");
+  const hours = parseInt(array[0]);
+  const minutes = parseInt(array[1]);
+  const number = {
+    hours: hours,
+    minutes: minutes,
+  };
+  return number;
 };
 
 // This function takes chosen month and year as parameters and returns the total days the month has
