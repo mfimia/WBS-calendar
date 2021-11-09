@@ -1,7 +1,7 @@
 // Create new date everytime the code runs
 let INPUT_DATE = new Date();
 // Array to store event data
-let EVENTS = [];
+let EVENTS = JSON.parse(localStorage.getItem("month-events")) || [];
 const TOGGLERS = {
   back: false,
 };
@@ -196,7 +196,6 @@ const displayMenu = (event, day, month, year) => {
   }
   event.target.appendChild(menu);
   addButton.addEventListener("mousedown", () => {
-    addEvent(event, menu, day, month, year);
     TOGGLERS.back = !TOGGLERS.back;
     menu.innerHTML = "";
     displayMenu(event, day, month, year);
@@ -220,7 +219,9 @@ const displayMenu = (event, day, month, year) => {
       event.target !=
         document.getElementById(`end-time-month-${day}-${month}-${year}`) &&
       event.target !=
-        document.getElementById(`form-month-${day}-${month}-${year}`)
+        document.getElementById(`form-month-${day}-${month}-${year}`) &&
+      event.target !=
+        document.getElementById(`color-month-${day}-${month}-${year}`)
     ) {
       INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
       TOGGLERS.back = false;
@@ -252,19 +253,60 @@ const generateForm = (day, month, year) => {
   const submitEvent = document.createElement("input");
   submitEvent.setAttribute("type", "submit");
   submitEvent.setAttribute("id", `submit-event-month-${day}-${month}-${year}`);
+  const colorTag = document.createElement("input");
+  colorTag.setAttribute("type", "color");
+  colorTag.setAttribute("id", `color-month-${day}-${month}-${year}`);
   eventForm.appendChild(eventInput);
   eventForm.appendChild(eventStartDate);
   eventForm.appendChild(eventEndDate);
+  eventForm.appendChild(colorTag);
   eventForm.appendChild(submitEvent);
-  eventForm.addEventListener("submit", (e) => {
-    e.preventDefault();
+  eventForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const eventText = document.getElementById(
+      `input-month-${day}-${month}-${year}`
+    ).value;
+    createEvent(event, eventText, day, month, year);
+    document.getElementById(`input-month-${day}-${month}-${year}`).value = "";
   });
   return eventForm;
 };
 
-// Back button currently not working as expected
-const addEvent = (event, menu, day, month, year) => {
-  // menu.innerHTML = "";
+const createEvent = (event, text, day, month, year) => {
+  const startTime = document.getElementById(
+    `start-time-month-${day}-${month}-${year}`
+  ).value;
+  const endTime = document.getElementById(
+    `end-time-month-${day}-${month}-${year}`
+  ).value;
+  const colorTag = document.getElementById(
+    `color-month-${day}-${month}-${year}`
+  ).value;
+  const durationMinutes =
+    (convertToSeconds(endTime) - convertToSeconds(startTime)) / 60;
+
+  const monthEvent = {
+    title: text,
+    numWeekday: new Date(`${year}-${month}-${day}`).getDay(),
+    stringWeekday: WEEKDAYS[new Date(`${year}-${month}-${day}`).getDay()],
+    day: day,
+    numMonth: month,
+    stringMonth: MONTHS[month - 1],
+    year: year,
+    colorHex: colorTag,
+    startTime: startTime,
+    endTime: endTime,
+    durationMinutes: durationMinutes,
+  };
+  EVENTS.push(monthEvent);
+  localStorage.setItem(`month-events`, JSON.stringify(EVENTS));
+};
+
+const convertToSeconds = (time) => {
+  const array = time.split(":");
+  const seconds =
+    parseInt(array[0], 10) * 60 * 60 + parseInt(array[1], 10) * 60;
+  return seconds;
 };
 
 // This function takes chosen month and year as parameters and returns the total days the month has
