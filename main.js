@@ -247,7 +247,6 @@ const generateForm = (day, month, year) => {
   // eventStartDate.setAttribute("step", "900");
   eventStartDate.setAttribute("id", `start-time-month-${day}-${month}-${year}`);
   eventStartDate.defaultValue = convertToTimeFormat(new Date());
-  console.log(eventStartDate.defaultValue);
   const eventEndDate = document.createElement("input");
   eventEndDate.setAttribute("type", "time");
   // eventEndDate.setAttribute("step", "900");
