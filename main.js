@@ -99,6 +99,7 @@ const drawMonthCalendar = (
   if (emptySpots) {
     // The previous month starts to be drawn from previousstarting day + 1 and runs until it reaches its last day
     for (j = prevStartingDay + 1; j <= previousMonthDays; j++) {
+      let withEvent = false;
       const numDay = Number(j);
       const prevMonth = selectedMonth;
       const prevYear = selectedMonth ? selectedYear : selectedYear - 1;
@@ -111,15 +112,6 @@ const drawMonthCalendar = (
         document.getElementById(`${midnightUnix}`) ||
         document.createElement("div");
       // Days generated in this way are classified as "extra-days"
-
-      prevDay.innerHTML = `${j}`;
-      prevDay.setAttribute("id", `${midnightUnix}`);
-      prevDay.setAttribute("class", "extra-day");
-      prevDay.addEventListener("click", function eventHandler(event) {
-        // Removing event handler when it is used to avoid unwanted extra menus
-        event.target.removeEventListener("click", eventHandler);
-        displayMenu(event, numDay, prevMonth, prevYear);
-      });
       const storedPreviousDay = {
         day: Number(j),
         month: prevMonth,
@@ -133,7 +125,17 @@ const drawMonthCalendar = (
           storedPreviousDay.year === element.year
         ) {
           prevDay.style.color = "blue";
+          withEvent = true;
         }
+      });
+
+      prevDay.innerHTML = `${j}`;
+      prevDay.setAttribute("id", `${midnightUnix}`);
+      prevDay.setAttribute("class", "extra-day");
+      prevDay.addEventListener("click", function eventHandler(event) {
+        // Removing event handler when it is used to avoid unwanted extra menus
+        event.target.removeEventListener("click", eventHandler);
+        displayMenu(event, numDay, prevMonth, prevYear, withEvent);
       });
       table.appendChild(prevDay);
     }
@@ -184,6 +186,7 @@ const drawMonthCalendar = (
   const remainingDays = 43 - lastDay;
   // The for loop just runs from 1 until there are no more empty spots
   for (k = 1; k <= remainingDays; k++) {
+    let withEvent = false;
     let nextMonth = selectedMonth + 2;
     let nextYear = selectedYear;
     if (nextMonth === 13) {
@@ -194,18 +197,6 @@ const drawMonthCalendar = (
     const nextDay =
       document.getElementById(`${midnightUnix}`) ||
       document.createElement("div");
-    nextDay.setAttribute("class", "extra-day");
-    nextDay.innerHTML = `${k}`;
-    // Day, month and year values calculated and stored in variables
-    const day = Number(nextDay.innerHTML);
-    // Unique id generated based on DD-MM-YYYY format
-    nextDay.setAttribute("id", `${midnightUnix}`);
-    // Adding event listener to display options menu on click. Naming the function so it can be removed
-    nextDay.addEventListener("click", function eventHandler(event) {
-      // Removing event handler when it is used to avoid unwanted extra menus
-      event.target.removeEventListener("click", eventHandler);
-      displayMenu(event, day, nextMonth, nextYear);
-    });
     const storedNextDay = {
       day: Number(k),
       month: nextMonth,
@@ -219,7 +210,20 @@ const drawMonthCalendar = (
         storedNextDay.year === element.year
       ) {
         nextDay.style.color = "blue";
+        withEvent = true;
       }
+    });
+    nextDay.setAttribute("class", "extra-day");
+    nextDay.innerHTML = `${k}`;
+    // Day, month and year values calculated and stored in variables
+    const day = Number(nextDay.innerHTML);
+    // Unique id generated based on DD-MM-YYYY format
+    nextDay.setAttribute("id", `${midnightUnix}`);
+    // Adding event listener to display options menu on click. Naming the function so it can be removed
+    nextDay.addEventListener("click", function eventHandler(event) {
+      // Removing event handler when it is used to avoid unwanted extra menus
+      event.target.removeEventListener("click", eventHandler);
+      displayMenu(event, day, nextMonth, nextYear, withEvent);
     });
     table.appendChild(nextDay);
   }
