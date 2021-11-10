@@ -102,7 +102,11 @@ const drawMonthCalendar = (
       const numDay = Number(j);
       const prevMonth = selectedMonth;
       const prevYear = selectedMonth ? selectedYear : selectedYear - 1;
-      const midnightUnix = new Date(prevYear, prevMonth - 1, numDay).getTime();
+      const midnightUnix = new Date(
+        selectedMonth ? prevYear : prevYear + 1,
+        prevMonth - 1,
+        numDay
+      ).getTime();
       const prevDay =
         document.getElementById(`${midnightUnix}`) ||
         document.createElement("div");
@@ -117,7 +121,7 @@ const drawMonthCalendar = (
         displayMenu(event, numDay, prevMonth, prevYear);
       });
       table.appendChild(prevDay);
-      console.log(new Date(midnightUnix))
+      console.log(new Date(midnightUnix));
       // CURRENT_VIEW.push(`${j}`);
     }
   }
@@ -144,7 +148,7 @@ const drawMonthCalendar = (
       displayMenu(event, numDay, selectedMonth + 1, selectedYear);
     });
     table.appendChild(day);
-    console.log(new Date(midnightUnix))
+    console.log(new Date(midnightUnix));
   }
   // Last, we draw the days of the next month.
   // We calculate the empty spots with the variable remainingDays
@@ -174,7 +178,7 @@ const drawMonthCalendar = (
       displayMenu(event, day, nextMonth, nextYear);
     });
     table.appendChild(nextDay);
-    console.log(new Date(midnightUnix))
+    console.log(new Date(midnightUnix));
   }
 };
 
