@@ -6,7 +6,7 @@ const TOGGLERS = {
   back: false,
 };
 let CURRENT_DISPLAY = [];
-let daysWithEvent = [null];
+let daysWithEvent = [];
 // Setting up the value attribute of <input> type date to display today's date on default
 document
   .getElementById("selectedDate")
@@ -90,6 +90,11 @@ const drawMonthCalendar = (
 ) => {
   CURRENT_DISPLAY = [];
   daysWithEvent = [];
+  daysWithEvent.forEach((item) => {
+    if (!item) {
+      daysWithEvent.pop(item);
+    }
+  });
   // Based on the starting day of the week, we calculate all "empty spots" that will be filled with previous month days
   const emptySpots = startingDay - 1;
   // Before displaying anything on the screen, we remove everything that was there already
