@@ -99,43 +99,85 @@ const drawMonthCalendar = (
   if (emptySpots) {
     // The previous month starts to be drawn from previousstarting day + 1 and runs until it reaches its last day
     for (j = prevStartingDay + 1; j <= previousMonthDays; j++) {
+      let withEvent = false;
       const numDay = Number(j);
       const prevMonth = selectedMonth;
       const prevYear = selectedMonth ? selectedYear : selectedYear - 1;
+      const midnightUnix = new Date(
+        selectedMonth ? prevYear : prevYear + 1,
+        prevMonth - 1,
+        numDay
+      ).getTime();
       const prevDay =
-        document.getElementById(`${numDay}-${prevMonth}-${prevYear}`) ||
+        document.getElementById(`${midnightUnix}`) ||
         document.createElement("div");
       // Days generated in this way are classified as "extra-days"
+      const storedPreviousDay = {
+        day: Number(j),
+        month: prevMonth,
+        year: prevYear,
+        midnightUnix: midnightUnix,
+      };
+      EVENTS.forEach((element) => {
+        if (
+          storedPreviousDay.day === element.day &&
+          storedPreviousDay.month === element.numMonth &&
+          storedPreviousDay.year === element.year
+        ) {
+          prevDay.style.color = "blue";
+          withEvent = true;
+        }
+      });
 
       prevDay.innerHTML = `${j}`;
-      prevDay.setAttribute("id", `${numDay}-${prevMonth}-${prevYear}`);
+      prevDay.setAttribute("id", `${midnightUnix}`);
       prevDay.setAttribute("class", "extra-day");
       prevDay.addEventListener("click", function eventHandler(event) {
         // Removing event handler when it is used to avoid unwanted extra menus
         event.target.removeEventListener("click", eventHandler);
-        displayMenu(event, numDay, prevMonth, prevYear);
+        displayMenu(event, numDay, prevMonth, prevYear, withEvent);
       });
       table.appendChild(prevDay);
-      // CURRENT_VIEW.push(`${j}`);
     }
   }
   // This for loop generates the chosen month days. It just runs from 1 until the last day of the month
   for (i = 1; i <= monthDays; i++) {
+    let withEvent = false;
     const numDay = Number(i);
+    const midnightUnix = new Date(
+      selectedYear,
+      selectedMonth,
+      numDay
+    ).getTime();
+    const storedCurrentDay = {
+      day: Number(i),
+      month: selectedMonth + 1,
+      year: selectedYear,
+      midnightUnix: midnightUnix,
+    };
     const day =
-      document.getElementById(
-        `${numDay}-${selectedMonth + 1}-${selectedYear}`
-      ) || document.createElement("div");
+      document.getElementById(`${midnightUnix}`) ||
+      document.createElement("div");
     // This ternary operator highlights the day chosen by user
     i === selectedDay
       ? day.setAttribute("class", "chosen-day")
       : day.setAttribute("class", "day");
+    EVENTS.forEach((element) => {
+      if (
+        storedCurrentDay.day === element.day &&
+        storedCurrentDay.month === element.numMonth &&
+        storedCurrentDay.year === element.year
+      ) {
+        day.style.color = "blue";
+        withEvent = true;
+      }
+    });
     day.innerHTML = `${i}`;
-    day.setAttribute("id", `${numDay}-${selectedMonth + 1}-${selectedYear}`);
+    day.setAttribute("id", `${midnightUnix}`);
     day.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
-      displayMenu(event, numDay, selectedMonth + 1, selectedYear);
+      displayMenu(event, numDay, selectedMonth + 1, selectedYear, withEvent);
     });
     table.appendChild(day);
   }
@@ -144,33 +186,51 @@ const drawMonthCalendar = (
   const remainingDays = 43 - lastDay;
   // The for loop just runs from 1 until there are no more empty spots
   for (k = 1; k <= remainingDays; k++) {
+    let withEvent = false;
     let nextMonth = selectedMonth + 2;
     let nextYear = selectedYear;
     if (nextMonth === 13) {
       nextMonth = 1;
       nextYear = nextYear + 1;
     }
+    const midnightUnix = new Date(nextYear, nextMonth - 1, Number(k)).getTime();
     const nextDay =
-      document.getElementById(`${Number(k)}-${nextMonth}-${nextYear}`) ||
+      document.getElementById(`${midnightUnix}`) ||
       document.createElement("div");
+    const storedNextDay = {
+      day: Number(k),
+      month: nextMonth,
+      year: nextYear,
+      midnightUnix: midnightUnix,
+    };
+    EVENTS.forEach((element) => {
+      if (
+        storedNextDay.day === element.day &&
+        storedNextDay.month === element.numMonth &&
+        storedNextDay.year === element.year
+      ) {
+        nextDay.style.color = "blue";
+        withEvent = true;
+      }
+    });
     nextDay.setAttribute("class", "extra-day");
     nextDay.innerHTML = `${k}`;
     // Day, month and year values calculated and stored in variables
     const day = Number(nextDay.innerHTML);
     // Unique id generated based on DD-MM-YYYY format
-    nextDay.setAttribute("id", `${day}-${nextMonth}-${nextYear}`);
+    nextDay.setAttribute("id", `${midnightUnix}`);
     // Adding event listener to display options menu on click. Naming the function so it can be removed
     nextDay.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
-      displayMenu(event, day, nextMonth, nextYear);
+      displayMenu(event, day, nextMonth, nextYear, withEvent);
     });
     table.appendChild(nextDay);
   }
 };
 
 // Menu takes all info about the day and displays an box in the location where event took place
-const displayMenu = (event, day, month, year) => {
+const displayMenu = (event, day, month, year, dayEvents) => {
   let menu =
     document.getElementById("add-events-menu") || document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
@@ -188,6 +248,22 @@ const displayMenu = (event, day, month, year) => {
   if (!TOGGLERS.back) {
     menu.innerHTML = `${day}.${month}.${year}`;
     menu.appendChild(addButton);
+    if (dayEvents) {
+      const eventsSection = document.createElement("div");
+      EVENTS.forEach((element) => {
+        if (
+          day === element.day &&
+          month === element.numMonth &&
+          year === element.year
+        ) {
+          eventsSection.innerHTML += `Event: ${element.title}<br>
+          Start: ${element.startTime}<br>
+          End: ${element.endTime}<br>
+          Duration: ${element.durationMinutes} minutes<br>`;
+        }
+      });
+      menu.appendChild(eventsSection);
+    }
   } else if (TOGGLERS.back) {
     menu.innerHTML = "";
     menu.appendChild(backButton);
@@ -242,14 +318,17 @@ const generateForm = (day, month, year) => {
   eventInput.setAttribute("id", `input-month-${day}-${month}-${year}`);
   eventInput.setAttribute("class", "input-event-month");
   eventInput.setAttribute("autocomplete", "off");
+  eventInput.setAttribute("required", "true");
   const eventStartDate = document.createElement("input");
   eventStartDate.setAttribute("type", "time");
-  eventStartDate.setAttribute("step", "900");
+  // eventStartDate.setAttribute("step", "900");
   eventStartDate.setAttribute("id", `start-time-month-${day}-${month}-${year}`);
+  eventStartDate.defaultValue = convertToTimeFormat(new Date());
   const eventEndDate = document.createElement("input");
   eventEndDate.setAttribute("type", "time");
-  eventEndDate.setAttribute("step", "900");
+  // eventEndDate.setAttribute("step", "900");
   eventEndDate.setAttribute("id", `end-time-month-${day}-${month}-${year}`);
+  eventEndDate.defaultValue = convertToTimeFormat(new Date(), true);
   const submitEvent = document.createElement("input");
   submitEvent.setAttribute("type", "submit");
   submitEvent.setAttribute("id", `submit-event-month-${day}-${month}-${year}`);
@@ -311,6 +390,8 @@ const createEvent = (event, text, day, month, year) => {
   localStorage.setItem(`month-events`, JSON.stringify(EVENTS));
 };
 
+// Helper functions below to manipulate time values
+// Convert a given time into seconds
 const convertToSeconds = (time) => {
   const array = time.split(":");
   const seconds =
@@ -318,6 +399,7 @@ const convertToSeconds = (time) => {
   return seconds;
 };
 
+// Convert a given time into hours and minutes (number)
 const convertToNumber = (time) => {
   const array = time.split(":");
   const hours = parseInt(array[0]);
@@ -327,6 +409,25 @@ const convertToNumber = (time) => {
     minutes: minutes,
   };
   return number;
+};
+
+// Receives a new date and returns hh:mm
+// Second argument toggles +1 h
+const convertToTimeFormat = (time, plusOne = false) => {
+  const addZero = (i) => {
+    if (i < 10) {
+      i = "0" + i;
+    }
+    return i;
+  };
+  if (plusOne) {
+    let unix = time.getTime();
+    time = new Date(unix + 3600000);
+  }
+  let h = addZero(time.getHours());
+  const m = addZero(time.getMinutes());
+  const returnedTime = h + ":" + m;
+  return returnedTime;
 };
 
 // This function takes chosen month and year as parameters and returns the total days the month has
