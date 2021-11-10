@@ -102,13 +102,14 @@ const drawMonthCalendar = (
       const numDay = Number(j);
       const prevMonth = selectedMonth;
       const prevYear = selectedMonth ? selectedYear : selectedYear - 1;
+      const midnightUnix = new Date(prevYear, prevMonth - 1, numDay).getTime();
       const prevDay =
-        document.getElementById(`${numDay}-${prevMonth}-${prevYear}`) ||
+        document.getElementById(`${midnightUnix}`) ||
         document.createElement("div");
       // Days generated in this way are classified as "extra-days"
 
       prevDay.innerHTML = `${j}`;
-      prevDay.setAttribute("id", `${numDay}-${prevMonth}-${prevYear}`);
+      prevDay.setAttribute("id", `${midnightUnix}`);
       prevDay.setAttribute("class", "extra-day");
       prevDay.addEventListener("click", function eventHandler(event) {
         // Removing event handler when it is used to avoid unwanted extra menus
@@ -116,28 +117,34 @@ const drawMonthCalendar = (
         displayMenu(event, numDay, prevMonth, prevYear);
       });
       table.appendChild(prevDay);
+      console.log(new Date(midnightUnix))
       // CURRENT_VIEW.push(`${j}`);
     }
   }
   // This for loop generates the chosen month days. It just runs from 1 until the last day of the month
   for (i = 1; i <= monthDays; i++) {
     const numDay = Number(i);
+    const midnightUnix = new Date(
+      selectedYear,
+      selectedMonth,
+      numDay
+    ).getTime();
     const day =
-      document.getElementById(
-        `${numDay}-${selectedMonth + 1}-${selectedYear}`
-      ) || document.createElement("div");
+      document.getElementById(`${midnightUnix}`) ||
+      document.createElement("div");
     // This ternary operator highlights the day chosen by user
     i === selectedDay
       ? day.setAttribute("class", "chosen-day")
       : day.setAttribute("class", "day");
     day.innerHTML = `${i}`;
-    day.setAttribute("id", `${numDay}-${selectedMonth + 1}-${selectedYear}`);
+    day.setAttribute("id", `${midnightUnix}`);
     day.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
       displayMenu(event, numDay, selectedMonth + 1, selectedYear);
     });
     table.appendChild(day);
+    console.log(new Date(midnightUnix))
   }
   // Last, we draw the days of the next month.
   // We calculate the empty spots with the variable remainingDays
@@ -150,15 +157,16 @@ const drawMonthCalendar = (
       nextMonth = 1;
       nextYear = nextYear + 1;
     }
+    const midnightUnix = new Date(nextYear, nextMonth - 1, Number(k)).getTime();
     const nextDay =
-      document.getElementById(`${Number(k)}-${nextMonth}-${nextYear}`) ||
+      document.getElementById(`${midnightUnix}`) ||
       document.createElement("div");
     nextDay.setAttribute("class", "extra-day");
     nextDay.innerHTML = `${k}`;
     // Day, month and year values calculated and stored in variables
     const day = Number(nextDay.innerHTML);
     // Unique id generated based on DD-MM-YYYY format
-    nextDay.setAttribute("id", `${day}-${nextMonth}-${nextYear}`);
+    nextDay.setAttribute("id", `${midnightUnix}`);
     // Adding event listener to display options menu on click. Naming the function so it can be removed
     nextDay.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
@@ -166,6 +174,7 @@ const drawMonthCalendar = (
       displayMenu(event, day, nextMonth, nextYear);
     });
     table.appendChild(nextDay);
+    console.log(new Date(midnightUnix))
   }
 };
 
