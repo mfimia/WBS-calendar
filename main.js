@@ -242,6 +242,7 @@ const generateForm = (day, month, year) => {
   eventInput.setAttribute("id", `input-month-${day}-${month}-${year}`);
   eventInput.setAttribute("class", "input-event-month");
   eventInput.setAttribute("autocomplete", "off");
+  eventInput.setAttribute("required", "true");
   const eventStartDate = document.createElement("input");
   eventStartDate.setAttribute("type", "time");
   // eventStartDate.setAttribute("step", "900");
