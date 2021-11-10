@@ -5,6 +5,8 @@ let EVENTS = JSON.parse(localStorage.getItem("month-events")) || [];
 const TOGGLERS = {
   back: false,
 };
+let CURRENT_DISPLAY = [];
+let daysWithEvent = [null];
 // Setting up the value attribute of <input> type date to display today's date on default
 document
   .getElementById("selectedDate")
@@ -86,6 +88,8 @@ const drawMonthCalendar = (
   selectedYear,
   previousMonthDays
 ) => {
+  CURRENT_DISPLAY = [];
+  daysWithEvent = [];
   // Based on the starting day of the week, we calculate all "empty spots" that will be filled with previous month days
   const emptySpots = startingDay - 1;
   // Before displaying anything on the screen, we remove everything that was there already
@@ -120,9 +124,14 @@ const drawMonthCalendar = (
         event.target.removeEventListener("click", eventHandler);
         displayMenu(event, numDay, prevMonth, prevYear);
       });
+      const storedPreviousDay = {
+        day: Number(j),
+        month: prevMonth,
+        year: prevYear,
+        midnightUnix: midnightUnix,
+      };
+      CURRENT_DISPLAY.push(storedPreviousDay);
       table.appendChild(prevDay);
-      console.log(new Date(midnightUnix));
-      // CURRENT_VIEW.push(`${j}`);
     }
   }
   // This for loop generates the chosen month days. It just runs from 1 until the last day of the month
@@ -147,8 +156,14 @@ const drawMonthCalendar = (
       event.target.removeEventListener("click", eventHandler);
       displayMenu(event, numDay, selectedMonth + 1, selectedYear);
     });
+    const storedCurrentDay = {
+      day: Number(i),
+      month: selectedMonth + 1,
+      year: selectedYear,
+      midnightUnix: midnightUnix,
+    };
+    CURRENT_DISPLAY.push(storedCurrentDay);
     table.appendChild(day);
-    console.log(new Date(midnightUnix));
   }
   // Last, we draw the days of the next month.
   // We calculate the empty spots with the variable remainingDays
@@ -177,8 +192,26 @@ const drawMonthCalendar = (
       event.target.removeEventListener("click", eventHandler);
       displayMenu(event, day, nextMonth, nextYear);
     });
+    const storedNextDay = {
+      day: Number(k),
+      month: nextMonth,
+      year: nextYear,
+      midnightUnix: midnightUnix,
+    };
+    CURRENT_DISPLAY.push(storedNextDay);
     table.appendChild(nextDay);
-    console.log(new Date(midnightUnix));
+  }
+
+  EVENTS.forEach((element) => {
+    for (i = 0; i < CURRENT_DISPLAY.length; i++) {
+      if (CURRENT_DISPLAY[i].midnightUnix > element.unixID) {
+        return daysWithEvent.push(CURRENT_DISPLAY[i - 1]);
+      }
+    }
+  });
+  if (daysWithEvent.length > 0) {
+    console.log(daysWithEvent);
+    console.log("hi!");
   }
 };
 
