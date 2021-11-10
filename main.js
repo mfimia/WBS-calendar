@@ -5,8 +5,6 @@ let EVENTS = JSON.parse(localStorage.getItem("month-events")) || [];
 const TOGGLERS = {
   back: false,
 };
-let CURRENT_DISPLAY = [];
-let daysWithEvent = [];
 // Setting up the value attribute of <input> type date to display today's date on default
 document
   .getElementById("selectedDate")
@@ -88,13 +86,6 @@ const drawMonthCalendar = (
   selectedYear,
   previousMonthDays
 ) => {
-  CURRENT_DISPLAY = [];
-  daysWithEvent = [];
-  daysWithEvent.forEach((item) => {
-    if (!item) {
-      daysWithEvent.pop(item);
-    }
-  });
   // Based on the starting day of the week, we calculate all "empty spots" that will be filled with previous month days
   const emptySpots = startingDay - 1;
   // Before displaying anything on the screen, we remove everything that was there already
@@ -135,18 +126,33 @@ const drawMonthCalendar = (
         year: prevYear,
         midnightUnix: midnightUnix,
       };
-      CURRENT_DISPLAY.push(storedPreviousDay);
+      EVENTS.forEach((element) => {
+        if (
+          storedPreviousDay.day === element.day &&
+          storedPreviousDay.month === element.numMonth &&
+          storedPreviousDay.year === element.year
+        ) {
+          prevDay.style.color = "blue";
+        }
+      });
       table.appendChild(prevDay);
     }
   }
   // This for loop generates the chosen month days. It just runs from 1 until the last day of the month
   for (i = 1; i <= monthDays; i++) {
+    let withEvent = false;
     const numDay = Number(i);
     const midnightUnix = new Date(
       selectedYear,
       selectedMonth,
       numDay
     ).getTime();
+    const storedCurrentDay = {
+      day: Number(i),
+      month: selectedMonth + 1,
+      year: selectedYear,
+      midnightUnix: midnightUnix,
+    };
     const day =
       document.getElementById(`${midnightUnix}`) ||
       document.createElement("div");
@@ -154,20 +160,23 @@ const drawMonthCalendar = (
     i === selectedDay
       ? day.setAttribute("class", "chosen-day")
       : day.setAttribute("class", "day");
+    EVENTS.forEach((element) => {
+      if (
+        storedCurrentDay.day === element.day &&
+        storedCurrentDay.month === element.numMonth &&
+        storedCurrentDay.year === element.year
+      ) {
+        day.style.color = "blue";
+        withEvent = true;
+      }
+    });
     day.innerHTML = `${i}`;
     day.setAttribute("id", `${midnightUnix}`);
     day.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
-      displayMenu(event, numDay, selectedMonth + 1, selectedYear);
+      displayMenu(event, numDay, selectedMonth + 1, selectedYear, withEvent);
     });
-    const storedCurrentDay = {
-      day: Number(i),
-      month: selectedMonth + 1,
-      year: selectedYear,
-      midnightUnix: midnightUnix,
-    };
-    CURRENT_DISPLAY.push(storedCurrentDay);
     table.appendChild(day);
   }
   // Last, we draw the days of the next month.
@@ -203,25 +212,21 @@ const drawMonthCalendar = (
       year: nextYear,
       midnightUnix: midnightUnix,
     };
-    CURRENT_DISPLAY.push(storedNextDay);
-    table.appendChild(nextDay);
-  }
-
-  EVENTS.forEach((element) => {
-    for (i = 0; i < CURRENT_DISPLAY.length; i++) {
-      if (CURRENT_DISPLAY[i].midnightUnix > element.unixID) {
-        return daysWithEvent.push(CURRENT_DISPLAY[i - 1]);
+    EVENTS.forEach((element) => {
+      if (
+        storedNextDay.day === element.day &&
+        storedNextDay.month === element.numMonth &&
+        storedNextDay.year === element.year
+      ) {
+        nextDay.style.color = "blue";
       }
-    }
-  });
-  if (daysWithEvent.length > 0) {
-    console.log(daysWithEvent);
-    console.log("hi!");
+    });
+    table.appendChild(nextDay);
   }
 };
 
 // Menu takes all info about the day and displays an box in the location where event took place
-const displayMenu = (event, day, month, year) => {
+const displayMenu = (event, day, month, year, dayEvents) => {
   let menu =
     document.getElementById("add-events-menu") || document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
@@ -239,6 +244,22 @@ const displayMenu = (event, day, month, year) => {
   if (!TOGGLERS.back) {
     menu.innerHTML = `${day}.${month}.${year}`;
     menu.appendChild(addButton);
+    if (dayEvents) {
+      const eventsSection = document.createElement("div");
+      EVENTS.forEach((element) => {
+        if (
+          day === element.day &&
+          month === element.numMonth &&
+          year === element.year
+        ) {
+          eventsSection.innerHTML += `Event: ${element.title}<br>
+          Start: ${element.startTime}<br>
+          End: ${element.endTime}<br>
+          Duration: ${element.durationMinutes} minutes<br>`;
+        }
+      });
+      menu.appendChild(eventsSection);
+    }
   } else if (TOGGLERS.back) {
     menu.innerHTML = "";
     menu.appendChild(backButton);
