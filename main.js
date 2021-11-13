@@ -251,12 +251,14 @@ const drawMonthCalendar = (
 let counter = 0;
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (event, day, month, year, dayEvents) => {
+  event.stopPropagation();
   counter++;
-  console.log(counter);
+  console.log(`menu displayed: ${counter}`);
   let menu =
-    document.getElementById("add-events-menu") || document.createElement("div");
+    document.getElementById(`add-events-menu-${counter}`) ||
+    document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
-  menu.setAttribute("id", "add-events-menu");
+  menu.setAttribute("id", `add-events-menu-${counter}`);
   let addButton =
     document.getElementById("add-button") || document.createElement("button");
   addButton.setAttribute("id", "add-event");
@@ -304,12 +306,14 @@ const displayMenu = (event, day, month, year, dayEvents) => {
     menu.appendChild(eventForm);
   }
   event.target.appendChild(menu);
-  addButton.addEventListener("mousedown", () => {
+  addButton.addEventListener("mousedown", (e) => {
+    e.stopPropagation();
     TOGGLERS.back = !TOGGLERS.back;
     menu.innerHTML = "";
     displayMenu(event, day, month, year, dayEvents);
   });
-  backButton.addEventListener("mousedown", () => {
+  backButton.addEventListener("mousedown", (e) => {
+    e.stopPropagation();
     TOGGLERS.back = !TOGGLERS.back;
     displayMenu(event, day, month, year, dayEvents);
   });
@@ -322,7 +326,7 @@ const displayMenu = (event, day, month, year, dayEvents) => {
     //   childNodes.push(child);
     // });
     event.stopPropagation();
-    console.log(event.target);
+    console.log(`triggered document body event listener: ${counter}`);
     if (
       // &&
       event.target != menu
