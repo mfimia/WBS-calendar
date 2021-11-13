@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset='utf-8'>
@@ -9,47 +9,33 @@
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <link rel="stylesheet" href="colors.css">
     <script src='main.js' defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
     <div class="container">
-        <!-- <section id="week-view">
-            <nav id="week-main-navbar">
-
-            </nav>
-            <div id="week-calendar">
-
-            </div>
-            <nav id="week-left-navbar">
-
-            </nav>
-        </section> -->
-        <section id="month-view">
-            <nav id="month-main-navbar">
+        <nav class="top-nav">
+            <div>
                 <h1>Current Month</h1>
-            </nav>
-            <div id="calendar">
             </div>
-
-            <nav id="month-left-navbar">
-                <input placeholder="search tasks">
+            <div>
+                <form id="input-date">
+                    <input type="date" name="date" id="selectedDate">
+                    <input id="submit" type="submit">
+                </form>
+            </div>
+        </nav>
+        <div id="displayed-date-text"></div>
+        <div class="main">
+            <nav class="side-nav">
+                <div><i class="fa fa-search icon"></i><input id="search-task" placeholder="search tasks"></div>
             </nav>
-        </section>
+            <div id="month-calendar"></div>
+        </div>
     </div>
-    <!-- <div id="day-calendar">
-
-    </div> -->
-    <!-- <nav id="day-left-navbar">
-
-    </nav> -->
-
-    <form id="input-date">
-        <input type="date" name="date" id="selectedDate">
-        <input id="submit" type="submit">
-    </form>
-    <div id="displayed-date-text"></div>
-    <div id="month-calendar"></div>
-
 </body>
+<style>
+
+</style>
 
 </html>
