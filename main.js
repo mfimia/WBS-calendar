@@ -352,7 +352,6 @@ const displayMenu = (event, day, month, year, dayEvents) => {
       // This function gets the display process started
       document.body.removeEventListener("mouseup", exitMenu);
       menu.remove();
-      console.log(menu);
       getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
     }
   });
