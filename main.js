@@ -7,7 +7,7 @@ const TOGGLERS = {
 };
 
 // Creating a class that automatically takes the values of a given date
-class StoredDate {
+class dateValues {
   constructor(date) {
     this.year = date.getFullYear();
     this.month = date.getMonth();
@@ -17,7 +17,7 @@ class StoredDate {
 
 // This variable will keep track of what date has been added by user
 // Initializing it with new date
-let STORED_DATE = new StoredDate(new Date());
+let STORED_DATE = new dateValues(new Date());
 
 // Setting up the value attribute of <input> type date to display today's date on default
 document
@@ -27,11 +27,9 @@ document
 document.getElementById("input-date").addEventListener("submit", (e) => {
   e.preventDefault();
   INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
-  STORED_DATE = new StoredDate(
+  STORED_DATE = new dateValues(
     new Date(document.getElementById("selectedDate").value)
   );
-  console.log(STORED_DATE);
-  console.log(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day);
   // This function gets the display process started
   getValues(INPUT_DATE);
 });
@@ -368,7 +366,6 @@ const generateForm = (day, month, year) => {
     ).value;
     createEvent(event, eventText, day, month, year);
     document.getElementById(`input-month-${day}-${month}-${year}`).value = "";
-    console.log(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
     getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
   });
   return eventForm;
