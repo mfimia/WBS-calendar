@@ -296,11 +296,11 @@ const displayMenu = (event, day, month, year, dayEvents) => {
   addButton.addEventListener("mousedown", () => {
     TOGGLERS.back = !TOGGLERS.back;
     menu.innerHTML = "";
-    displayMenu(event, day, month, year);
+    displayMenu(event, day, month, year, dayEvents);
   });
   backButton.addEventListener("mousedown", () => {
     TOGGLERS.back = !TOGGLERS.back;
-    displayMenu(event, day, month, year);
+    displayMenu(event, day, month, year, dayEvents);
   });
   // Listener event. User clicks outside the menu and whole calendar gets drawn again
   document.body.addEventListener("mouseup", function exitMenu(event) {
