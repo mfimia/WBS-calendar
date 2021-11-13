@@ -63,6 +63,7 @@ const WEEKDAYS = [
 
 // When a date is selected, all relevant values are collected in date object
 const getValues = (input) => {
+  console.log(input);
   const date = {
     year: input.getFullYear(),
     month: input.getMonth(),
@@ -315,6 +316,17 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
     const eventForm = generateForm(day, month, year);
     menu.appendChild(eventForm);
   }
+
+  document.addEventListener("mouseup", function exitMenu(e) {
+    if (!menu.contains(e.target )) {
+      console.log(menu.contains(e.target));
+      e.stopPropagation();
+      menu.remove();
+      document.removeEventListener("mouseup", exitMenu);
+      getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
+    }
+  });
+
   event.target.appendChild(menu);
   // addButton.addEventListener("mousedown", (e) => {
   //   e.stopPropagation();
