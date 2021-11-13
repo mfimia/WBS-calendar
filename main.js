@@ -340,6 +340,7 @@ const generateForm = (day, month, year) => {
   eventForm.appendChild(eventEndDate);
   eventForm.appendChild(colorTag);
   eventForm.appendChild(submitEvent);
+  // Adding event listener to the form that will call the createEvent function, reset input and draw calendar on submit
   eventForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const eventText = document.getElementById(
@@ -352,7 +353,10 @@ const generateForm = (day, month, year) => {
   return eventForm;
 };
 
+// Function to add events
+// It takes the day, month and year. Creates an object with all the values and pushes it to the EVENTS array
 const createEvent = (event, text, day, month, year) => {
+  // Below we select all values coming from the form and store them in variables
   const startTime = document.getElementById(
     `start-time-month-${day}-${month}-${year}`
   ).value;
@@ -362,9 +366,11 @@ const createEvent = (event, text, day, month, year) => {
   const colorTag = document.getElementById(
     `color-month-${day}-${month}-${year}`
   ).value;
+  // To calculate the duration we call these helper functions declared below
   const durationMinutes =
     (convertToSeconds(endTime) - convertToSeconds(startTime)) / 60;
   const startTimeNum = convertToNumber(startTime);
+  // Here is where we create the object with all the values from the form
   const monthEvent = {
     title: text,
     numWeekday: new Date(`${year}-${month}-${day}`).getDay(),
@@ -386,7 +392,7 @@ const createEvent = (event, text, day, month, year) => {
       startTimeNum.minutes
     ).getTime(),
   };
-
+  // When the object is created we push it to our EVENTS array and save it in localStorage
   EVENTS.push(monthEvent);
   localStorage.setItem(`month-events`, JSON.stringify(EVENTS));
 };
