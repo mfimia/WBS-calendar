@@ -267,6 +267,13 @@ const displayMenu = (event, day, month, year, dayEvents) => {
     document.getElementById("back-button") || document.createElement("button");
   backButton.setAttribute("id", "back-button");
   backButton.innerHTML = "Back";
+
+  backButton.addEventListener("mousedown", (e) => {
+    menu.remove();
+  });
+  addButton.addEventListener("mousedown", (e) => {
+    menu.remove();
+  });
   // menu.innerHTML = TOGGLERS.back ? "" : `${day}.${month}.${year}`;
   // TOGGLERS.back ? menu.appendChild(backButton) : menu.appendChild(addButton);
   if (!TOGGLERS.back) {
@@ -306,59 +313,17 @@ const displayMenu = (event, day, month, year, dayEvents) => {
     menu.appendChild(eventForm);
   }
   event.target.appendChild(menu);
-  addButton.addEventListener("mousedown", (e) => {
-    e.stopPropagation();
-    TOGGLERS.back = !TOGGLERS.back;
-    menu.innerHTML = "";
-    displayMenu(event, day, month, year, dayEvents);
-  });
-  backButton.addEventListener("mousedown", (e) => {
-    e.stopPropagation();
-    TOGGLERS.back = !TOGGLERS.back;
-    displayMenu(event, day, month, year, dayEvents);
-  });
-  // Listener event. User clicks outside the menu and whole calendar gets drawn again
-  document.body.addEventListener("mouseup", function exitMenu(event) {
-    // Adding conditions to the event listener that exits the menu
-    // It will only trigger when user doesnt click in any of these places below (all menu related)
-    // console.log(menu.childNodes, event.target);
-    // menu.children.forEach((child) => {
-    //   childNodes.push(child);
-    // });
-    event.stopPropagation();
-    console.log(`triggered document body event listener: ${counter}`);
-    if (
-      // &&
-      event.target != menu
-
-      // event.target != menu &&
-      // // event.target != NodeListOf<document.querySelectorAll(".displayed-menu")>
-      // event.target !=
-      //   document.getElementById(`input-month-${day}-${month}-${year}`) &&
-      // event.target !=
-      //   document.getElementById(`submit-event-month-${day}-${month}-${year}`) &&
-      // event.target !=
-      //   document.getElementById(`start-time-month-${day}-${month}-${year}`) &&
-      // event.target !=
-      //   document.getElementById(`end-time-month-${day}-${month}-${year}`) &&
-      // event.target !=
-      //   document.getElementById(`form-month-${day}-${month}-${year}`) &&
-      // event.target !=
-      //   document.getElementById(`color-month-${day}-${month}-${year}`) &&
-      // event.target !=
-      //   document.getElementById(`month-event-${day}-${month}-${year}`) &&
-      // event.target != document.querySelector(".month-remove-button")
-      // event.target != document.querySelector(".month-event").childNodes
-    ) {
-      // INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
-      TOGGLERS.back = false;
-
-      // This function gets the display process started
-      document.body.removeEventListener("mouseup", exitMenu);
-      menu.remove();
-      getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
-    }
-  });
+  // addButton.addEventListener("mousedown", (e) => {
+  //   e.stopPropagation();
+  //   TOGGLERS.back = !TOGGLERS.back;
+  //   menu.innerHTML = "";
+  //   displayMenu(event, day, month, year, dayEvents);
+  // });
+  // backButton.addEventListener("mousedown", (e) => {
+  //   e.stopPropagation();
+  //   TOGGLERS.back = !TOGGLERS.back;
+  //   displayMenu(event, day, month, year, dayEvents);
+  // });
 };
 
 // This is just very repetite code that generates a form inside the display menu
@@ -514,3 +479,46 @@ const getPreviousMonthDays = (month, year) => {
 
 // If no input is given by user, we display the current date
 getValues(INPUT_DATE);
+
+// Listener event. User clicks outside the menu and whole calendar gets drawn again
+// document.body.addEventListener("mouseup", function exitMenu(event) {
+//   // Adding conditions to the event listener that exits the menu
+//   // It will only trigger when user doesnt click in any of these places below (all menu related)
+//   // console.log(menu.childNodes, event.target);
+//   // menu.children.forEach((child) => {
+//   //   childNodes.push(child);
+//   // });
+//   event.stopPropagation();
+//   console.log(`triggered document body event listener: ${counter}`);
+//   if (
+//     // &&
+//     event.target != menu
+
+//     // event.target != menu &&
+//     // // event.target != NodeListOf<document.querySelectorAll(".displayed-menu")>
+//     // event.target !=
+//     //   document.getElementById(`input-month-${day}-${month}-${year}`) &&
+//     // event.target !=
+//     //   document.getElementById(`submit-event-month-${day}-${month}-${year}`) &&
+//     // event.target !=
+//     //   document.getElementById(`start-time-month-${day}-${month}-${year}`) &&
+//     // event.target !=
+//     //   document.getElementById(`end-time-month-${day}-${month}-${year}`) &&
+//     // event.target !=
+//     //   document.getElementById(`form-month-${day}-${month}-${year}`) &&
+//     // event.target !=
+//     //   document.getElementById(`color-month-${day}-${month}-${year}`) &&
+//     // event.target !=
+//     //   document.getElementById(`month-event-${day}-${month}-${year}`) &&
+//     // event.target != document.querySelector(".month-remove-button")
+//     // event.target != document.querySelector(".month-event").childNodes
+//   ) {
+//     // INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
+//     TOGGLERS.back = false;
+
+//     // This function gets the display process started
+//     document.body.removeEventListener("mouseup", exitMenu);
+//     menu.remove();
+//     getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
+//   }
+// });
