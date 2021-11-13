@@ -250,7 +250,7 @@ const drawMonthCalendar = (
 
 let counter = 0;
 // Menu takes all info about the day and displays an box in the location where event took place
-const displayMenu = (event, day, month, year, dayEvents) => {
+const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
   event.stopPropagation();
   counter++;
   console.log(`menu displayed: ${counter}`);
@@ -259,24 +259,17 @@ const displayMenu = (event, day, month, year, dayEvents) => {
     document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
   menu.setAttribute("id", `add-events-menu-${counter}`);
-  let addButton =
-    document.getElementById("add-button") || document.createElement("button");
-  addButton.setAttribute("id", "add-event");
-  addButton.innerHTML = "Add event";
-  let backButton =
-    document.getElementById("back-button") || document.createElement("button");
-  backButton.setAttribute("id", "back-button");
-  backButton.innerHTML = "Back";
-
-  backButton.addEventListener("mousedown", (e) => {
-    menu.remove();
-  });
-  addButton.addEventListener("mousedown", (e) => {
-    menu.remove();
-  });
   // menu.innerHTML = TOGGLERS.back ? "" : `${day}.${month}.${year}`;
   // TOGGLERS.back ? menu.appendChild(backButton) : menu.appendChild(addButton);
-  if (!TOGGLERS.back) {
+  if (!backside) {
+    let addButton =
+      document.getElementById("add-button") || document.createElement("button");
+    addButton.setAttribute("id", "add-event");
+    addButton.innerHTML = "Add event";
+    addButton.addEventListener("mousedown", (e) => {
+      menu.remove();
+      displayMenu(event, day, month, year, dayEvents, true);
+    });
     menu.innerHTML = `${day}.${month}.${year}`;
     menu.appendChild(addButton);
     if (dayEvents) {
@@ -289,24 +282,34 @@ const displayMenu = (event, day, month, year, dayEvents) => {
           year === element.year
         ) {
           eventsSection.innerHTML += `
-          <div
-          class="month-event"
-          id="${element.unixID}"
-          Event: ${element.title}<br>
-          Start: ${element.startTime}<br>
-          End: ${element.endTime}<br>
-          Duration: ${element.durationMinutes} minutes<br>
-          <button 
-          class="month-remove-button" 
-          onclick="removeMonthEvent(${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year})">
-          Remove event
-          </button>
-          `;
+            <div
+            class="month-event"
+            id="${element.unixID}"
+            Event: ${element.title}<br>
+            Start: ${element.startTime}<br>
+            End: ${element.endTime}<br>
+            Duration: ${element.durationMinutes} minutes<br>
+            <button 
+            class="month-remove-button" 
+            onclick="removeMonthEvent(${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year})">
+            Remove event
+            </button>
+            `;
         }
       });
       menu.appendChild(eventsSection);
     }
-  } else if (TOGGLERS.back) {
+  } else if (backside) {
+    let backButton =
+      document.getElementById("back-button") ||
+      document.createElement("button");
+    backButton.setAttribute("id", "back-button");
+    backButton.innerHTML = "Back";
+
+    backButton.addEventListener("mousedown", (e) => {
+      menu.remove();
+      displayMenu(event, day, month, year, dayEvents);
+    });
     menu.innerHTML = "";
     menu.appendChild(backButton);
     const eventForm = generateForm(day, month, year);
