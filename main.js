@@ -299,11 +299,11 @@ const displayMenu = (event, day, month, year, dayEvents) => {
       event.target !=
         document.getElementById(`color-month-${day}-${month}-${year}`)
     ) {
-      INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
+      // INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
       TOGGLERS.back = false;
       // This function gets the display process started
       document.body.removeEventListener("mouseup", exitMenu);
-      getValues(INPUT_DATE);
+      getValues(new Date(year, month - 1, day));
     }
   });
 };
@@ -347,6 +347,7 @@ const generateForm = (day, month, year) => {
     ).value;
     createEvent(event, eventText, day, month, year);
     document.getElementById(`input-month-${day}-${month}-${year}`).value = "";
+    getValues(new Date(year, month - 1, day));
   });
   return eventForm;
 };
