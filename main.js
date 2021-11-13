@@ -268,16 +268,20 @@ const displayMenu = (event, day, month, year, dayEvents) => {
     menu.appendChild(addButton);
     if (dayEvents) {
       const eventsSection = document.createElement("div");
+      eventsSection.setAttribute("id", `month-event-${day}-${month}-${year}`);
       EVENTS.forEach((element) => {
         if (
           day === element.day &&
           month === element.numMonth &&
           year === element.year
         ) {
-          eventsSection.innerHTML += `Event: ${element.title}<br>
+          eventsSection.innerHTML += `
+          Event: ${element.title}<br>
           Start: ${element.startTime}<br>
           End: ${element.endTime}<br>
-          Duration: ${element.durationMinutes} minutes<br>`;
+          Duration: ${element.durationMinutes} minutes<br>
+          <button>Remove event</button>
+          `;
         }
       });
       menu.appendChild(eventsSection);
@@ -315,7 +319,9 @@ const displayMenu = (event, day, month, year, dayEvents) => {
       event.target !=
         document.getElementById(`form-month-${day}-${month}-${year}`) &&
       event.target !=
-        document.getElementById(`color-month-${day}-${month}-${year}`)
+        document.getElementById(`color-month-${day}-${month}-${year}`) &&
+      event.target !=
+        document.getElementById(`month-event-${day}-${month}-${year}`)
     ) {
       // INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
       TOGGLERS.back = false;
