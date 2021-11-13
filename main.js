@@ -5,6 +5,20 @@ let EVENTS = JSON.parse(localStorage.getItem("month-events")) || [];
 const TOGGLERS = {
   back: false,
 };
+
+// Creating a class that automatically takes the values of a given date
+class StoredDate {
+  constructor(date) {
+    this.year = date.getFullYear();
+    this.month = date.getMonth();
+    this.day = date.getDate();
+  }
+}
+
+// This variable will keep track of what date has been added by user
+// Initializing it with new date
+let STORED_DATE = new StoredDate(new Date());
+
 // Setting up the value attribute of <input> type date to display today's date on default
 document
   .getElementById("selectedDate")
@@ -13,9 +27,15 @@ document
 document.getElementById("input-date").addEventListener("submit", (e) => {
   e.preventDefault();
   INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
+  STORED_DATE = new StoredDate(
+    new Date(document.getElementById("selectedDate").value)
+  );
+  console.log(STORED_DATE);
+  console.log(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day);
   // This function gets the display process started
   getValues(INPUT_DATE);
 });
+
 // Storing the name of months in array. The indexes match the generated value by method '.getMonth()'. (0-11)
 const MONTHS = [
   "January",
@@ -303,7 +323,7 @@ const displayMenu = (event, day, month, year, dayEvents) => {
       TOGGLERS.back = false;
       // This function gets the display process started
       document.body.removeEventListener("mouseup", exitMenu);
-      getValues(new Date(year, month - 1, day));
+      getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
     }
   });
 };
@@ -348,7 +368,8 @@ const generateForm = (day, month, year) => {
     ).value;
     createEvent(event, eventText, day, month, year);
     document.getElementById(`input-month-${day}-${month}-${year}`).value = "";
-    getValues(new Date(year, month - 1, day));
+    console.log(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
+    getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
   });
   return eventForm;
 };
