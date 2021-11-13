@@ -276,11 +276,18 @@ const displayMenu = (event, day, month, year, dayEvents) => {
           year === element.year
         ) {
           eventsSection.innerHTML += `
+          <div
+          class="month-event"
+          id="${element.unixID}"
           Event: ${element.title}<br>
           Start: ${element.startTime}<br>
           End: ${element.endTime}<br>
           Duration: ${element.durationMinutes} minutes<br>
-          <button>Remove event</button>
+          <button 
+          class="month-remove-button" 
+          onclick="removeMonthEvent(${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year})">
+          Remove event
+          </button>
           `;
         }
       });
@@ -307,21 +314,28 @@ const displayMenu = (event, day, month, year, dayEvents) => {
     // Adding conditions to the event listener that exits the menu
     // It will only trigger when user doesnt click in any of these places below (all menu related)
     if (
-      event.target != menu &&
-      event.target !=
-        document.getElementById(`input-month-${day}-${month}-${year}`) &&
-      event.target !=
-        document.getElementById(`submit-event-month-${day}-${month}-${year}`) &&
-      event.target !=
-        document.getElementById(`start-time-month-${day}-${month}-${year}`) &&
-      event.target !=
-        document.getElementById(`end-time-month-${day}-${month}-${year}`) &&
-      event.target !=
-        document.getElementById(`form-month-${day}-${month}-${year}`) &&
-      event.target !=
-        document.getElementById(`color-month-${day}-${month}-${year}`) &&
-      event.target !=
-        document.getElementById(`month-event-${day}-${month}-${year}`)
+      menu.childNodes.forEach((child) => {
+        event.target != child;
+      })
+
+      // event.target != menu &&
+      // // event.target != NodeListOf<document.querySelectorAll(".displayed-menu")>
+      // event.target !=
+      //   document.getElementById(`input-month-${day}-${month}-${year}`) &&
+      // event.target !=
+      //   document.getElementById(`submit-event-month-${day}-${month}-${year}`) &&
+      // event.target !=
+      //   document.getElementById(`start-time-month-${day}-${month}-${year}`) &&
+      // event.target !=
+      //   document.getElementById(`end-time-month-${day}-${month}-${year}`) &&
+      // event.target !=
+      //   document.getElementById(`form-month-${day}-${month}-${year}`) &&
+      // event.target !=
+      //   document.getElementById(`color-month-${day}-${month}-${year}`) &&
+      // event.target !=
+      //   document.getElementById(`month-event-${day}-${month}-${year}`) &&
+      // event.target != document.querySelector(".month-remove-button")
+      // event.target != document.querySelector(".month-event").childNodes
     ) {
       // INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
       TOGGLERS.back = false;
@@ -419,6 +433,11 @@ const createEvent = (event, text, day, month, year) => {
   // When the object is created we push it to our EVENTS array and save it in localStorage
   EVENTS.push(monthEvent);
   localStorage.setItem(`month-events`, JSON.stringify(EVENTS));
+};
+
+const removeMonthEvent = (id, day, month, year) => {
+  console.log("hi!");
+  console.log(id, day, month, year);
 };
 
 // Helper functions below to manipulate time values
