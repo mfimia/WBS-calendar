@@ -1,3 +1,4 @@
+// import displayMenu from "./displayMenu.js";
 // Create new date everytime the code runs
 let INPUT_DATE = new Date();
 // Array to store event data
@@ -247,8 +248,11 @@ const drawMonthCalendar = (
   }
 };
 
+let counter = 0;
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (event, day, month, year, dayEvents) => {
+  counter++;
+  console.log(counter);
   let menu =
     document.getElementById("add-events-menu") || document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
@@ -313,10 +317,15 @@ const displayMenu = (event, day, month, year, dayEvents) => {
   document.body.addEventListener("mouseup", function exitMenu(event) {
     // Adding conditions to the event listener that exits the menu
     // It will only trigger when user doesnt click in any of these places below (all menu related)
+    // console.log(menu.childNodes, event.target);
+    // menu.children.forEach((child) => {
+    //   childNodes.push(child);
+    // });
+    event.stopPropagation();
+    console.log(event.target);
     if (
-      menu.childNodes.forEach((child) => {
-        event.target != child;
-      })
+      // &&
+      event.target != menu
 
       // event.target != menu &&
       // // event.target != NodeListOf<document.querySelectorAll(".displayed-menu")>
@@ -339,8 +348,11 @@ const displayMenu = (event, day, month, year, dayEvents) => {
     ) {
       // INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
       TOGGLERS.back = false;
+
       // This function gets the display process started
       document.body.removeEventListener("mouseup", exitMenu);
+      menu.remove();
+      console.log(menu);
       getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
     }
   });
