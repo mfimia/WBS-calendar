@@ -317,13 +317,19 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
     menu.appendChild(eventForm);
   }
 
-  document.addEventListener("mouseup", function exitMenu(e) {
-    if (!menu.contains(e.target )) {
-      console.log(menu.contains(e.target));
+  document.addEventListener("click", function exitMenu(e) {
+    const form = document.getElementById(`form-month-${day}-${month}-${year}`);
+    if (
+      e.target != menu &&
+      !menu.contains(e.target) &&
+      !form.contains(e.target)
+    ) {
+      console.log(menu);
+      console.log(e.target);
       e.stopPropagation();
       menu.remove();
-      document.removeEventListener("mouseup", exitMenu);
       getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
+      document.removeEventListener("click", exitMenu);
     }
   });
 
@@ -510,7 +516,6 @@ getValues(INPUT_DATE);
 //     event.target != menu
 
 //     // event.target != menu &&
-//     // // event.target != NodeListOf<document.querySelectorAll(".displayed-menu")>
 //     // event.target !=
 //     //   document.getElementById(`input-month-${day}-${month}-${year}`) &&
 //     // event.target !=
