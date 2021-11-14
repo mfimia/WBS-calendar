@@ -65,7 +65,6 @@ const WEEKDAYS = [
 
 // When a date is selected, all relevant values are collected in date object
 const getValues = (input) => {
-  console.log(input);
   const date = {
     year: input.getFullYear(),
     month: input.getMonth(),
@@ -251,6 +250,7 @@ const drawMonthCalendar = (
   }
 };
 
+// Debug counter
 let counter = 0;
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
@@ -351,7 +351,7 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
         e.target !=
           document.getElementById(`month-event-${day}-${month}-${year}`) &&
         e.target != document.querySelector(".month-remove-button") &&
-        e.target != document.querySelectorAll(".month-event")
+        e.target != document.querySelector(".month-event")
       ) {
         // When event handler is triggered, it removes menu, displays new calendar and removes itself
         e.stopPropagation();
