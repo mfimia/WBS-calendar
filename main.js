@@ -5,6 +5,7 @@ let INPUT_DATE = new Date();
 let EVENTS = JSON.parse(localStorage.getItem("month-events")) || [];
 const TOGGLERS = {
   back: false,
+  click: false,
 };
 
 // Creating a class that automatically takes the values of a given date
@@ -262,9 +263,8 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
   menu.setAttribute("id", `add-events-menu-${counter}`);
   // menu.innerHTML = TOGGLERS.back ? "" : `${day}.${month}.${year}`;
   // TOGGLERS.back ? menu.appendChild(backButton) : menu.appendChild(addButton);
-  if (!backside) {
-    let addButton =
-      document.getElementById("add-button") || document.createElement("button");
+  if (menu && !backside) {
+    let addButton = document.createElement("button");
     addButton.setAttribute("id", "add-event");
     addButton.innerHTML = "Add event";
     addButton.addEventListener("mousedown", (e) => {
@@ -300,10 +300,8 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
       });
       menu.appendChild(eventsSection);
     }
-  } else if (backside) {
-    let backButton =
-      document.getElementById("back-button") ||
-      document.createElement("button");
+  } else if (menu && backside) {
+    let backButton = document.createElement("button");
     backButton.setAttribute("id", "back-button");
     backButton.innerHTML = "Back";
 
@@ -317,23 +315,51 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
     menu.appendChild(eventForm);
   }
 
-  document.addEventListener("click", function exitMenu(e) {
-    const form = document.getElementById(`form-month-${day}-${month}-${year}`);
-    if (
-      e.target != menu &&
-      !menu.contains(e.target) &&
-      !form.contains(e.target)
-    ) {
-      console.log(menu);
-      console.log(e.target);
-      e.stopPropagation();
-      menu.remove();
-      getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
-      document.removeEventListener("click", exitMenu);
-    }
-  });
-
   event.target.appendChild(menu);
+
+  let form = backside
+    ? document.getElementById(`form-month-${day}-${month}-${year}`)
+    : menu;
+
+  if (!TOGGLERS.click) {
+    document.addEventListener("click", function exitMenu(e) {
+      TOGGLERS.click = true;
+      if (
+        e.target != menu &&
+        !menu.contains(e.target) &&
+        !form.contains(e.target) &&
+        e.target != form &&
+        e.target !=
+          document.getElementById(`input-month-${day}-${month}-${year}`) &&
+        e.target !=
+          document.getElementById(
+            `submit-event-month-${day}-${month}-${year}`
+          ) &&
+        e.target !=
+          document.getElementById(`start-time-month-${day}-${month}-${year}`) &&
+        e.target !=
+          document.getElementById(`end-time-month-${day}-${month}-${year}`) &&
+        e.target !=
+          document.getElementById(`form-month-${day}-${month}-${year}`) &&
+        e.target !=
+          document.getElementById(`color-month-${day}-${month}-${year}`) &&
+        e.target !=
+          document.getElementById(`month-event-${day}-${month}-${year}`) &&
+        e.target != document.querySelector(".month-remove-button") &&
+        e.target != document.querySelectorAll(".month-event")
+      ) {
+        console.log(e.target);
+        e.stopPropagation();
+        menu.remove();
+        getValues(
+          new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day)
+        );
+        document.removeEventListener("click", exitMenu);
+        TOGGLERS.click = false;
+      }
+    });
+  }
+
   // addButton.addEventListener("mousedown", (e) => {
   //   e.stopPropagation();
   //   TOGGLERS.back = !TOGGLERS.back;
