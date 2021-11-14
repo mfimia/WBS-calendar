@@ -326,8 +326,9 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
   // Adding event listener to close menu when clicking outside of it
   // This toggler checks if the event already exists, in which case it doesn't create a new one
   if (!TOGGLERS.click) {
-    document.addEventListener("click", function exitMenu(e) {
-      TOGGLERS.click = true;
+    console.log("eventlistener added");
+    document.addEventListener("mousedown", function exitMenu(e) {
+      console.log(e.target);
       // Conditions below include all elements that won't trigger menu closing
       if (
         e.target != menu &&
@@ -359,10 +360,12 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
         getValues(
           new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day)
         );
-        document.removeEventListener("click", exitMenu);
+        document.removeEventListener("mousedown", exitMenu);
+        console.log("event listener removed");
         TOGGLERS.click = false;
       }
     });
+    TOGGLERS.click = true;
   }
 };
 
