@@ -1,8 +1,9 @@
-// import displayMenu from "./displayMenu.js";
 // Create new date everytime the code runs
 let INPUT_DATE = new Date();
 // Array to store event data
 let EVENTS = JSON.parse(localStorage.getItem("month-events")) || [];
+
+// Object to store all togglers
 const TOGGLERS = {
   back: false,
   click: false,
@@ -317,13 +318,17 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
 
   event.target.appendChild(menu);
 
+  // Ternary operator to check which side of the menu is being displayed
   let form = backside
     ? document.getElementById(`form-month-${day}-${month}-${year}`)
     : menu;
 
+  // Adding event listener to close menu when clicking outside of it
+  // This toggler checks if the event already exists, in which case it doesn't create a new one
   if (!TOGGLERS.click) {
     document.addEventListener("click", function exitMenu(e) {
       TOGGLERS.click = true;
+      // Conditions below include all elements that won't trigger menu closing
       if (
         e.target != menu &&
         !menu.contains(e.target) &&
@@ -348,7 +353,7 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
         e.target != document.querySelector(".month-remove-button") &&
         e.target != document.querySelectorAll(".month-event")
       ) {
-        console.log(e.target);
+        // When event handler is triggered, it removes menu, displays new calendar and removes itself
         e.stopPropagation();
         menu.remove();
         getValues(
@@ -359,18 +364,6 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
       }
     });
   }
-
-  // addButton.addEventListener("mousedown", (e) => {
-  //   e.stopPropagation();
-  //   TOGGLERS.back = !TOGGLERS.back;
-  //   menu.innerHTML = "";
-  //   displayMenu(event, day, month, year, dayEvents);
-  // });
-  // backButton.addEventListener("mousedown", (e) => {
-  //   e.stopPropagation();
-  //   TOGGLERS.back = !TOGGLERS.back;
-  //   displayMenu(event, day, month, year, dayEvents);
-  // });
 };
 
 // This is just very repetite code that generates a form inside the display menu
@@ -526,45 +519,3 @@ const getPreviousMonthDays = (month, year) => {
 
 // If no input is given by user, we display the current date
 getValues(INPUT_DATE);
-
-// Listener event. User clicks outside the menu and whole calendar gets drawn again
-// document.body.addEventListener("mouseup", function exitMenu(event) {
-//   // Adding conditions to the event listener that exits the menu
-//   // It will only trigger when user doesnt click in any of these places below (all menu related)
-//   // console.log(menu.childNodes, event.target);
-//   // menu.children.forEach((child) => {
-//   //   childNodes.push(child);
-//   // });
-//   event.stopPropagation();
-//   console.log(`triggered document body event listener: ${counter}`);
-//   if (
-//     // &&
-//     event.target != menu
-
-//     // event.target != menu &&
-//     // event.target !=
-//     //   document.getElementById(`input-month-${day}-${month}-${year}`) &&
-//     // event.target !=
-//     //   document.getElementById(`submit-event-month-${day}-${month}-${year}`) &&
-//     // event.target !=
-//     //   document.getElementById(`start-time-month-${day}-${month}-${year}`) &&
-//     // event.target !=
-//     //   document.getElementById(`end-time-month-${day}-${month}-${year}`) &&
-//     // event.target !=
-//     //   document.getElementById(`form-month-${day}-${month}-${year}`) &&
-//     // event.target !=
-//     //   document.getElementById(`color-month-${day}-${month}-${year}`) &&
-//     // event.target !=
-//     //   document.getElementById(`month-event-${day}-${month}-${year}`) &&
-//     // event.target != document.querySelector(".month-remove-button")
-//     // event.target != document.querySelector(".month-event").childNodes
-//   ) {
-//     // INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
-//     TOGGLERS.back = false;
-
-//     // This function gets the display process started
-//     document.body.removeEventListener("mouseup", exitMenu);
-//     menu.remove();
-//     getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
-//   }
-// });
