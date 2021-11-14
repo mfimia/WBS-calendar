@@ -2,9 +2,26 @@
 let INPUT_DATE = new Date();
 // Array to store event data
 let EVENTS = JSON.parse(localStorage.getItem("month-events")) || [];
+
+// Object to store all togglers
 const TOGGLERS = {
   back: false,
+  click: false,
 };
+
+// Creating a class that automatically takes the values of a given date
+class dateValues {
+  constructor(date) {
+    this.year = date.getFullYear();
+    this.month = date.getMonth();
+    this.day = date.getDate();
+  }
+}
+
+// This variable will keep track of what date has been added by user
+// Initializing it with new date
+let STORED_DATE = new dateValues(new Date());
+
 // Setting up the value attribute of <input> type date to display today's date on default
 document
   .getElementById("selectedDate")
@@ -13,9 +30,13 @@ document
 document.getElementById("input-date").addEventListener("submit", (e) => {
   e.preventDefault();
   INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
+  STORED_DATE = new dateValues(
+    new Date(document.getElementById("selectedDate").value)
+  );
   // This function gets the display process started
   getValues(INPUT_DATE);
 });
+
 // Storing the name of months in array. The indexes match the generated value by method '.getMonth()'. (0-11)
 const MONTHS = [
   "January",
@@ -229,83 +250,120 @@ const drawMonthCalendar = (
   }
 };
 
+// Debug counter
+let counter = 0;
 // Menu takes all info about the day and displays an box in the location where event took place
-const displayMenu = (event, day, month, year, dayEvents) => {
+const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
+  event.stopPropagation();
+  counter++;
+  console.log(`menu displayed: ${counter}`);
   let menu =
-    document.getElementById("add-events-menu") || document.createElement("div");
+    document.getElementById(`add-events-menu-${counter}`) ||
+    document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
-  menu.setAttribute("id", "add-events-menu");
-  let addButton =
-    document.getElementById("add-button") || document.createElement("button");
-  addButton.setAttribute("id", "add-event");
-  addButton.innerHTML = "Add event";
-  let backButton =
-    document.getElementById("back-button") || document.createElement("button");
-  backButton.setAttribute("id", "back-button");
-  backButton.innerHTML = "Back";
+  menu.setAttribute("id", `add-events-menu-${counter}`);
   // menu.innerHTML = TOGGLERS.back ? "" : `${day}.${month}.${year}`;
   // TOGGLERS.back ? menu.appendChild(backButton) : menu.appendChild(addButton);
-  if (!TOGGLERS.back) {
+  if (menu && !backside) {
+    let addButton = document.createElement("button");
+    addButton.setAttribute("id", "add-event");
+    addButton.innerHTML = "Add event";
+    addButton.addEventListener("mousedown", (e) => {
+      menu.remove();
+      displayMenu(event, day, month, year, dayEvents, true);
+    });
     menu.innerHTML = `${day}.${month}.${year}`;
     menu.appendChild(addButton);
     if (dayEvents) {
       const eventsSection = document.createElement("div");
+      eventsSection.setAttribute("id", `month-event-${day}-${month}-${year}`);
       EVENTS.forEach((element) => {
         if (
           day === element.day &&
           month === element.numMonth &&
           year === element.year
         ) {
-          eventsSection.innerHTML += `Event: ${element.title}<br>
-          Start: ${element.startTime}<br>
-          End: ${element.endTime}<br>
-          Duration: ${element.durationMinutes} minutes<br>`;
+          eventsSection.innerHTML += `
+            <div
+            class="month-event"
+            id="${element.unixID}"
+            Event: ${element.title}<br>
+            Start: ${element.startTime}<br>
+            End: ${element.endTime}<br>
+            Duration: ${element.durationMinutes} minutes<br>
+            <button 
+            class="month-remove-button" 
+            onclick="removeMonthEvent(${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year})">
+            Remove event
+            </button>
+            `;
         }
       });
       menu.appendChild(eventsSection);
     }
-  } else if (TOGGLERS.back) {
+  } else if (menu && backside) {
+    let backButton = document.createElement("button");
+    backButton.setAttribute("id", "back-button");
+    backButton.innerHTML = "Back";
+
+    backButton.addEventListener("mousedown", (e) => {
+      menu.remove();
+      displayMenu(event, day, month, year, dayEvents);
+    });
     menu.innerHTML = "";
     menu.appendChild(backButton);
     const eventForm = generateForm(day, month, year);
     menu.appendChild(eventForm);
   }
+
   event.target.appendChild(menu);
-  addButton.addEventListener("mousedown", () => {
-    TOGGLERS.back = !TOGGLERS.back;
-    menu.innerHTML = "";
-    displayMenu(event, day, month, year);
-  });
-  backButton.addEventListener("mousedown", () => {
-    TOGGLERS.back = !TOGGLERS.back;
-    displayMenu(event, day, month, year);
-  });
-  // Listener event. User clicks outside the menu and whole calendar gets drawn again
-  document.body.addEventListener("mouseup", function exitMenu(event) {
-    // Adding conditions to the event listener that exits the menu
-    // It will only trigger when user doesnt click in any of these places below (all menu related)
-    if (
-      event.target != menu &&
-      event.target !=
-        document.getElementById(`input-month-${day}-${month}-${year}`) &&
-      event.target !=
-        document.getElementById(`submit-event-month-${day}-${month}-${year}`) &&
-      event.target !=
-        document.getElementById(`start-time-month-${day}-${month}-${year}`) &&
-      event.target !=
-        document.getElementById(`end-time-month-${day}-${month}-${year}`) &&
-      event.target !=
-        document.getElementById(`form-month-${day}-${month}-${year}`) &&
-      event.target !=
-        document.getElementById(`color-month-${day}-${month}-${year}`)
-    ) {
-      INPUT_DATE = new Date(`${document.getElementById("selectedDate").value}`);
-      TOGGLERS.back = false;
-      // This function gets the display process started
-      document.body.removeEventListener("mouseup", exitMenu);
-      getValues(INPUT_DATE);
-    }
-  });
+
+  // Ternary operator to check which side of the menu is being displayed
+  let form = backside
+    ? document.getElementById(`form-month-${day}-${month}-${year}`)
+    : menu;
+
+  // Adding event listener to close menu when clicking outside of it
+  // This toggler checks if the event already exists, in which case it doesn't create a new one
+  if (!TOGGLERS.click) {
+    document.addEventListener("click", function exitMenu(e) {
+      TOGGLERS.click = true;
+      // Conditions below include all elements that won't trigger menu closing
+      if (
+        e.target != menu &&
+        !menu.contains(e.target) &&
+        !form.contains(e.target) &&
+        e.target != form &&
+        e.target !=
+          document.getElementById(`input-month-${day}-${month}-${year}`) &&
+        e.target !=
+          document.getElementById(
+            `submit-event-month-${day}-${month}-${year}`
+          ) &&
+        e.target !=
+          document.getElementById(`start-time-month-${day}-${month}-${year}`) &&
+        e.target !=
+          document.getElementById(`end-time-month-${day}-${month}-${year}`) &&
+        e.target !=
+          document.getElementById(`form-month-${day}-${month}-${year}`) &&
+        e.target !=
+          document.getElementById(`color-month-${day}-${month}-${year}`) &&
+        e.target !=
+          document.getElementById(`month-event-${day}-${month}-${year}`) &&
+        e.target != document.querySelector(".month-remove-button") &&
+        e.target != document.querySelector(".month-event")
+      ) {
+        // When event handler is triggered, it removes menu, displays new calendar and removes itself
+        e.stopPropagation();
+        menu.remove();
+        getValues(
+          new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day)
+        );
+        document.removeEventListener("click", exitMenu);
+        TOGGLERS.click = false;
+      }
+    });
+  }
 };
 
 // This is just very repetite code that generates a form inside the display menu
@@ -340,6 +398,7 @@ const generateForm = (day, month, year) => {
   eventForm.appendChild(eventEndDate);
   eventForm.appendChild(colorTag);
   eventForm.appendChild(submitEvent);
+  // Adding event listener to the form that will call the createEvent function, reset input and draw calendar on submit
   eventForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const eventText = document.getElementById(
@@ -347,11 +406,15 @@ const generateForm = (day, month, year) => {
     ).value;
     createEvent(event, eventText, day, month, year);
     document.getElementById(`input-month-${day}-${month}-${year}`).value = "";
+    getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
   });
   return eventForm;
 };
 
+// Function to add events
+// It takes the day, month and year. Creates an object with all the values and pushes it to the EVENTS array
 const createEvent = (event, text, day, month, year) => {
+  // Below we select all values coming from the form and store them in variables
   const startTime = document.getElementById(
     `start-time-month-${day}-${month}-${year}`
   ).value;
@@ -361,9 +424,11 @@ const createEvent = (event, text, day, month, year) => {
   const colorTag = document.getElementById(
     `color-month-${day}-${month}-${year}`
   ).value;
+  // To calculate the duration we call these helper functions declared below
   const durationMinutes =
     (convertToSeconds(endTime) - convertToSeconds(startTime)) / 60;
   const startTimeNum = convertToNumber(startTime);
+  // Here is where we create the object with all the values from the form
   const monthEvent = {
     title: text,
     numWeekday: new Date(`${year}-${month}-${day}`).getDay(),
@@ -385,9 +450,14 @@ const createEvent = (event, text, day, month, year) => {
       startTimeNum.minutes
     ).getTime(),
   };
-
+  // When the object is created we push it to our EVENTS array and save it in localStorage
   EVENTS.push(monthEvent);
   localStorage.setItem(`month-events`, JSON.stringify(EVENTS));
+};
+
+const removeMonthEvent = (id, day, month, year) => {
+  console.log("hi!");
+  console.log(id, day, month, year);
 };
 
 // Helper functions below to manipulate time values
