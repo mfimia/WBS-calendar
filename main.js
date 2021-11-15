@@ -250,25 +250,18 @@ const drawMonthCalendar = (
   }
 };
 
-// Debug counter
-let counter = 0;
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
   event.stopPropagation();
-  counter++;
-  console.log(`menu displayed: ${counter}`);
   let menu =
-    document.getElementById(`add-events-menu-${counter}`) ||
-    document.createElement("div");
+    document.getElementById(`add-events-menu`) || document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
-  menu.setAttribute("id", `add-events-menu-${counter}`);
-  // menu.innerHTML = TOGGLERS.back ? "" : `${day}.${month}.${year}`;
-  // TOGGLERS.back ? menu.appendChild(backButton) : menu.appendChild(addButton);
+  menu.setAttribute("id", `add-events-menu`);
   if (menu && !backside) {
     let addButton = document.createElement("button");
     addButton.setAttribute("id", "add-event");
     addButton.innerHTML = "Add event";
-    addButton.addEventListener("mousedown", (e) => {
+    addButton.addEventListener("click", (e) => {
       menu.remove();
       displayMenu(event, day, month, year, dayEvents, true);
     });
@@ -306,7 +299,7 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
     backButton.setAttribute("id", "back-button");
     backButton.innerHTML = "Back";
 
-    backButton.addEventListener("mousedown", (e) => {
+    backButton.addEventListener("click", (e) => {
       menu.remove();
       displayMenu(event, day, month, year, dayEvents);
     });
@@ -322,12 +315,13 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
   let form = backside
     ? document.getElementById(`form-month-${day}-${month}-${year}`)
     : menu;
+  // Storing events to loop over them eventually and check if they are click targeted
+  const events = document.querySelectorAll(".month-event");
 
   // Adding event listener to close menu when clicking outside of it
   // This toggler checks if the event already exists, in which case it doesn't create a new one
   if (!TOGGLERS.click) {
-    document.addEventListener("click", function exitMenu(e) {
-      TOGGLERS.click = true;
+    document.addEventListener("mousedown", function exitMenu(e) {
       // Conditions below include all elements that won't trigger menu closing
       if (
         e.target != menu &&
@@ -351,7 +345,11 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
         e.target !=
           document.getElementById(`month-event-${day}-${month}-${year}`) &&
         e.target != document.querySelector(".month-remove-button") &&
-        e.target != document.querySelector(".month-event")
+        e.target != document.querySelector(".month-event") &&
+        e.target != document.querySelector("#back-button") &&
+        e.target != document.querySelector(".displayed-menu") &&
+        e.target != document.querySelector("#add-event") &&
+        events.forEach((item) => e.target != item)
       ) {
         // When event handler is triggered, it removes menu, displays new calendar and removes itself
         e.stopPropagation();
@@ -359,10 +357,11 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
         getValues(
           new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day)
         );
-        document.removeEventListener("click", exitMenu);
+        document.removeEventListener("mousedown", exitMenu);
         TOGGLERS.click = false;
       }
     });
+    TOGGLERS.click = true;
   }
 };
 
