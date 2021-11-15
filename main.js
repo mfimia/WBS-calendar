@@ -277,19 +277,19 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
           year === element.year
         ) {
           eventsSection.innerHTML += `
-            <div
-            class="month-event"
-            id="${element.unixID}"
-            Event: ${element.title}<br>
-            Start: ${element.startTime}<br>
-            End: ${element.endTime}<br>
-            Duration: ${element.durationMinutes} minutes<br>
-            <button 
-            class="month-remove-button" 
-            onclick="removeMonthEvent(${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year})">
-            Remove event
-            </button>
-            `;
+              <div
+              class="month-event"
+              id="${element.unixID}"
+              Event: ${element.title}<br>
+              Start: ${element.startTime}<br>
+              End: ${element.endTime}<br>
+              Duration: ${element.durationMinutes} minutes<br>
+              <button 
+              class="month-remove-button" 
+              onclick="removeMonthEvent(${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year})">
+              Remove event
+              </button>
+              `;
         }
       });
       menu.appendChild(eventsSection);
@@ -311,17 +311,17 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
 
   event.target.appendChild(menu);
 
+  let events;
   // Ternary operator to check which side of the menu is being displayed
   let form = backside
     ? document.getElementById(`form-month-${day}-${month}-${year}`)
     : menu;
-  // Storing events to loop over them eventually and check if they are click targeted
-  const events = document.querySelectorAll(".month-event");
-
   // Adding event listener to close menu when clicking outside of it
   // This toggler checks if the event already exists, in which case it doesn't create a new one
   if (!TOGGLERS.click) {
     document.addEventListener("mousedown", function exitMenu(e) {
+      // Storing events to loop over them eventually and check if they are click targeted
+      events = document.querySelectorAll(".month-event");
       // Conditions below include all elements that won't trigger menu closing
       if (
         e.target != menu &&
@@ -348,8 +348,7 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
         e.target != document.querySelector(".month-event") &&
         e.target != document.querySelector("#back-button") &&
         e.target != document.querySelector(".displayed-menu") &&
-        e.target != document.querySelector("#add-event") &&
-        events.forEach((item) => e.target != item)
+        e.target != document.querySelector("#add-event")
       ) {
         // When event handler is triggered, it removes menu, displays new calendar and removes itself
         e.stopPropagation();
