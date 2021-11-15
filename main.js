@@ -156,7 +156,7 @@ const drawMonthCalendar = (
       prevDay.addEventListener("click", function eventHandler(event) {
         // Removing event handler when it is used to avoid unwanted extra menus
         event.target.removeEventListener("click", eventHandler);
-        displayMenu(event, numDay, prevMonth, prevYear, withEvent);
+        displayMenu(event.target.id, numDay, prevMonth, prevYear, withEvent);
       });
       table.appendChild(prevDay);
     }
@@ -198,7 +198,13 @@ const drawMonthCalendar = (
     day.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
-      displayMenu(event, numDay, selectedMonth + 1, selectedYear, withEvent);
+      displayMenu(
+        event.target.id,
+        numDay,
+        selectedMonth + 1,
+        selectedYear,
+        withEvent
+      );
     });
     table.appendChild(day);
   }
@@ -244,16 +250,15 @@ const drawMonthCalendar = (
     nextDay.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
-      displayMenu(event, day, nextMonth, nextYear, withEvent);
+      displayMenu(event.target.id, day, nextMonth, nextYear, withEvent);
     });
     table.appendChild(nextDay);
   }
 };
 
 // Menu takes all info about the day and displays an box in the location where event took place
-const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
+const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
   let eventCounter = 0;
-  event.stopPropagation();
   let menu =
     document.getElementById(`add-events-menu`) || document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
@@ -264,7 +269,7 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
     addButton.innerHTML = "Add event";
     addButton.addEventListener("click", (e) => {
       menu.remove();
-      displayMenu(event, day, month, year, dayEvents, true);
+      displayMenu(id, day, month, year, dayEvents, true);
     });
     menu.innerHTML = `${day}.${month}.${year}`;
     menu.appendChild(addButton);
@@ -286,13 +291,14 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
               Start: ${element.startTime}<br>
               End: ${element.endTime}<br>
               Duration: ${element.durationMinutes} minutes<br>
-              <button 
+              <button
               class="month-remove-button"
               id="month-remove-button-${eventCounter}"
-              onclick="removeMonthEvent(${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year})">
+              onclick="removeMonthEvent(${id}, ${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year}, ${dayEvents})">
               Remove event
               </button>
               `;
+          // We probably can create a button element and pass it the event value, as opposed to writing pseudoHTML
         }
       });
       menu.appendChild(eventsSection);
@@ -304,20 +310,19 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
 
     backButton.addEventListener("click", (e) => {
       menu.remove();
-      displayMenu(event, day, month, year, dayEvents);
+      displayMenu(id, day, month, year, dayEvents);
     });
     menu.innerHTML = "";
     menu.appendChild(backButton);
     const eventForm = generateForm(day, month, year);
     menu.appendChild(eventForm);
   }
-
-  event.target.appendChild(menu);
+  document.getElementById(`${id}`).appendChild(menu);
 
   let events;
   // Ternary operator to check which side of the menu is being displayed
   let form = backside
-    ? document.getElementById(`form-month-${day}-${month}-${year}`)
+    ? document.getElementById(`form-month-day}-${month}-${year}`)
     : menu;
   // Adding event listener to close menu when clicking outside of it
   // This toggler checks if the event already exists, in which case it doesn't create a new one
@@ -485,9 +490,16 @@ const createEvent = (event, text, day, month, year) => {
   localStorage.setItem(`month-events`, JSON.stringify(EVENTS));
 };
 
-const removeMonthEvent = (id, day, month, year) => {
-  console.log("hi!");
-  console.log(id, day, month, year);
+const removeMonthEvent = (dayID, id, day, month, year, dayEvents) => {
+  EVENTS.forEach((item) => {
+    if (item.unixID === id) {
+      const itemIndex = EVENTS.indexOf(item);
+      EVENTS.splice(itemIndex, 1);
+      localStorage.setItem(`month-events`, JSON.stringify(EVENTS));
+    }
+  });
+  document.getElementById("add-events-menu").remove();
+  displayMenu(dayID, day, month, year, dayEvents);
 };
 
 // Helper functions below to manipulate time values
