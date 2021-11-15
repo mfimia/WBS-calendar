@@ -253,7 +253,7 @@ const drawMonthCalendar = (
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
   let eventCounter = 0;
-  event.stopPropagation();
+  // event.stopPropagation();
   let menu =
     document.getElementById(`add-events-menu`) || document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
@@ -289,7 +289,7 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
               <button 
               class="month-remove-button"
               id="month-remove-button-${eventCounter}"
-              onclick="removeMonthEvent(${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year})">
+              onclick="removeMonthEvent(${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year}, ${dayEvents})">
               Remove event
               </button>
               `;
@@ -485,9 +485,17 @@ const createEvent = (event, text, day, month, year) => {
   localStorage.setItem(`month-events`, JSON.stringify(EVENTS));
 };
 
-const removeMonthEvent = (id, day, month, year) => {
-  console.log("hi!");
-  console.log(id, day, month, year);
+const removeMonthEvent = (id, day, month, year, dayEvents) => {
+  EVENTS.forEach((item) => {
+    if (item.unixID === id) {
+      const itemIndex = EVENTS.indexOf(item);
+      console.log(itemIndex);
+      EVENTS.splice(itemIndex, 1);
+      localStorage.setItem(`month-events`, JSON.stringify(EVENTS));
+    }
+  });
+  document.getElementById("add-events-menu").remove();
+  displayMenu(day, month, year, dayEvents);
 };
 
 // Helper functions below to manipulate time values
