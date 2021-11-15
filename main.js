@@ -353,6 +353,7 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
         e.target != document.querySelector(".displayed-menu") &&
         e.target != document.querySelector("#add-event")
       ) {
+        // If there are day events, we check them all before decidding if the click was outside or inside
         if (dayEvents) {
           let clickedOutside = [];
           for (i = 1; i <= eventCounter; i++) {
@@ -360,11 +361,15 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
               e.target != document.getElementById(`month-event-${i}`) &&
               e.target != document.getElementById(`month-remove-button-${i}`)
             ) {
+              // If click didn't happen in this foor loop iteration location, we push true
               clickedOutside.push(true);
             } else {
+              // Otherwise, pushing false
               clickedOutside.push(false);
             }
+            // This variable checks if the click happened outside of all iterations
             let checker = clickedOutside.every((item) => item === true);
+            // If all clicks happened outside, and all iterations are run, then we run the logic
             if (checker && clickedOutside.length === eventCounter) {
               e.stopPropagation();
               menu.remove();
