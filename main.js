@@ -254,10 +254,9 @@ const drawMonthCalendar = (
 const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
   event.stopPropagation();
   let menu =
-    document.getElementById(`add-events-menu-${counter}`) ||
-    document.createElement("div");
+    document.getElementById(`add-events-menu`) || document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
-  menu.setAttribute("id", `add-events-menu-${counter}`);
+  menu.setAttribute("id", `add-events-menu`);
   // menu.innerHTML = TOGGLERS.back ? "" : `${day}.${month}.${year}`;
   // TOGGLERS.back ? menu.appendChild(backButton) : menu.appendChild(addButton);
   if (menu && !backside) {
