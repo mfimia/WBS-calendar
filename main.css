@@ -1,140 +1,140 @@
 * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: antiquewhite;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: antiquewhite;
 }
 
 .container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .top-nav {
-    background: rgb(230, 163, 163);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 6em;
+  background: rgb(230, 163, 163);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 6em;
 }
 
 #displayed-date-text {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: "Times New Roman", Times, serif;
-    font-weight: 700;
-    font-size: x-large;
-    height: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Times New Roman", Times, serif;
+  font-weight: 700;
+  font-size: x-large;
+  height: 2em;
 }
 
 .main {
-    height: 100%;
-    display: flex;
-    justify-content: space-around;
-    padding-bottom: 2em;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: 2em;
 }
 
 .side-nav {
-    height: 100%;
-    width: 20em;
-    display: flex;
-    flex-direction: column;
-    background-color: rgb(173, 226, 173);
+  height: 100%;
+  width: 20em;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(173, 226, 173);
 }
 
 i {
-    position: absolute;
+  position: absolute;
 }
 
 .icon {
-    padding: 10px;
-    min-width: 40px;
+  padding: 10px;
+  min-width: 40px;
 }
 
 #search-task {
-    width: 100%;
-    padding: 10px;
-    text-align: center;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
 }
 
 #month-calendar {
-    background-color: rgb(173, 226, 173);
+  background-color: rgb(173, 226, 173);
 }
 
 .weekday {
-    display: inline-flex;
-    width: 14.2858%;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    height: 5%;
-    color: red;
+  display: inline-flex;
+  width: 14.2858%;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  height: 5%;
+  color: red;
 }
 
 .month-day,
 .day,
 .extra-day,
 .chosen-day {
-    height: 16.66666%;
-    display: inline-flex;
-    width: 14.2858%;
-    justify-content: flex-end;
-    align-items: flex-end;
-    border: solid thin black;
-    padding: 0.3vmin;
-    color: red;
-    font-weight: 900;
+  height: 16.66666%;
+  display: inline-flex;
+  width: 14.2858%;
+  justify-content: flex-end;
+  align-items: flex-end;
+  border: solid thin black;
+  padding: 0.3vmin;
+  color: red;
+  font-weight: 900;
 }
 
 .month-day:hover,
 .day:hover,
 .extra-day:hover {
-    background-color: lightgrey;
+  background-color: lightgrey;
 }
 
 .chosen-day {
-    background-color: rgb(209, 233, 248);
+  background-color: rgb(209, 233, 248);
 }
 
 .chosen-day:hover {
-    background-color: lightskyblue;
+  background-color: lightskyblue;
 }
 
 .extra-day {
-    color: grey;
+  color: grey;
 }
 
 #input-date *,
 #selectedDate * {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .displayed-menu {
-    position: absolute;
-    /* border: none; */
-    width: 200px;
-    height: 100px;
-    overflow: auto;
-    /* left: 50%;
+  position: absolute;
+  /* border: none; */
+  width: 200px;
+  height: 100px;
+  overflow: auto;
+  /* left: 50%;
   transform: translate(-50%);
   top: 30%; */
-    background-color: white;
-    z-index: 5;
+  background-color: white;
+  z-index: 5;
 }
 
 #add-event {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .input-event-month {
-    height: 40%;
+  height: 40%;
 }

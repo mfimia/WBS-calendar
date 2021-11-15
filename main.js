@@ -352,7 +352,9 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
         e.target !=
           document.getElementById(`month-event-${day}-${month}-${year}`) &&
         e.target != document.querySelector(".month-remove-button") &&
-        e.target != document.querySelector(".month-event")
+        e.target != document.querySelector(".month-event") &&
+        e.target != document.querySelector("#back-button") &&
+        e.target != document.querySelector(".displayed-menu")
       ) {
         // When event handler is triggered, it removes menu, displays new calendar and removes itself
         e.stopPropagation();
