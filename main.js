@@ -257,8 +257,6 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
     document.getElementById(`add-events-menu`) || document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
   menu.setAttribute("id", `add-events-menu`);
-  // menu.innerHTML = TOGGLERS.back ? "" : `${day}.${month}.${year}`;
-  // TOGGLERS.back ? menu.appendChild(backButton) : menu.appendChild(addButton);
   if (menu && !backside) {
     let addButton = document.createElement("button");
     addButton.setAttribute("id", "add-event");
