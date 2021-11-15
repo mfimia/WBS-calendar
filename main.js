@@ -359,6 +359,7 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
         if (dayEvents) {
           console.log(eventCounter);
           for (i = 1; i <= eventCounter; i++) {
+            console.log(`for loop run ${i}`);
             if (
               e.target !=
                 document.getElementById(`month-event-${eventCounter}`) &&
