@@ -252,6 +252,7 @@ const drawMonthCalendar = (
 
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
+  let eventCounter = 0;
   event.stopPropagation();
   let menu =
     document.getElementById(`add-events-menu`) || document.createElement("div");
@@ -276,16 +277,18 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
           month === element.numMonth &&
           year === element.year
         ) {
+          eventCounter++;
           eventsSection.innerHTML += `
               <div
               class="month-event"
-              id="${element.unixID}"
+              id="month-event-${eventCounter}"
               Event: ${element.title}<br>
               Start: ${element.startTime}<br>
               End: ${element.endTime}<br>
               Duration: ${element.durationMinutes} minutes<br>
               <button 
-              class="month-remove-button" 
+              class="month-remove-button"
+              id="month-remove-button-${eventCounter}"
               onclick="removeMonthEvent(${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year})">
               Remove event
               </button>
@@ -350,14 +353,43 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
         e.target != document.querySelector(".displayed-menu") &&
         e.target != document.querySelector("#add-event")
       ) {
+        // If there are day events, we check them all before decidding if the click was outside or inside
+        if (dayEvents) {
+          let clickedOutside = [];
+          for (i = 1; i <= eventCounter; i++) {
+            if (
+              e.target != document.getElementById(`month-event-${i}`) &&
+              e.target != document.getElementById(`month-remove-button-${i}`)
+            ) {
+              // If click didn't happen in this foor loop iteration location, we push true
+              clickedOutside.push(true);
+            } else {
+              // Otherwise, pushing false
+              clickedOutside.push(false);
+            }
+            // This variable checks if the click happened outside of all iterations
+            let checker = clickedOutside.every((item) => item === true);
+            // If all clicks happened outside, and all iterations are run, then we run the logic
+            if (checker && clickedOutside.length === eventCounter) {
+              e.stopPropagation();
+              menu.remove();
+              getValues(
+                new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day)
+              );
+              document.removeEventListener("mousedown", exitMenu);
+              TOGGLERS.click = false;
+            }
+          }
+        } else {
+          e.stopPropagation();
+          menu.remove();
+          getValues(
+            new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day)
+          );
+          document.removeEventListener("mousedown", exitMenu);
+          TOGGLERS.click = false;
+        }
         // When event handler is triggered, it removes menu, displays new calendar and removes itself
-        e.stopPropagation();
-        menu.remove();
-        getValues(
-          new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day)
-        );
-        document.removeEventListener("mousedown", exitMenu);
-        TOGGLERS.click = false;
       }
     });
     TOGGLERS.click = true;
