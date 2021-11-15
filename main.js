@@ -323,7 +323,6 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
   // This toggler checks if the event already exists, in which case it doesn't create a new one
   if (!TOGGLERS.click) {
     document.addEventListener("mousedown", function exitMenu(e) {
-      console.log(eventCounter);
       // Storing events to loop over them eventually and check if they are click targeted
       events = document.querySelectorAll(".month-event");
       // Conditions below include all elements that won't trigger menu closing
@@ -354,19 +353,19 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
         e.target != document.querySelector(".displayed-menu") &&
         e.target != document.querySelector("#add-event")
       ) {
-        console.log(dayEvents);
-        console.log("pre-conditions met");
         if (dayEvents) {
-          console.log(eventCounter);
+          let clickedOutside = [];
           for (i = 1; i <= eventCounter; i++) {
-            console.log(`for loop run ${i}`);
             if (
-              e.target !=
-                document.getElementById(`month-event-${eventCounter}`) &&
-              e.target !=
-                document.getElementById(`month-remove-button-${eventCounter}`)
+              e.target != document.getElementById(`month-event-${i}`) &&
+              e.target != document.getElementById(`month-remove-button-${i}`)
             ) {
-              console.log("condition met, menu closed");
+              clickedOutside.push(true);
+            } else {
+              clickedOutside.push(false);
+            }
+            let checker = clickedOutside.every((item) => item === true);
+            if (checker && clickedOutside.length === eventCounter) {
               e.stopPropagation();
               menu.remove();
               getValues(
@@ -377,7 +376,6 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
             }
           }
         } else {
-          console.log("condition met, menu closed");
           e.stopPropagation();
           menu.remove();
           getValues(
