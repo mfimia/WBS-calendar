@@ -252,6 +252,7 @@ const drawMonthCalendar = (
 
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
+  let eventCounter = 0;
   event.stopPropagation();
   let menu =
     document.getElementById(`add-events-menu`) || document.createElement("div");
@@ -276,16 +277,18 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
           month === element.numMonth &&
           year === element.year
         ) {
+          eventCounter++;
           eventsSection.innerHTML += `
               <div
               class="month-event"
-              id="${element.unixID}"
+              id="month-event-${eventCounter}"
               Event: ${element.title}<br>
               Start: ${element.startTime}<br>
               End: ${element.endTime}<br>
               Duration: ${element.durationMinutes} minutes<br>
               <button 
-              class="month-remove-button" 
+              class="month-remove-button"
+              id="month-remove-button-${eventCounter}"
               onclick="removeMonthEvent(${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year})">
               Remove event
               </button>
@@ -320,6 +323,7 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
   // This toggler checks if the event already exists, in which case it doesn't create a new one
   if (!TOGGLERS.click) {
     document.addEventListener("mousedown", function exitMenu(e) {
+      console.log(eventCounter);
       // Storing events to loop over them eventually and check if they are click targeted
       events = document.querySelectorAll(".month-event");
       // Conditions below include all elements that won't trigger menu closing
@@ -350,14 +354,38 @@ const displayMenu = (event, day, month, year, dayEvents, backside = false) => {
         e.target != document.querySelector(".displayed-menu") &&
         e.target != document.querySelector("#add-event")
       ) {
+        console.log(dayEvents);
+        console.log("pre-conditions met");
+        if (dayEvents) {
+          console.log(eventCounter);
+          for (i = 1; i <= eventCounter; i++) {
+            if (
+              e.target !=
+                document.getElementById(`month-event-${eventCounter}`) &&
+              e.target !=
+                document.getElementById(`month-remove-button-${eventCounter}`)
+            ) {
+              console.log("condition met, menu closed");
+              e.stopPropagation();
+              menu.remove();
+              getValues(
+                new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day)
+              );
+              document.removeEventListener("mousedown", exitMenu);
+              TOGGLERS.click = false;
+            }
+          }
+        } else {
+          console.log("condition met, menu closed");
+          e.stopPropagation();
+          menu.remove();
+          getValues(
+            new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day)
+          );
+          document.removeEventListener("mousedown", exitMenu);
+          TOGGLERS.click = false;
+        }
         // When event handler is triggered, it removes menu, displays new calendar and removes itself
-        e.stopPropagation();
-        menu.remove();
-        getValues(
-          new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day)
-        );
-        document.removeEventListener("mousedown", exitMenu);
-        TOGGLERS.click = false;
       }
     });
     TOGGLERS.click = true;
