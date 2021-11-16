@@ -139,18 +139,27 @@ const drawMonthCalendar = (
         year: prevYear,
         midnightUnix: midnightUnix,
       };
+      const monthDayNumber = document.createElement("div");
+      monthDayNumber.setAttribute("class", "month-day-number");
+      monthDayNumber.innerHTML = `${j}`;
+      const eventsList = document.createElement("ul");
+      eventsList.setAttribute("class", "events-headline-list");
+      prevDay.appendChild(monthDayNumber);
       EVENTS.forEach((element) => {
         if (
           storedPreviousDay.day === element.day &&
           storedPreviousDay.month === element.numMonth &&
           storedPreviousDay.year === element.year
         ) {
-          prevDay.style.color = "blue";
           withEvent = true;
+          eventsList.innerHTML += `
+          <li style="background-color: ${element.colorHex}" 
+          class="event-headline">${element.title}
+          </li>`;
         }
       });
-
-      prevDay.innerHTML = `${j}`;
+      if (withEvent) prevDay.appendChild(eventsList);
+      // prevDay.innerHTML = `${j}`;
       prevDay.setAttribute("id", `${midnightUnix}`);
       prevDay.setAttribute("class", "extra-day");
       prevDay.addEventListener("click", function eventHandler(event) {
@@ -195,11 +204,12 @@ const drawMonthCalendar = (
         storedCurrentDay.month === element.numMonth &&
         storedCurrentDay.year === element.year
       ) {
-        day.style.color = `${element.colorHex}`;
+        // day.style.color = `${element.colorHex}`;
         withEvent = true;
-        eventsList.innerHTML += `<li class="event-headline">${element.title}</li>`;
-        // day.innerHTML += `<span class="event-headline">${element.title}</span>`;
-        console.log(element.colorHex);
+        eventsList.innerHTML += `
+        <li style="background-color: ${element.colorHex}" 
+        class="event-headline">${element.title}
+        </li>`;
       }
     });
     if (withEvent) day.appendChild(eventsList);
