@@ -118,6 +118,16 @@ i {
   padding-left: 10%;
 }
 
+.month-events-group {
+  color: black;
+  background-color: grey;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-top: 20%;
+  margin-left: 15%;
+  padding: 0.4vmin;
+}
+
 .month-day:hover,
 .day:hover,
 .extra-day:hover {
