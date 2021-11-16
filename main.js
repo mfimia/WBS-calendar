@@ -291,7 +291,7 @@ const drawMonthCalendar = (
     nextDay.setAttribute("class", "extra-day");
 
     // Day, month and year values calculated and stored in variables
-    const day = Number(nextDay.innerHTML);
+    const day = Number(monthDayNumber.innerHTML);
     // Unique id generated based on DD-MM-YYYY format
     nextDay.setAttribute("id", `${midnightUnix}`);
     // Adding event listener to display options menu on click. Naming the function so it can be removed
