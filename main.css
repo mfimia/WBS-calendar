@@ -68,14 +68,15 @@ i {
 
 #month-calendar {
   background-color: rgb(173, 226, 173);
+  /* display: block; */
 }
 
 .weekday {
   display: inline-flex;
   width: 14.2858%;
   text-align: center;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
   height: 5%;
   color: red;
 }
@@ -84,16 +85,34 @@ i {
 .day,
 .extra-day,
 .chosen-day {
-  height: 16.66666%;
+  height: 15.66666%;
   display: inline-flex;
-  width: 14.2858%;
-  justify-content: flex-end;
-  align-items: flex-end;
+  width: 13.2858%;
+  justify-content: flex-start;
+  align-items: flex-start;
   border: solid thin black;
   padding: 0.3vmin;
   color: red;
   font-weight: 900;
+  position: relative;
+  overflow: hidden;
 }
+
+.event-headline {
+  list-style: none;
+  padding: 3px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.events-headline-list {
+  /* position: absolute; */
+  padding-top: 15%;
+  display: block;
+  padding-left: 10%;
+}
+
+
 
 .month-day:hover,
 .day:hover,

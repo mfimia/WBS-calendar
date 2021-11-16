@@ -179,6 +179,12 @@ const drawMonthCalendar = (
     const day =
       document.getElementById(`${midnightUnix}`) ||
       document.createElement("div");
+    const monthDayNumber = document.createElement("div");
+    monthDayNumber.setAttribute("class", "month-day-number");
+    monthDayNumber.innerHTML = `${i}`;
+    const eventsList = document.createElement("ul");
+    eventsList.setAttribute("class", "events-headline-list");
+    day.appendChild(monthDayNumber);
     // This ternary operator highlights the day chosen by user
     i === selectedDay
       ? day.setAttribute("class", "chosen-day")
@@ -189,11 +195,14 @@ const drawMonthCalendar = (
         storedCurrentDay.month === element.numMonth &&
         storedCurrentDay.year === element.year
       ) {
-        day.style.color = "blue";
+        day.style.color = `${element.colorHex}`;
         withEvent = true;
+        eventsList.innerHTML += `<li class="event-headline">${element.title}</li>`;
+        // day.innerHTML += `<span class="event-headline">${element.title}</span>`;
+        console.log(element.colorHex);
       }
     });
-    day.innerHTML = `${i}`;
+    if (withEvent) day.appendChild(eventsList);
     day.setAttribute("id", `${midnightUnix}`);
     day.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
