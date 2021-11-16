@@ -249,18 +249,28 @@ const drawMonthCalendar = (
       year: nextYear,
       midnightUnix: midnightUnix,
     };
+    const monthDayNumber = document.createElement("div");
+    monthDayNumber.setAttribute("class", "month-day-number");
+    monthDayNumber.innerHTML = `${k}`;
+    const eventsList = document.createElement("ul");
+    eventsList.setAttribute("class", "events-headline-list");
+    nextDay.appendChild(monthDayNumber);
     EVENTS.forEach((element) => {
       if (
         storedNextDay.day === element.day &&
         storedNextDay.month === element.numMonth &&
         storedNextDay.year === element.year
       ) {
-        nextDay.style.color = "blue";
         withEvent = true;
+        eventsList.innerHTML += `
+        <li style="background-color: ${element.colorHex}" 
+        class="event-headline">${element.title}
+        </li>`;
       }
     });
+    if (withEvent) nextDay.appendChild(eventsList);
     nextDay.setAttribute("class", "extra-day");
-    nextDay.innerHTML = `${k}`;
+    // nextDay.innerHTML = `${k}`;
     // Day, month and year values calculated and stored in variables
     const day = Number(nextDay.innerHTML);
     // Unique id generated based on DD-MM-YYYY format
