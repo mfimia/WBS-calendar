@@ -139,18 +139,34 @@ const drawMonthCalendar = (
         year: prevYear,
         midnightUnix: midnightUnix,
       };
+      const monthDayNumber = document.createElement("div");
+      monthDayNumber.setAttribute("class", "month-day-number");
+      monthDayNumber.innerHTML = `${j}`;
+      monthDayNumber.style.color = 'grey'
+      const eventsList = document.createElement("ul");
+      eventsList.setAttribute("class", "events-headline-list");
+      prevDay.appendChild(monthDayNumber);
+      let counter = 0;
       EVENTS.forEach((element) => {
         if (
           storedPreviousDay.day === element.day &&
           storedPreviousDay.month === element.numMonth &&
           storedPreviousDay.year === element.year
         ) {
-          prevDay.style.color = "blue";
           withEvent = true;
+          eventsList.innerHTML += `
+          <li style="background-color: ${element.colorHex}" 
+          class="event-headline">${element.title}
+          </li>`;
+          counter++;
         }
       });
+      if (counter >= 3) {
+        eventsList.innerHTML = `${counter} events`;
+        eventsList.setAttribute("class", "month-events-group");
+      }
+      if (withEvent) prevDay.appendChild(eventsList);
 
-      prevDay.innerHTML = `${j}`;
       prevDay.setAttribute("id", `${midnightUnix}`);
       prevDay.setAttribute("class", "extra-day");
       prevDay.addEventListener("click", function eventHandler(event) {
@@ -179,21 +195,36 @@ const drawMonthCalendar = (
     const day =
       document.getElementById(`${midnightUnix}`) ||
       document.createElement("div");
+    const monthDayNumber = document.createElement("div");
+    monthDayNumber.setAttribute("class", "month-day-number");
+    monthDayNumber.innerHTML = `${i}`;
+    const eventsList = document.createElement("ul");
+    eventsList.setAttribute("class", "events-headline-list");
+    day.appendChild(monthDayNumber);
     // This ternary operator highlights the day chosen by user
     i === selectedDay
       ? day.setAttribute("class", "chosen-day")
       : day.setAttribute("class", "day");
+    let counter = 0;
     EVENTS.forEach((element) => {
       if (
         storedCurrentDay.day === element.day &&
         storedCurrentDay.month === element.numMonth &&
         storedCurrentDay.year === element.year
       ) {
-        day.style.color = "blue";
         withEvent = true;
+        eventsList.innerHTML += `
+        <li style="background-color: ${element.colorHex}" 
+        class="event-headline">${element.title}
+        </li>`;
+        counter++;
       }
     });
-    day.innerHTML = `${i}`;
+    if (counter >= 3) {
+      eventsList.innerHTML = `${counter} events`;
+      eventsList.setAttribute("class", "month-events-group");
+    }
+    if (withEvent) day.appendChild(eventsList);
     day.setAttribute("id", `${midnightUnix}`);
     day.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
@@ -230,20 +261,37 @@ const drawMonthCalendar = (
       year: nextYear,
       midnightUnix: midnightUnix,
     };
+    const monthDayNumber = document.createElement("div");
+    monthDayNumber.setAttribute("class", "month-day-number");
+    monthDayNumber.innerHTML = `${k}`;
+    monthDayNumber.style.color = 'grey'
+    const eventsList = document.createElement("ul");
+    eventsList.setAttribute("class", "events-headline-list");
+    nextDay.appendChild(monthDayNumber);
+    let counter = 0;
     EVENTS.forEach((element) => {
       if (
         storedNextDay.day === element.day &&
         storedNextDay.month === element.numMonth &&
         storedNextDay.year === element.year
       ) {
-        nextDay.style.color = "blue";
         withEvent = true;
+        eventsList.innerHTML += `
+        <li style="background-color: ${element.colorHex}" 
+        class="event-headline">${element.title}
+        </li>`;
+        counter++;
       }
     });
+    if (counter >= 3) {
+      eventsList.innerHTML = `${counter} events`;
+      eventsList.setAttribute("class", "month-events-group");
+    }
+    if (withEvent) nextDay.appendChild(eventsList);
     nextDay.setAttribute("class", "extra-day");
-    nextDay.innerHTML = `${k}`;
+
     // Day, month and year values calculated and stored in variables
-    const day = Number(nextDay.innerHTML);
+    const day = Number(monthDayNumber.innerHTML);
     // Unique id generated based on DD-MM-YYYY format
     nextDay.setAttribute("id", `${midnightUnix}`);
     // Adding event listener to display options menu on click. Naming the function so it can be removed
