@@ -13,7 +13,7 @@ body {
 }
 
 .container {
-    height: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -23,7 +23,8 @@ body {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 6em;
+    min-height: 60px;
+    height: 60px;
 }
 
 #displayed-date-text {
@@ -48,7 +49,34 @@ body {
     width: 20em;
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
     background-color: rgb(173, 226, 173);
+    max-height: 75vh;
+}
+
+#event-lists {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.event-item {
+    min-height: 2em;
+    height: 2;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #d3d1d1;
+    border: 1px solid #DDDDDD;
+    overflow: hidden;
+}
+
+.event-item-content {
+    line-height: 1.5em;
+    padding: 3px;
+}
+
+.event-item:hover {
+    background-color: rgb(31, 167, 90);
 }
 
 i {
