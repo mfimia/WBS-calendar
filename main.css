@@ -28,6 +28,16 @@ h1 {
   flex-direction: column;
 }
 
+/* .top-nav {
+    background: rgba(187, 255, 0, .9);
+    background-color: #00FF44;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 60px;
+    height: 60px;
+} */
+
 input[type="date"] {
   background-color: rgba(255, 255 , 255, .6);
   /* background-color: #FF9900; */
