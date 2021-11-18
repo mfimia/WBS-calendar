@@ -13,18 +13,18 @@ body {
 }
 
 .container {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .top-nav {
-    background: rgb(230, 163, 163);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    min-height: 60px;
-    height: 60px;
+  background: rgb(230, 163, 163);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 60px;
+  height: 60px;
 }
 
 #displayed-date-text {
@@ -45,38 +45,38 @@ body {
 }
 
 .side-nav {
-    height: 100%;
-    width: 20em;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    background-color: rgb(173, 226, 173);
-    max-height: 75vh;
+  height: 100%;
+  width: 20em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: rgb(173, 226, 173);
+  max-height: 75vh;
 }
 
 #event-lists {
-    height: 100%;
-    overflow-y: auto;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .event-item {
-    min-height: 2em;
-    height: 2;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    background-color: #d3d1d1;
-    border: 1px solid #DDDDDD;
-    overflow: hidden;
+  min-height: 2em;
+  height: 2;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #d3d1d1;
+  border: 1px solid #dddddd;
+  overflow: hidden;
 }
 
 .event-item-content {
-    line-height: 1.5em;
-    padding: 3px;
+  line-height: 1.5em;
+  padding: 3px;
 }
 
 .event-item:hover {
-    background-color: rgb(31, 167, 90);
+  background-color: rgb(31, 167, 90);
 }
 
 i {
@@ -123,7 +123,7 @@ i {
   /* color: red; */
   font-weight: 900;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
   cursor: pointer;
   color: white;
 }
@@ -182,14 +182,14 @@ i {
 .displayed-menu {
   top: 0;
   left: 0;
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
   position: absolute;
   color: black;
   /* border: none; */
-  /* width: 200px;
-  height: 100px; */
-  overflow: visible;
+  width: 200px;
+  /* height: 100px; */
+  overflow: auto;
   /* overflow-y: auto; */
   /* left: 50%;
   transform: translate(-50%);
