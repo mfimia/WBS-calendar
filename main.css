@@ -9,7 +9,17 @@ body {
   padding: 0;
   width: 100vw;
   height: 100vh;
-  background-color: antiquewhite;
+  background: hsla(324, 91%, 46%, 1);
+  background: linear-gradient(90deg, hsla(324, 91%, 46%, 1) 0%, hsla(18, 100%, 49%, 1) 100%);
+  background: -moz-linear-gradient(90deg, hsla(324, 91%, 46%, 1) 0%, hsla(18, 100%, 49%, 1) 100%);
+  background: -webkit-linear-gradient(90deg, hsla(324, 91%, 46%, 1) 0%, hsla(18, 100%, 49%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#E20B8C", endColorstr="#F84B00", GradientType=1 );
+
+}
+
+h1 {
+  color: white;
+  font-family: sans-serif;
 }
 
 .container {
@@ -18,23 +28,70 @@ body {
   flex-direction: column;
 }
 
-.top-nav {
-  background: rgb(230, 163, 163);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  min-height: 60px;
-  height: 60px;
+/* .top-nav {
+    background: rgba(187, 255, 0, .9);
+    background-color: #00FF44;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 60px;
+    height: 60px;
+} */
+
+input[type="date"] {
+  background-color: rgba(255, 255 , 255, .6);
+  /* background-color: #FF9900; */
+  outline: none;
+  color: hsl(238, 68%, 49%);
+  font-family: sans-serif;
+  font-weight: bold;
+  padding: 5px 7px 5px 7px;
+}
+
+#submit {
+  border: none;
+  border-radius: 16px;
+  margin-left: 1em;
+  background-color: #BBFF00;
+  padding: .5em;
+  font-weight: bold;
+  color: hsl(238, 68%, 49%);
+}
+
+#submit:hover {
+  background-color: #FF00BB;
+  color: white;
+
 }
 
 #displayed-date-text {
-  display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Times New Roman", Times, serif;
-  font-weight: 700;
-  font-size: x-large;
+  font-size: 2rem;
+  font-family: 'Caveat', cursive;
   height: 2em;
+  color: #fff;
+  text-shadow:
+    0 0 7px #BBFF00,
+    0 0 10px #BBFF00,
+    0 0 21px #BBFF00,
+    0 0 42px #BBFF00,
+    0 0 82px #BBFF00,
+    0 0 92px #BBFF00,
+    0 0 102px #BBFF00,
+    0 0 151px #BBFF00;
+}
+
+#screenTop {
+  display: flex;
+  justify-content: center;
+  align-content: flex-end;
+  margin-top: 2.5em;
+}
+
+#selectedDate {
+  margin-left: 5em;
+  align-content: flex-end;
 }
 
 .main {
@@ -45,13 +102,20 @@ body {
 }
 
 .side-nav {
-  height: 100%;
-  width: 20em;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  background-color: rgb(173, 226, 173);
-  max-height: 75vh;
+
+    height: 100%;
+    width: 20em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    max-height: 75vh;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+
 }
 
 #event-lists {
@@ -76,7 +140,8 @@ body {
 }
 
 .event-item:hover {
-  background-color: rgb(31, 167, 90);
+    background-color: #FF00BB;
+
 }
 
 i {
@@ -92,11 +157,28 @@ i {
   width: 100%;
   padding: 10px;
   text-align: center;
+  border: none;
+  border-radius: 16px;
+  background-color: rgba(255, 255 , 255, .3);
+  color: #fff;
+}
+
+#search-task::placeholder {
+  color: white;
+  opacity: .6;
+  font-size: 1rem;
 }
 
 #month-calendar {
-  background-color: rgb(173, 226, 173);
+background: rgba(255, 255, 255, 0.2);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+border: 1px solid rgba(255, 255, 255, 0.3);
   /* display: block; */
+padding-left: 4em;
+padding-top: 2em;
 }
 
 .weekday {
@@ -118,7 +200,8 @@ i {
   width: 13.2858%;
   justify-content: flex-start;
   align-items: flex-start;
-  border: solid thin black;
+  border: solid .5px rgba(255, 255, 255, .5);
+  outline: none;
   padding: 0.3vmin;
   /* color: red; */
   font-weight: 900;
@@ -129,7 +212,9 @@ i {
 }
 
 .month-day-number {
-  color: black;
+  color: white;
+  font-family: sans-serif;
+  font-size: .8rem;
 }
 
 .event-headline {
@@ -159,15 +244,15 @@ i {
 .month-day:hover,
 .day:hover,
 .extra-day:hover {
-  background-color: lightgrey;
+  background-color: #00BBFF;
 }
 
 .chosen-day {
-  background-color: rgb(209, 233, 248);
+  background-color: #9900FF;
 }
 
 .chosen-day:hover {
-  background-color: lightskyblue;
+  background-color: #FF9900;
 }
 
 .extra-day {
@@ -177,6 +262,12 @@ i {
 #input-date *,
 #selectedDate * {
   cursor: pointer;
+}
+
+#selectedDate {
+  border: none;
+  border-radius: 5px;
+  font-family: sans-serif;
 }
 
 .displayed-menu {
