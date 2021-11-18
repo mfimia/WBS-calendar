@@ -450,6 +450,8 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
         }
         // When event handler is triggered, it removes menu, displays new calendar and removes itself
       }
+      document.removeEventListener("mousedown", exitMenu);
+      TOGGLERS.click = false;
     });
     TOGGLERS.click = true;
   }
