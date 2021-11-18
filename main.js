@@ -24,8 +24,8 @@ let STORED_DATE = new dateValues(new Date());
 
 // Setting up the value attribute of <input> type date to display today's date on default
 document
-  .getElementById("selectedDate")
-  .setAttribute("value", `${INPUT_DATE.toISOString().split("T")[0]}`);
+    .getElementById("selectedDate")
+    .setAttribute("value", `${INPUT_DATE.toISOString().split("T")[0]}`);
 // Adding event listener to form to change the date and trigger display function
 document.getElementById("input-date").addEventListener("submit", (e) => {
   e.preventDefault();
@@ -39,73 +39,73 @@ document.getElementById("input-date").addEventListener("submit", (e) => {
 
 // Storing the name of months in array. The indexes match the generated value by method '.getMonth()'. (0-11)
 const MONTHS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
 ];
 // Same thing with weekdays (0-6)
 const WEEKDAYS = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
 ];
 
 // When a date is selected, all relevant values are collected in date object
 const getValues = (input) => {
-  const date = {
-    year: input.getFullYear(),
-    month: input.getMonth(),
-    day: input.getDate(),
-    unix: input.getTime(),
-    weekday: input.getDay(),
-    // The last two values are generated with functions "getMonthDays" and "getPreviousMonthDays", declared further in document.
-    // They store information about how many days in total the chosen month and previous month have
-    totalMonthDays: getMonthDays(input.getMonth(), input.getFullYear()),
-    previousMonthDays: getPreviousMonthDays(
-      input.getMonth(),
-      input.getFullYear()
-    ),
-  };
-  // This function tells us what is the first weekday of a given month in a given year
-  const firstDayMonth = new Date(
-    date.year + "-" + (date.month + 1) + "-01"
-  ).getDay();
-  // This is the actual display function, we pass it all relevant values to draw calendar
-  drawMonthCalendar(
-    date.totalMonthDays,
-    firstDayMonth,
-    date.day,
-    date.month,
-    date.year,
-    date.previousMonthDays
-  );
-  // This template literal controls the text that is displayed on top of the calendar
-  document.getElementById("displayed-date-text").innerHTML = `${
+    const date = {
+        year: input.getFullYear(),
+        month: input.getMonth(),
+        day: input.getDate(),
+        unix: input.getTime(),
+        weekday: input.getDay(),
+        // The last two values are generated with functions "getMonthDays" and "getPreviousMonthDays", declared further in document.
+        // They store information about how many days in total the chosen month and previous month have
+        totalMonthDays: getMonthDays(input.getMonth(), input.getFullYear()),
+        previousMonthDays: getPreviousMonthDays(
+            input.getMonth(),
+            input.getFullYear()
+        ),
+    };
+    // This function tells us what is the first weekday of a given month in a given year
+    const firstDayMonth = new Date(
+        date.year + "-" + (date.month + 1) + "-01"
+    ).getDay();
+    // This is the actual display function, we pass it all relevant values to draw calendar
+    drawMonthCalendar(
+        date.totalMonthDays,
+        firstDayMonth,
+        date.day,
+        date.month,
+        date.year,
+        date.previousMonthDays
+    );
+    // This template literal controls the text that is displayed on top of the calendar
+    document.getElementById("displayed-date-text").innerHTML = `${
     WEEKDAYS[date.weekday]
   }, ${date.day} ${MONTHS[date.month]} ${date.year}`;
 };
 
 // Function to draw calendar is declared here, taking all relevant parameters
 const drawMonthCalendar = (
-  monthDays,
-  startingDay,
-  selectedDay,
-  selectedMonth,
-  selectedYear,
-  previousMonthDays
+    monthDays,
+    startingDay,
+    selectedDay,
+    selectedMonth,
+    selectedYear,
+    previousMonthDays
 ) => {
   // Based on the starting day of the week, we calculate all "empty spots" that will be filled with previous month days
   const emptySpots = startingDay - 1;
@@ -553,58 +553,58 @@ const removeMonthEvent = (dayID, id, day, month, year, dayEvents) => {
 // Helper functions below to manipulate time values
 // Convert a given time into seconds
 const convertToSeconds = (time) => {
-  const array = time.split(":");
-  const seconds =
-    parseInt(array[0], 10) * 60 * 60 + parseInt(array[1], 10) * 60;
-  return seconds;
+    const array = time.split(":");
+    const seconds =
+        parseInt(array[0], 10) * 60 * 60 + parseInt(array[1], 10) * 60;
+    return seconds;
 };
 
 // Convert a given time into hours and minutes (number)
 const convertToNumber = (time) => {
-  const array = time.split(":");
-  const hours = parseInt(array[0]);
-  const minutes = parseInt(array[1]);
-  const number = {
-    hours: hours,
-    minutes: minutes,
-  };
-  return number;
+    const array = time.split(":");
+    const hours = parseInt(array[0]);
+    const minutes = parseInt(array[1]);
+    const number = {
+        hours: hours,
+        minutes: minutes,
+    };
+    return number;
 };
 
 // Receives a new date and returns hh:mm
 // Second argument toggles +1 h
 const convertToTimeFormat = (time, plusOne = false) => {
-  const addZero = (i) => {
-    if (i < 10) {
-      i = "0" + i;
+    const addZero = (i) => {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
+    };
+    if (plusOne) {
+        let unix = time.getTime();
+        time = new Date(unix + 3600000);
     }
-    return i;
-  };
-  if (plusOne) {
-    let unix = time.getTime();
-    time = new Date(unix + 3600000);
-  }
-  let h = addZero(time.getHours());
-  const m = addZero(time.getMinutes());
-  const returnedTime = h + ":" + m;
-  return returnedTime;
+    let h = addZero(time.getHours());
+    const m = addZero(time.getMinutes());
+    const returnedTime = h + ":" + m;
+    return returnedTime;
 };
 
 // This function takes chosen month and year as parameters and returns the total days the month has
 // Returns a number
 const getMonthDays = (month, year) => {
-  const number = new Date(year, month + 1, 0);
-  return number.getDate();
+    const number = new Date(year, month + 1, 0);
+    return number.getDate();
 };
 
 // Same as above but with previous month
 const getPreviousMonthDays = (month, year) => {
-  if (month === 0) {
-    year = year - 1;
-    month = 12;
-  }
-  const number = new Date(year, month, 0);
-  return number.getDate();
+    if (month === 0) {
+        year = year - 1;
+        month = 12;
+    }
+    const number = new Date(year, month, 0);
+    return number.getDate();
 };
 
 // If no input is given by user, we display the current date
