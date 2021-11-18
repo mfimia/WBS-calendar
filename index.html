@@ -10,12 +10,15 @@
     <link rel="stylesheet" href="colors.css">
     <script src='main.js' defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <div class="container">
-        <nav class="top-nav">
-            <div>
+        <!-- <nav class="top-nav">
+             <div>
                 <h1>Current Month</h1>
             </div>
             <div>
@@ -24,8 +27,16 @@
                     <input id="submit" type="submit">
                 </form>
             </div>
-        </nav>
-        <div id="displayed-date-text"></div>
+        </nav> -->
+        <div id="screenTop">
+            <div id="displayed-date-text"></div>
+            <div id="calendarDropdown">
+            <form id="input-date">
+                <input type="date" name="date" id="selectedDate">
+                <input id="submit" type="submit">
+            </form>
+            </div>
+        </div>
         <div class="main">
             <nav class="side-nav">
                 <div><i class="fa fa-search icon"></i><input id="search-task" placeholder="search tasks"></div>
