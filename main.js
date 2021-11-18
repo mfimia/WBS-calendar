@@ -555,6 +555,7 @@ const removeMonthEvent = (dayID, id, day, month, year, dayEvents) => {
     }
   });
   document.getElementById("add-events-menu").remove();
+  getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
   displayMenu(dayID, day, month, year, dayEvents);
 };
 
