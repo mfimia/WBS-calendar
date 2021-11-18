@@ -14,7 +14,6 @@ body {
   background: -moz-linear-gradient(90deg, hsla(324, 91%, 46%, 1) 0%, hsla(18, 100%, 49%, 1) 100%);
   background: -webkit-linear-gradient(90deg, hsla(324, 91%, 46%, 1) 0%, hsla(18, 100%, 49%, 1) 100%);
   filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#E20B8C", endColorstr="#F84B00", GradientType=1 );
-
 }
 
 h1 {
@@ -61,7 +60,6 @@ input[type="date"] {
 #submit:hover {
   background-color: #FF00BB;
   color: white;
-
 }
 
 #displayed-date-text {
@@ -102,7 +100,6 @@ input[type="date"] {
 }
 
 .side-nav {
-
     height: 100%;
     width: 20em;
     display: flex;
@@ -115,7 +112,6 @@ input[type="date"] {
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-
 }
 
 #event-lists {
@@ -141,7 +137,6 @@ input[type="date"] {
 
 .event-item:hover {
     background-color: #FF00BB;
-
 }
 
 i {
