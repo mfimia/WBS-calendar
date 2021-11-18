@@ -28,7 +28,6 @@ h1 {
   flex-direction: column;
 }
 
-
 /* .top-nav {
     background: rgba(187, 255, 0, .9);
     background-color: #00FF44;
@@ -62,6 +61,7 @@ input[type="date"] {
 #submit:hover {
   background-color: #FF00BB;
   color: white;
+
 }
 
 #displayed-date-text {
@@ -102,6 +102,7 @@ input[type="date"] {
 }
 
 .side-nav {
+
     height: 100%;
     width: 20em;
     display: flex;
@@ -114,6 +115,7 @@ input[type="date"] {
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.3);
+
 }
 
 #event-lists {
@@ -139,6 +141,7 @@ input[type="date"] {
 
 .event-item:hover {
     background-color: #FF00BB;
+
 }
 
 i {
