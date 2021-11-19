@@ -177,10 +177,7 @@ const drawMonthCalendar = (
       prevDay.addEventListener("click", function eventHandler(event) {
         // Removing event handler when it is used to avoid unwanted extra menus
         event.target.removeEventListener("click", eventHandler);
-        if (
-          event.target.className != "event-headline" &&
-          event.target.className != "grouped-event"
-        ) {
+        if (event.target.className != "event-headline") {
           event.target.className === "month-events-group"
             ? displayGroupMenu(
                 midnightUnix,
@@ -257,10 +254,7 @@ const drawMonthCalendar = (
     day.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
-      if (
-        event.target.className != "event-headline" &&
-        event.target.className != "grouped-event"
-      ) {
+      if (event.target.className != "event-headline") {
         event.target.className === "month-events-group"
           ? displayGroupMenu(
               midnightUnix,
@@ -343,10 +337,7 @@ const drawMonthCalendar = (
     nextDay.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
-      if (
-        event.target.className != "event-headline" &&
-        event.target.className != "grouped-event"
-      ) {
+      if (event.target.className != "event-headline") {
         event.target.className === "month-events-group"
           ? displayGroupMenu(
               midnightUnix,
@@ -366,22 +357,30 @@ const displayGroupMenu = (unix, day, month, year) => {
     return event.day === day && event.numMonth === month && event.year === year;
   });
   const groupMenu = document.getElementById(`group-events-${unix}`);
-  groupMenu.style.height = "150px";
-  groupMenu.style.width = "180px";
+  groupMenu.style.height = "180px";
+  groupMenu.style.width = "220px";
   groupMenu.innerHTML = "";
   groupMenu.style.overflow = "auto";
   groupMenu.style.textAlign = "center";
   groupMenu.style.position = "absolute";
+  groupMenu.style.transform = "translate(-20%, -20%)";
   dayEvents.forEach((event) => {
     groupMenu.innerHTML += `
     <div 
     class="grouped-event"
+    id="grouped-event-${event.unixID}"
     style="color:${event.colorHex}">
-    <h3>${event.title}</h3>
-    <p>${event.startTime} - ${event.endTime}</br> (${event.durationMinutes} mins)</p>
+    <h3 contentEditable="true">${event.title.toUpperCase()}</h3>
+    <p>${event.startTime} - ${event.endTime}</br> 
+    (${event.durationMinutes} mins)</p>
     </div>
     `;
   });
+  groupMenu.innerHTML += `
+  <button 
+  onclick="exitCallback()"
+  class="exit-group">Close
+  </button>`;
 };
 
 // Function to edit events. It takes in an ID finds, the item in the EVENTS array and changes its value
@@ -428,20 +427,20 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
         ) {
           eventCounter++;
           eventsSection.innerHTML += `
-              <div
-              class="month-event"
-              id="month-event-${eventCounter}"
-              Event: ${element.title}<br>
-              Start: ${element.startTime}<br>
-              End: ${element.endTime}<br>
-              Duration: ${element.durationMinutes} minutes<br>
-              <button
-              class="month-remove-button"
-              id="month-remove-button-${eventCounter}"
-              onclick="removeMonthEvent(${id}, ${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year}, ${dayEvents})">
-              Remove event
-              </button>
-              `;
+            <div
+            class="month-event"
+            id="month-event-${eventCounter}"
+            Event: ${element.title}<br>
+            Start: ${element.startTime}<br>
+            End: ${element.endTime}<br>
+            Duration: ${element.durationMinutes} minutes<br>
+            <button
+            class="month-remove-button"
+            id="month-remove-button-${eventCounter}"
+            onclick="removeMonthEvent(${id}, ${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year}, ${dayEvents})">
+            Remove event
+            </button>
+            `;
           // We probably can create a button element and pass it the event value, as opposed to writing pseudoHTML
         }
       });
@@ -653,6 +652,11 @@ const convertToSeconds = (time) => {
   const seconds =
     parseInt(array[0], 10) * 60 * 60 + parseInt(array[1], 10) * 60;
   return seconds;
+};
+
+// Helper function that lets us exit menu by using a callback function
+const exitCallback = () => {
+  getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
 };
 
 // Convert a given time into hours and minutes (number)
