@@ -140,9 +140,9 @@ const drawMonthCalendar = (
         midnightUnix: midnightUnix,
       };
       const monthDayNumber = document.createElement("div");
-      monthDayNumber.setAttribute("class", "month-day-number");
+      monthDayNumber.setAttribute("class", "extra-month-day-number");
       monthDayNumber.innerHTML = `${j}`;
-      monthDayNumber.style.color = "grey";
+
       const eventsList = document.createElement("ul");
       eventsList.setAttribute("class", "events-headline-list");
       prevDay.appendChild(monthDayNumber);
@@ -167,7 +167,7 @@ const drawMonthCalendar = (
       });
       if (counter >= 3) {
         eventsList.innerHTML = `${counter} events`;
-        eventsList.setAttribute("class", "month-events-group");
+        eventsList.setAttribute("class", "month-events-group hover-color");
         eventsList.setAttribute("id", `group-events-${midnightUnix}`);
       }
       if (withEvent) prevDay.appendChild(eventsList);
@@ -178,7 +178,7 @@ const drawMonthCalendar = (
         // Removing event handler when it is used to avoid unwanted extra menus
         event.target.removeEventListener("click", eventHandler);
         if (event.target.className != "event-headline") {
-          event.target.className === "month-events-group"
+          event.target.className === "month-events-group hover-color"
             ? displayGroupMenu(
                 midnightUnix,
                 storedPreviousDay.day,
@@ -246,7 +246,7 @@ const drawMonthCalendar = (
     });
     if (counter >= 3) {
       eventsList.innerHTML = `${counter} events`;
-      eventsList.setAttribute("class", "month-events-group");
+      eventsList.setAttribute("class", "month-events-group hover-color");
       eventsList.setAttribute("id", `group-events-${midnightUnix}`);
     }
     if (withEvent) day.appendChild(eventsList);
@@ -255,7 +255,7 @@ const drawMonthCalendar = (
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
       if (event.target.className != "event-headline") {
-        event.target.className === "month-events-group"
+        event.target.className === "month-events-group hover-color"
           ? displayGroupMenu(
               midnightUnix,
               storedCurrentDay.day,
@@ -296,9 +296,8 @@ const drawMonthCalendar = (
       midnightUnix: midnightUnix,
     };
     const monthDayNumber = document.createElement("div");
-    monthDayNumber.setAttribute("class", "month-day-number");
+    monthDayNumber.setAttribute("class", "extra-month-day-number");
     monthDayNumber.innerHTML = `${k}`;
-    monthDayNumber.style.color = "grey";
     const eventsList = document.createElement("ul");
     eventsList.setAttribute("class", "events-headline-list");
     nextDay.appendChild(monthDayNumber);
@@ -323,7 +322,7 @@ const drawMonthCalendar = (
     });
     if (counter >= 3) {
       eventsList.innerHTML = `${counter} events`;
-      eventsList.setAttribute("class", "month-events-group");
+      eventsList.setAttribute("class", "month-events-group hover-color");
       eventsList.setAttribute("id", `group-events-${midnightUnix}`);
     }
     if (withEvent) nextDay.appendChild(eventsList);
@@ -338,7 +337,7 @@ const drawMonthCalendar = (
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
       if (event.target.className != "event-headline") {
-        event.target.className === "month-events-group"
+        event.target.className === "month-events-group hover-color"
           ? displayGroupMenu(
               midnightUnix,
               storedNextDay.day,
@@ -352,13 +351,16 @@ const drawMonthCalendar = (
   }
 };
 
+// Displays all items grouped in a day on click
+// Takes the unixID of the day and day month and year and changes the HTML and CSS of the element
 const displayGroupMenu = (unix, day, month, year) => {
   const dayEvents = EVENTS.filter((event) => {
     return event.day === day && event.numMonth === month && event.year === year;
   });
   const groupMenu = document.getElementById(`group-events-${unix}`);
-  groupMenu.style.height = "180px";
-  groupMenu.style.width = "220px";
+  groupMenu.classList.remove("hover-color");
+  groupMenu.style.height = "30vmin";
+  groupMenu.style.width = "30vmin";
   groupMenu.innerHTML = "";
   groupMenu.style.overflow = "auto";
   groupMenu.style.textAlign = "center";
@@ -370,16 +372,16 @@ const displayGroupMenu = (unix, day, month, year) => {
     class="grouped-event"
     id="grouped-event-${event.unixID}"
     style="color:${event.colorHex}">
-    <h3 contentEditable="true">${event.title.toUpperCase()}</h3>
-    <p>${event.startTime} - ${event.endTime}</br> 
-    (${event.durationMinutes} mins)</p>
+    <h3 onfocusout="editGroupedEvent(${event.unixID})" contentEditable="true">${event.title}</h3>
+    <p>${event.startTime} - ${event.endTime}</p> 
+    <p>${event.durationMinutes} mins</p>
     </div>
     `;
   });
   groupMenu.innerHTML += `
   <button 
   onclick="exitCallback()"
-  class="exit-group">Close
+  class="exit-group">&#x2715
   </button>`;
 };
 
@@ -395,6 +397,18 @@ const editEvent = (id) => {
   });
   localStorage.setItem(`month-events`, JSON.stringify(EVENTS));
   getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
+};
+
+const editGroupedEvent = (id) => {
+  EVENTS.forEach((item) => {
+    if (item.unixID === id) {
+      item.title = document.querySelector(`#grouped-event-${id} h3`).innerHTML;
+      if (!item.title) {
+        EVENTS.pop(item);
+      }
+    }
+  });
+  localStorage.setItem(`month-events`, JSON.stringify(EVENTS));
 };
 
 // Menu takes all info about the day and displays an box in the location where event took place
@@ -430,6 +444,7 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
             class="month-event"
             id="month-event-${eventCounter}"
             Event: ${element.title}<br>
+            Event: ${element.title}<br>
             Start: ${element.startTime}<br>
             End: ${element.endTime}<br>
             Duration: ${element.durationMinutes} minutes<br>
@@ -440,7 +455,6 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
             Remove event
             </button>
             `;
-          // We probably can create a button element and pass it the event value, as opposed to writing pseudoHTML
         }
       });
       menu.appendChild(eventsSection);
@@ -600,6 +614,7 @@ const createEvent = (event, text, day, month, year) => {
   const colorTag = document.getElementById(
     `color-month-${day}-${month}-${year}`
   ).value;
+  const randomSeconds = Math.floor(Math.random() * 61);
   // To calculate the duration we call these helper functions declared below
   const durationMinutes =
     (convertToSeconds(endTime) - convertToSeconds(startTime)) / 60;
@@ -623,7 +638,8 @@ const createEvent = (event, text, day, month, year) => {
       month - 1,
       day,
       startTimeNum.hours,
-      startTimeNum.minutes
+      startTimeNum.minutes,
+      randomSeconds
     ).getTime(),
   };
   // When the object is created we push it to our EVENTS array and save it in localStorage
