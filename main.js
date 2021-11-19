@@ -373,7 +373,7 @@ const displayGroupMenu = (unix, day, month, year) => {
     class="grouped-event"
     id="grouped-event-${event.unixID}"
     style="color:${event.colorHex}">
-    <h3 contentEditable="true">${event.title}</h3>
+    <h3 onfocusout="editGroupedEvent(${event.unixID})" contentEditable="true">${event.title}</h3>
     <p>${event.startTime} - ${event.endTime}</p> 
     <p>${event.durationMinutes} mins</p>
     </div>
@@ -398,6 +398,18 @@ const editEvent = (id) => {
   });
   localStorage.setItem(`month-events`, JSON.stringify(EVENTS));
   getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
+};
+
+const editGroupedEvent = (id) => {
+  EVENTS.forEach((item) => {
+    if (item.unixID === id) {
+      item.title = document.querySelector(`#grouped-event-${id} h3`).innerHTML;
+      if (!item.title) {
+        EVENTS.pop(item);
+      }
+    }
+  });
+  localStorage.setItem(`month-events`, JSON.stringify(EVENTS));
 };
 
 // Menu takes all info about the day and displays an box in the location where event took place
@@ -603,6 +615,7 @@ const createEvent = (event, text, day, month, year) => {
   const colorTag = document.getElementById(
     `color-month-${day}-${month}-${year}`
   ).value;
+  const randomSeconds = Math.floor(Math.random() * 61);
   // To calculate the duration we call these helper functions declared below
   const durationMinutes =
     (convertToSeconds(endTime) - convertToSeconds(startTime)) / 60;
@@ -626,7 +639,8 @@ const createEvent = (event, text, day, month, year) => {
       month - 1,
       day,
       startTimeNum.hours,
-      startTimeNum.minutes
+      startTimeNum.minutes,
+      randomSeconds
     ).getTime(),
   };
   // When the object is created we push it to our EVENTS array and save it in localStorage
