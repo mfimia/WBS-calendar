@@ -658,6 +658,11 @@ const exitCallback = () => {
   getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
 };
 
+// Helper function that lets us submit date input on change
+const triggerDate = () => {
+  getValues(new Date(document.getElementById("selectedDate").value));
+};
+
 // Convert a given time into hours and minutes (number)
 const convertToNumber = (time) => {
   const array = time.split(":");
