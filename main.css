@@ -172,6 +172,8 @@ i {
 }
 
 #month-calendar {
+  font-size: large;
+  font-family: "Caveat";
   width: 80%;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 16px;
@@ -232,6 +234,10 @@ i {
   padding-top: 15%;
   display: block;
   padding-left: 10%;
+}
+
+.month-event {
+  margin-top: 10px;
 }
 
 .month-events-group {

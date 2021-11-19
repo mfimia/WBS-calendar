@@ -445,6 +445,7 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
             class="month-event"
             id="month-event-${eventCounter}"
             Event: ${element.title}<br>
+            Event: ${element.title}<br>
             Start: ${element.startTime}<br>
             End: ${element.endTime}<br>
             Duration: ${element.durationMinutes} minutes<br>
@@ -455,7 +456,6 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
             Remove event
             </button>
             `;
-          // We probably can create a button element and pass it the event value, as opposed to writing pseudoHTML
         }
       });
       menu.appendChild(eventsSection);
