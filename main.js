@@ -168,6 +168,7 @@ const drawMonthCalendar = (
       if (counter >= 3) {
         eventsList.innerHTML = `${counter} events`;
         eventsList.setAttribute("class", "month-events-group");
+        eventsList.setAttribute("id", `group-events-${midnightUnix}`);
       }
       if (withEvent) prevDay.appendChild(eventsList);
 
@@ -178,7 +179,7 @@ const drawMonthCalendar = (
         event.target.removeEventListener("click", eventHandler);
         if (event.target.className != "event-headline") {
           event.target.className === "month-events-group"
-            ? displayGroupMenu()
+            ? displayGroupMenu(midnightUnix)
             : displayMenu(
                 event.target.id,
                 numDay,
@@ -241,6 +242,7 @@ const drawMonthCalendar = (
     if (counter >= 3) {
       eventsList.innerHTML = `${counter} events`;
       eventsList.setAttribute("class", "month-events-group");
+      eventsList.setAttribute("id", `group-events-${midnightUnix}`);
     }
     if (withEvent) day.appendChild(eventsList);
     day.setAttribute("id", `${midnightUnix}`);
@@ -249,7 +251,7 @@ const drawMonthCalendar = (
       event.target.removeEventListener("click", eventHandler);
       if (event.target.className != "event-headline") {
         event.target.className === "month-events-group"
-          ? displayGroupMenu()
+          ? displayGroupMenu(midnightUnix)
           : displayMenu(
               event.target.id,
               numDay,
@@ -312,6 +314,7 @@ const drawMonthCalendar = (
     if (counter >= 3) {
       eventsList.innerHTML = `${counter} events`;
       eventsList.setAttribute("class", "month-events-group");
+      eventsList.setAttribute("id", `group-events-${midnightUnix}`);
     }
     if (withEvent) nextDay.appendChild(eventsList);
     nextDay.setAttribute("class", "extra-day");
@@ -326,7 +329,7 @@ const drawMonthCalendar = (
       event.target.removeEventListener("click", eventHandler);
       if (event.target.className != "event-headline") {
         event.target.className === "month-events-group"
-          ? displayGroupMenu()
+          ? displayGroupMenu(midnightUnix)
           : displayMenu(event.target.id, day, nextMonth, nextYear, withEvent);
       }
     });
@@ -334,9 +337,14 @@ const drawMonthCalendar = (
   }
 };
 
-const displayGroupMenu = () => {
-  console.log("group menu displayed");
-  
+const displayGroupMenu = (unix) => {
+  const group = document.getElementById(`group-events-${unix}`);
+  console.log(group.style);
+  // group.style.position = "absolute";
+  group.style.height = "150px";
+  group.style.width = "150px";
+  group.style.textAlign = "center";
+  group.style.position = "absolute";
 };
 
 // Function to edit events. It takes in an ID finds, the item in the EVENTS array and changes its value
@@ -417,7 +425,6 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
   }
   document.getElementById(`${id}`).appendChild(menu);
 
-  let events;
   // Ternary operator to check which side of the menu is being displayed
   let form = backside
     ? document.getElementById(`form-month-day}-${month}-${year}`)
