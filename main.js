@@ -352,6 +352,8 @@ const drawMonthCalendar = (
   }
 };
 
+// Displays all items grouped in a day on click
+// Takes the unixID of the day and day month and year and changes the HTML and CSS of the element
 const displayGroupMenu = (unix, day, month, year) => {
   const dayEvents = EVENTS.filter((event) => {
     return event.day === day && event.numMonth === month && event.year === year;
