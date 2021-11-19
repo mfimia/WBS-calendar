@@ -177,7 +177,10 @@ const drawMonthCalendar = (
       prevDay.addEventListener("click", function eventHandler(event) {
         // Removing event handler when it is used to avoid unwanted extra menus
         event.target.removeEventListener("click", eventHandler);
-        if (event.target.className != "event-headline") {
+        if (
+          event.target.className != "event-headline" &&
+          event.target.className != "grouped-event"
+        ) {
           event.target.className === "month-events-group"
             ? displayGroupMenu(
                 midnightUnix,
@@ -254,7 +257,10 @@ const drawMonthCalendar = (
     day.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
-      if (event.target.className != "event-headline") {
+      if (
+        event.target.className != "event-headline" &&
+        event.target.className != "grouped-event"
+      ) {
         event.target.className === "month-events-group"
           ? displayGroupMenu(
               midnightUnix,
@@ -337,7 +343,10 @@ const drawMonthCalendar = (
     nextDay.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
-      if (event.target.className != "event-headline") {
+      if (
+        event.target.className != "event-headline" &&
+        event.target.className != "grouped-event"
+      ) {
         event.target.className === "month-events-group"
           ? displayGroupMenu(
               midnightUnix,
@@ -375,18 +384,6 @@ const displayGroupMenu = (unix, day, month, year) => {
   });
 };
 
-//     title: text,
-//     numWeekday: new Date(`${year}-${month}-${day}`).getDay(),
-//     stringWeekday: WEEKDAYS[new Date(`${year}-${month}-${day}`).getDay()],
-//     day: day,
-//     numMonth: month,
-//     stringMonth: MONTHS[month - 1],
-//     year: year,
-//     colorHex: colorTag,
-//     startTime: startTime,
-//     endTime: endTime,
-//     durationMinutes: durationMinutes,
-
 // Function to edit events. It takes in an ID finds, the item in the EVENTS array and changes its value
 const editEvent = (id) => {
   EVENTS.forEach((item) => {
@@ -403,6 +400,8 @@ const editEvent = (id) => {
 
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
+  if (!id) return;
+  console.log("display menu triggered");
   let eventCounter = 0;
   let menu =
     document.getElementById(`add-events-menu`) || document.createElement("div");
