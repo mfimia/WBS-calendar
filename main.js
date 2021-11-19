@@ -140,9 +140,9 @@ const drawMonthCalendar = (
         midnightUnix: midnightUnix,
       };
       const monthDayNumber = document.createElement("div");
-      monthDayNumber.setAttribute("class", "month-day-number");
+      monthDayNumber.setAttribute("class", "extra-month-day-number");
       monthDayNumber.innerHTML = `${j}`;
-      monthDayNumber.style.color = "grey";
+
       const eventsList = document.createElement("ul");
       eventsList.setAttribute("class", "events-headline-list");
       prevDay.appendChild(monthDayNumber);
@@ -296,9 +296,8 @@ const drawMonthCalendar = (
       midnightUnix: midnightUnix,
     };
     const monthDayNumber = document.createElement("div");
-    monthDayNumber.setAttribute("class", "month-day-number");
+    monthDayNumber.setAttribute("class", "extra-month-day-number");
     monthDayNumber.innerHTML = `${k}`;
-    monthDayNumber.style.color = "grey";
     const eventsList = document.createElement("ul");
     eventsList.setAttribute("class", "events-headline-list");
     nextDay.appendChild(monthDayNumber);

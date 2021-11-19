@@ -215,10 +215,18 @@ i {
   color: white;
 }
 
-.month-day-number {
-  color: white;
+.month-day-number,
+.extra-month-day-number {
   font-family: sans-serif;
   font-size: 0.8rem;
+}
+
+.month-day-number {
+  color: white;
+}
+
+.extra-month-day-number {
+  color: rgb(85, 110, 53);
 }
 
 .event-headline {
