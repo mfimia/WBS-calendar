@@ -179,7 +179,12 @@ const drawMonthCalendar = (
         event.target.removeEventListener("click", eventHandler);
         if (event.target.className != "event-headline") {
           event.target.className === "month-events-group"
-            ? displayGroupMenu(midnightUnix)
+            ? displayGroupMenu(
+                midnightUnix,
+                storedPreviousDay.day,
+                storedPreviousDay.month,
+                storedPreviousDay.year
+              )
             : displayMenu(
                 event.target.id,
                 numDay,
@@ -251,12 +256,17 @@ const drawMonthCalendar = (
       event.target.removeEventListener("click", eventHandler);
       if (event.target.className != "event-headline") {
         event.target.className === "month-events-group"
-          ? displayGroupMenu(midnightUnix)
+          ? displayGroupMenu(
+              midnightUnix,
+              storedCurrentDay.day,
+              selectedMonth + 1,
+              selectedYear
+            )
           : displayMenu(
               event.target.id,
               numDay,
-              selectedMonth + 1,
-              selectedYear,
+              storedCurrentDay.month,
+              storedCurrentDay.year,
               withEvent
             );
       }
@@ -329,7 +339,12 @@ const drawMonthCalendar = (
       event.target.removeEventListener("click", eventHandler);
       if (event.target.className != "event-headline") {
         event.target.className === "month-events-group"
-          ? displayGroupMenu(midnightUnix)
+          ? displayGroupMenu(
+              midnightUnix,
+              storedNextDay.day,
+              storedNextDay.month,
+              storedNextDay.year
+            )
           : displayMenu(event.target.id, day, nextMonth, nextYear, withEvent);
       }
     });
@@ -337,14 +352,18 @@ const drawMonthCalendar = (
   }
 };
 
-const displayGroupMenu = (unix) => {
-  const group = document.getElementById(`group-events-${unix}`);
-  console.log(group.style);
-  // group.style.position = "absolute";
-  group.style.height = "150px";
-  group.style.width = "150px";
-  group.style.textAlign = "center";
-  group.style.position = "absolute";
+const displayGroupMenu = (unix, day, month, year) => {
+  console.log(day, month, year);
+  const dayEvents = EVENTS.filter((event) => {
+    return event.day === day && event.numMonth === month && event.year === year;
+  });
+  console.log(dayEvents);
+  const groupMenu = document.getElementById(`group-events-${unix}`);
+  groupMenu.style.height = "150px";
+  groupMenu.style.width = "150px";
+  groupMenu.style.textAlign = "center";
+  groupMenu.style.position = "absolute";
+  groupMenu.style.innerHTML = ``;
 };
 
 // Function to edit events. It takes in an ID finds, the item in the EVENTS array and changes its value
