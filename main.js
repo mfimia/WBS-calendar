@@ -372,7 +372,6 @@ const editEvent = (id) => {
     if (item.unixID === id) {
       item.title = document.getElementById(id).innerHTML;
       if (!item.title) {
-        console.log("hi");
         EVENTS.pop(item);
       }
     }
