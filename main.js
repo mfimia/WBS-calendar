@@ -167,7 +167,7 @@ const drawMonthCalendar = (
       });
       if (counter >= 3) {
         eventsList.innerHTML = `${counter} events`;
-        eventsList.setAttribute("class", "month-events-group");
+        eventsList.setAttribute("class", "month-events-group hover-color");
         eventsList.setAttribute("id", `group-events-${midnightUnix}`);
       }
       if (withEvent) prevDay.appendChild(eventsList);
@@ -178,7 +178,7 @@ const drawMonthCalendar = (
         // Removing event handler when it is used to avoid unwanted extra menus
         event.target.removeEventListener("click", eventHandler);
         if (event.target.className != "event-headline") {
-          event.target.className === "month-events-group"
+          event.target.className === "month-events-group hover-color"
             ? displayGroupMenu(
                 midnightUnix,
                 storedPreviousDay.day,
@@ -246,7 +246,7 @@ const drawMonthCalendar = (
     });
     if (counter >= 3) {
       eventsList.innerHTML = `${counter} events`;
-      eventsList.setAttribute("class", "month-events-group");
+      eventsList.setAttribute("class", "month-events-group hover-color");
       eventsList.setAttribute("id", `group-events-${midnightUnix}`);
     }
     if (withEvent) day.appendChild(eventsList);
@@ -255,7 +255,7 @@ const drawMonthCalendar = (
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
       if (event.target.className != "event-headline") {
-        event.target.className === "month-events-group"
+        event.target.className === "month-events-group hover-color"
           ? displayGroupMenu(
               midnightUnix,
               storedCurrentDay.day,
@@ -323,7 +323,7 @@ const drawMonthCalendar = (
     });
     if (counter >= 3) {
       eventsList.innerHTML = `${counter} events`;
-      eventsList.setAttribute("class", "month-events-group");
+      eventsList.setAttribute("class", "month-events-group hover-color");
       eventsList.setAttribute("id", `group-events-${midnightUnix}`);
     }
     if (withEvent) nextDay.appendChild(eventsList);
@@ -338,7 +338,7 @@ const drawMonthCalendar = (
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
       if (event.target.className != "event-headline") {
-        event.target.className === "month-events-group"
+        event.target.className === "month-events-group hover-color"
           ? displayGroupMenu(
               midnightUnix,
               storedNextDay.day,
@@ -359,6 +359,7 @@ const displayGroupMenu = (unix, day, month, year) => {
     return event.day === day && event.numMonth === month && event.year === year;
   });
   const groupMenu = document.getElementById(`group-events-${unix}`);
+  groupMenu.classList.remove("hover-color");
   groupMenu.style.height = "30vmin";
   groupMenu.style.width = "30vmin";
   groupMenu.innerHTML = "";
@@ -372,16 +373,16 @@ const displayGroupMenu = (unix, day, month, year) => {
     class="grouped-event"
     id="grouped-event-${event.unixID}"
     style="color:${event.colorHex}">
-    <h3 contentEditable="true">${event.title.toUpperCase()}</h3>
-    <p>${event.startTime} - ${event.endTime}</br> 
-    (${event.durationMinutes} mins)</p>
+    <h3 contentEditable="true">${event.title}</h3>
+    <p>${event.startTime} - ${event.endTime}</p> 
+    <p>${event.durationMinutes} mins</p>
     </div>
     `;
   });
   groupMenu.innerHTML += `
   <button 
   onclick="exitCallback()"
-  class="exit-group">Close
+  class="exit-group">&#x2715
   </button>`;
 };
 

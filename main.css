@@ -248,21 +248,22 @@ i {
   transition: all ease 1s;
 }
 
-.month-events-group:hover {
+/* .month-events-group:hover {
   background-color: #9900ff;
-}
+} */
 
-.testdays {
+.title-weekdays {
   position: absolute;
   width: 80%;
   z-index: 10;
+  color: white;
   right: 0;
   font-family: "Caveat", cursive;
-  padding: 0 80px;
+  padding: 0 50px;
   padding-right: 40px;
 }
 
-.testdays > * {
+.title-weekdays > * {
   width: 13.2858%;
   text-align: center;
   display: inline-block;
@@ -270,14 +271,39 @@ i {
 }
 
 .grouped-event {
-  background-color: #30b1e0f3;
+  background-color: #a1d3e6f3;
   margin-bottom: 10px;
   border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  height: 120px;
+  justify-content: space-between;
+  font-family: "Caveat";
+  font-size: x-large;
+}
+
+.grouped-event h3 {
+  text-decoration: underline;
 }
 
 .exit-group {
   position: relative;
   bottom: 0;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: #30b1e0f3;
+  font-weight: 700;
+  transition: all 0.6s ease;
+}
+
+.exit-group:hover {
+  background-color: #30b1e04b;
+}
+
+.hover-color:hover {
+  background-color: #e9ab70f3;
 }
 
 .month-day:hover,
