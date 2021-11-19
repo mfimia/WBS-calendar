@@ -176,11 +176,16 @@ const drawMonthCalendar = (
       prevDay.addEventListener("click", function eventHandler(event) {
         // Removing event handler when it is used to avoid unwanted extra menus
         event.target.removeEventListener("click", eventHandler);
-        if (
-          event.target.className != "event-headline" &&
-          event.target.className != "month-events-group"
-        ) {
-          displayMenu(event.target.id, numDay, prevMonth, prevYear, withEvent);
+        if (event.target.className != "event-headline") {
+          event.target.className === "month-events-group"
+            ? displayGroupMenu()
+            : displayMenu(
+                event.target.id,
+                numDay,
+                prevMonth,
+                prevYear,
+                withEvent
+              );
         }
       });
       table.appendChild(prevDay);
@@ -242,17 +247,16 @@ const drawMonthCalendar = (
     day.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
-      if (
-        event.target.className != "event-headline" &&
-        event.target.className != "month-events-group"
-      ) {
-        displayMenu(
-          event.target.id,
-          numDay,
-          selectedMonth + 1,
-          selectedYear,
-          withEvent
-        );
+      if (event.target.className != "event-headline") {
+        event.target.className === "month-events-group"
+          ? displayGroupMenu()
+          : displayMenu(
+              event.target.id,
+              numDay,
+              selectedMonth + 1,
+              selectedYear,
+              withEvent
+            );
       }
     });
     table.appendChild(day);
@@ -320,15 +324,19 @@ const drawMonthCalendar = (
     nextDay.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
-      if (
-        event.target.className != "event-headline" &&
-        event.target.className != "month-events-group"
-      ) {
-        displayMenu(event.target.id, day, nextMonth, nextYear, withEvent);
+      if (event.target.className != "event-headline") {
+        event.target.className === "month-events-group"
+          ? displayGroupMenu()
+          : displayMenu(event.target.id, day, nextMonth, nextYear, withEvent);
       }
     });
     table.appendChild(nextDay);
   }
+};
+
+const displayGroupMenu = () => {
+  console.log("group menu displayed");
+  
 };
 
 // Function to edit events. It takes in an ID finds, the item in the EVENTS array and changes its value
