@@ -353,18 +353,39 @@ const drawMonthCalendar = (
 };
 
 const displayGroupMenu = (unix, day, month, year) => {
-  console.log(day, month, year);
   const dayEvents = EVENTS.filter((event) => {
     return event.day === day && event.numMonth === month && event.year === year;
   });
-  console.log(dayEvents);
   const groupMenu = document.getElementById(`group-events-${unix}`);
   groupMenu.style.height = "150px";
-  groupMenu.style.width = "150px";
+  groupMenu.style.width = "180px";
+  groupMenu.innerHTML = "";
+  groupMenu.style.overflow = "auto";
   groupMenu.style.textAlign = "center";
   groupMenu.style.position = "absolute";
-  groupMenu.style.innerHTML = ``;
+  dayEvents.forEach((event) => {
+    groupMenu.innerHTML += `
+    <div 
+    class="grouped-event"
+    style="color:${event.colorHex}">
+    <h3>${event.title}</h3>
+    <p>${event.startTime} - ${event.endTime}</br> (${event.durationMinutes} mins)</p>
+    </div>
+    `;
+  });
 };
+
+//     title: text,
+//     numWeekday: new Date(`${year}-${month}-${day}`).getDay(),
+//     stringWeekday: WEEKDAYS[new Date(`${year}-${month}-${day}`).getDay()],
+//     day: day,
+//     numMonth: month,
+//     stringMonth: MONTHS[month - 1],
+//     year: year,
+//     colorHex: colorTag,
+//     startTime: startTime,
+//     endTime: endTime,
+//     durationMinutes: durationMinutes,
 
 // Function to edit events. It takes in an ID finds, the item in the EVENTS array and changes its value
 const editEvent = (id) => {
