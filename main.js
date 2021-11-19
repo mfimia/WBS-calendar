@@ -342,7 +342,7 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
     let addButton = document.createElement("button");
     addButton.setAttribute("id", "add-event");
     addButton.innerHTML = "Add event";
-    addButton.addEventListener("click", (e) => {
+    addButton.addEventListener("click", () => {
       menu.remove();
       displayMenu(id, day, month, year, dayEvents, true);
     });
@@ -491,12 +491,10 @@ const generateForm = (day, month, year) => {
   eventInput.setAttribute("required", "true");
   const eventStartDate = document.createElement("input");
   eventStartDate.setAttribute("type", "time");
-  // eventStartDate.setAttribute("step", "900");
   eventStartDate.setAttribute("id", `start-time-month-${day}-${month}-${year}`);
   eventStartDate.defaultValue = convertToTimeFormat(new Date());
   const eventEndDate = document.createElement("input");
   eventEndDate.setAttribute("type", "time");
-  // eventEndDate.setAttribute("step", "900");
   eventEndDate.setAttribute("id", `end-time-month-${day}-${month}-${year}`);
   eventEndDate.defaultValue = convertToTimeFormat(new Date(), true);
   const submitEvent = document.createElement("input");
