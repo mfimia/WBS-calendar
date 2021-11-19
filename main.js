@@ -155,7 +155,8 @@ const drawMonthCalendar = (
         ) {
           withEvent = true;
           eventsList.innerHTML += `
-          <li style="background-color: ${element.colorHex}" 
+          <li onclick="editEvent()"
+          style="background-color: ${element.colorHex}" 
           class="event-headline">${element.title}
           </li>`;
           counter++;
@@ -216,7 +217,11 @@ const drawMonthCalendar = (
       ) {
         withEvent = true;
         eventsList.innerHTML += `
-        <li style="background-color: ${element.colorHex}" 
+        <li
+        id="${element.unixID}"
+        contentEditable="true" 
+        onfocusout="editEvent(${element.unixID})"
+        style="background-color: ${element.colorHex}" 
         class="event-headline">${element.title}
         </li>`;
         counter++;
@@ -281,7 +286,8 @@ const drawMonthCalendar = (
       ) {
         withEvent = true;
         eventsList.innerHTML += `
-        <li style="background-color: ${element.colorHex}" 
+        <li onfocusout="editEvent()"
+        style="background-color: ${element.colorHex}" 
         class="event-headline">${element.title}
         </li>`;
         counter++;
@@ -308,6 +314,21 @@ const drawMonthCalendar = (
     });
     table.appendChild(nextDay);
   }
+};
+
+// Function to edit events. It takes in an ID finds, the item in the EVENTS array and changes its value
+const editEvent = (id) => {
+  EVENTS.forEach((item) => {
+    if (item.unixID === id) {
+      item.title = document.getElementById(id).innerHTML;
+      if (!item.title) {
+        console.log("hi");
+        EVENTS.pop(item);
+      }
+    }
+  });
+  localStorage.setItem(`month-events`, JSON.stringify(EVENTS));
+  getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
 };
 
 // Menu takes all info about the day and displays an box in the location where event took place
