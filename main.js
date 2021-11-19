@@ -155,15 +155,20 @@ const drawMonthCalendar = (
         ) {
           withEvent = true;
           eventsList.innerHTML += `
-          <li style="background-color: ${element.colorHex}" 
-          class="event-headline">${element.title}
-          </li>`;
+            <li
+            id="${element.unixID}"
+            contentEditable="true" 
+            onfocusout="editEvent(${element.unixID})"
+            style="background-color: ${element.colorHex}" 
+            class="event-headline">${element.title}
+            </li>`;
           counter++;
         }
       });
       if (counter >= 3) {
         eventsList.innerHTML = `${counter} events`;
         eventsList.setAttribute("class", "month-events-group");
+        eventsList.setAttribute("id", `group-events-${midnightUnix}`);
       }
       if (withEvent) prevDay.appendChild(eventsList);
 
@@ -173,7 +178,20 @@ const drawMonthCalendar = (
         // Removing event handler when it is used to avoid unwanted extra menus
         event.target.removeEventListener("click", eventHandler);
         if (event.target.className != "event-headline") {
-          displayMenu(event.target.id, numDay, prevMonth, prevYear, withEvent);
+          event.target.className === "month-events-group"
+            ? displayGroupMenu(
+                midnightUnix,
+                storedPreviousDay.day,
+                storedPreviousDay.month,
+                storedPreviousDay.year
+              )
+            : displayMenu(
+                event.target.id,
+                numDay,
+                prevMonth,
+                prevYear,
+                withEvent
+              );
         }
       });
       table.appendChild(prevDay);
@@ -216,7 +234,11 @@ const drawMonthCalendar = (
       ) {
         withEvent = true;
         eventsList.innerHTML += `
-        <li style="background-color: ${element.colorHex}" 
+        <li
+        id="${element.unixID}"
+        contentEditable="true" 
+        onfocusout="editEvent(${element.unixID})"
+        style="background-color: ${element.colorHex}" 
         class="event-headline">${element.title}
         </li>`;
         counter++;
@@ -225,6 +247,7 @@ const drawMonthCalendar = (
     if (counter >= 3) {
       eventsList.innerHTML = `${counter} events`;
       eventsList.setAttribute("class", "month-events-group");
+      eventsList.setAttribute("id", `group-events-${midnightUnix}`);
     }
     if (withEvent) day.appendChild(eventsList);
     day.setAttribute("id", `${midnightUnix}`);
@@ -232,13 +255,20 @@ const drawMonthCalendar = (
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
       if (event.target.className != "event-headline") {
-        displayMenu(
-          event.target.id,
-          numDay,
-          selectedMonth + 1,
-          selectedYear,
-          withEvent
-        );
+        event.target.className === "month-events-group"
+          ? displayGroupMenu(
+              midnightUnix,
+              storedCurrentDay.day,
+              selectedMonth + 1,
+              selectedYear
+            )
+          : displayMenu(
+              event.target.id,
+              numDay,
+              storedCurrentDay.month,
+              storedCurrentDay.year,
+              withEvent
+            );
       }
     });
     table.appendChild(day);
@@ -281,15 +311,20 @@ const drawMonthCalendar = (
       ) {
         withEvent = true;
         eventsList.innerHTML += `
-        <li style="background-color: ${element.colorHex}" 
-        class="event-headline">${element.title}
-        </li>`;
+            <li
+            id="${element.unixID}"
+            contentEditable="true" 
+            onfocusout="editEvent(${element.unixID})"
+            style="background-color: ${element.colorHex}" 
+            class="event-headline">${element.title}
+            </li>`;
         counter++;
       }
     });
     if (counter >= 3) {
       eventsList.innerHTML = `${counter} events`;
       eventsList.setAttribute("class", "month-events-group");
+      eventsList.setAttribute("id", `group-events-${midnightUnix}`);
     }
     if (withEvent) nextDay.appendChild(eventsList);
     nextDay.setAttribute("class", "extra-day");
@@ -303,15 +338,68 @@ const drawMonthCalendar = (
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
       if (event.target.className != "event-headline") {
-        displayMenu(event.target.id, day, nextMonth, nextYear, withEvent);
+        event.target.className === "month-events-group"
+          ? displayGroupMenu(
+              midnightUnix,
+              storedNextDay.day,
+              storedNextDay.month,
+              storedNextDay.year
+            )
+          : displayMenu(event.target.id, day, nextMonth, nextYear, withEvent);
       }
     });
     table.appendChild(nextDay);
   }
 };
 
+const displayGroupMenu = (unix, day, month, year) => {
+  const dayEvents = EVENTS.filter((event) => {
+    return event.day === day && event.numMonth === month && event.year === year;
+  });
+  const groupMenu = document.getElementById(`group-events-${unix}`);
+  groupMenu.style.height = "180px";
+  groupMenu.style.width = "220px";
+  groupMenu.innerHTML = "";
+  groupMenu.style.overflow = "auto";
+  groupMenu.style.textAlign = "center";
+  groupMenu.style.position = "absolute";
+  groupMenu.style.transform = "translate(-20%, -20%)";
+  dayEvents.forEach((event) => {
+    groupMenu.innerHTML += `
+    <div 
+    class="grouped-event"
+    id="grouped-event-${event.unixID}"
+    style="color:${event.colorHex}">
+    <h3 contentEditable="true">${event.title.toUpperCase()}</h3>
+    <p>${event.startTime} - ${event.endTime}</br> 
+    (${event.durationMinutes} mins)</p>
+    </div>
+    `;
+  });
+  groupMenu.innerHTML += `
+  <button 
+  onclick="exitCallback()"
+  class="exit-group">Close
+  </button>`;
+};
+
+// Function to edit events. It takes in an ID finds, the item in the EVENTS array and changes its value
+const editEvent = (id) => {
+  EVENTS.forEach((item) => {
+    if (item.unixID === id) {
+      item.title = document.getElementById(id).innerHTML;
+      if (!item.title) {
+        EVENTS.pop(item);
+      }
+    }
+  });
+  localStorage.setItem(`month-events`, JSON.stringify(EVENTS));
+  getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
+};
+
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
+  if (!id) return;
   let eventCounter = 0;
   let menu =
     document.getElementById(`add-events-menu`) || document.createElement("div");
@@ -321,7 +409,7 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
     let addButton = document.createElement("button");
     addButton.setAttribute("id", "add-event");
     addButton.innerHTML = "Add event";
-    addButton.addEventListener("click", (e) => {
+    addButton.addEventListener("click", () => {
       menu.remove();
       displayMenu(id, day, month, year, dayEvents, true);
     });
@@ -338,20 +426,20 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
         ) {
           eventCounter++;
           eventsSection.innerHTML += `
-              <div
-              class="month-event"
-              id="month-event-${eventCounter}"
-              Event: ${element.title}<br>
-              Start: ${element.startTime}<br>
-              End: ${element.endTime}<br>
-              Duration: ${element.durationMinutes} minutes<br>
-              <button
-              class="month-remove-button"
-              id="month-remove-button-${eventCounter}"
-              onclick="removeMonthEvent(${id}, ${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year}, ${dayEvents})">
-              Remove event
-              </button>
-              `;
+            <div
+            class="month-event"
+            id="month-event-${eventCounter}"
+            Event: ${element.title}<br>
+            Start: ${element.startTime}<br>
+            End: ${element.endTime}<br>
+            Duration: ${element.durationMinutes} minutes<br>
+            <button
+            class="month-remove-button"
+            id="month-remove-button-${eventCounter}"
+            onclick="removeMonthEvent(${id}, ${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year}, ${dayEvents})">
+            Remove event
+            </button>
+            `;
           // We probably can create a button element and pass it the event value, as opposed to writing pseudoHTML
         }
       });
@@ -373,7 +461,6 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
   }
   document.getElementById(`${id}`).appendChild(menu);
 
-  let events;
   // Ternary operator to check which side of the menu is being displayed
   let form = backside
     ? document.getElementById(`form-month-day}-${month}-${year}`)
@@ -470,12 +557,10 @@ const generateForm = (day, month, year) => {
   eventInput.setAttribute("required", "true");
   const eventStartDate = document.createElement("input");
   eventStartDate.setAttribute("type", "time");
-  // eventStartDate.setAttribute("step", "900");
   eventStartDate.setAttribute("id", `start-time-month-${day}-${month}-${year}`);
   eventStartDate.defaultValue = convertToTimeFormat(new Date());
   const eventEndDate = document.createElement("input");
   eventEndDate.setAttribute("type", "time");
-  // eventEndDate.setAttribute("step", "900");
   eventEndDate.setAttribute("id", `end-time-month-${day}-${month}-${year}`);
   eventEndDate.defaultValue = convertToTimeFormat(new Date(), true);
   const submitEvent = document.createElement("input");
@@ -566,6 +651,16 @@ const convertToSeconds = (time) => {
   const seconds =
     parseInt(array[0], 10) * 60 * 60 + parseInt(array[1], 10) * 60;
   return seconds;
+};
+
+// Helper function that lets us exit menu by using a callback function
+const exitCallback = () => {
+  getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
+};
+
+// Helper function that lets us submit date input on change
+const triggerDate = () => {
+  getValues(new Date(document.getElementById("selectedDate").value));
 };
 
 // Convert a given time into hours and minutes (number)
