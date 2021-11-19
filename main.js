@@ -357,8 +357,8 @@ const displayGroupMenu = (unix, day, month, year) => {
     return event.day === day && event.numMonth === month && event.year === year;
   });
   const groupMenu = document.getElementById(`group-events-${unix}`);
-  groupMenu.style.height = "180px";
-  groupMenu.style.width = "220px";
+  groupMenu.style.height = "30vmin";
+  groupMenu.style.width = "30vmin";
   groupMenu.innerHTML = "";
   groupMenu.style.overflow = "auto";
   groupMenu.style.textAlign = "center";
