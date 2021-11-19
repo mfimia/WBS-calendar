@@ -155,10 +155,13 @@ const drawMonthCalendar = (
         ) {
           withEvent = true;
           eventsList.innerHTML += `
-          <li onclick="editEvent()"
-          style="background-color: ${element.colorHex}" 
-          class="event-headline">${element.title}
-          </li>`;
+            <li
+            id="${element.unixID}"
+            contentEditable="true" 
+            onfocusout="editEvent(${element.unixID})"
+            style="background-color: ${element.colorHex}" 
+            class="event-headline">${element.title}
+            </li>`;
           counter++;
         }
       });
@@ -173,7 +176,10 @@ const drawMonthCalendar = (
       prevDay.addEventListener("click", function eventHandler(event) {
         // Removing event handler when it is used to avoid unwanted extra menus
         event.target.removeEventListener("click", eventHandler);
-        if (event.target.className != "event-headline") {
+        if (
+          event.target.className != "event-headline" &&
+          event.target.className != "month-events-group"
+        ) {
           displayMenu(event.target.id, numDay, prevMonth, prevYear, withEvent);
         }
       });
@@ -236,7 +242,10 @@ const drawMonthCalendar = (
     day.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
-      if (event.target.className != "event-headline") {
+      if (
+        event.target.className != "event-headline" &&
+        event.target.className != "month-events-group"
+      ) {
         displayMenu(
           event.target.id,
           numDay,
@@ -286,10 +295,13 @@ const drawMonthCalendar = (
       ) {
         withEvent = true;
         eventsList.innerHTML += `
-        <li onfocusout="editEvent()"
-        style="background-color: ${element.colorHex}" 
-        class="event-headline">${element.title}
-        </li>`;
+            <li
+            id="${element.unixID}"
+            contentEditable="true" 
+            onfocusout="editEvent(${element.unixID})"
+            style="background-color: ${element.colorHex}" 
+            class="event-headline">${element.title}
+            </li>`;
         counter++;
       }
     });
@@ -308,7 +320,10 @@ const drawMonthCalendar = (
     nextDay.addEventListener("click", function eventHandler(event) {
       // Removing event handler when it is used to avoid unwanted extra menus
       event.target.removeEventListener("click", eventHandler);
-      if (event.target.className != "event-headline") {
+      if (
+        event.target.className != "event-headline" &&
+        event.target.className != "month-events-group"
+      ) {
         displayMenu(event.target.id, day, nextMonth, nextYear, withEvent);
       }
     });
