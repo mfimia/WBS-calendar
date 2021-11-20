@@ -14,7 +14,10 @@ document.getElementById("input-date").addEventListener("submit", (e) => {
 });
 
 // Helper function that lets us exit menu by using a callback function
-const exitCallback = () => {
+const exitCallback = (id) => {
+  if (id) {
+    document.getElementById(id).remove();
+  }
   getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
 };
 

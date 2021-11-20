@@ -6,6 +6,12 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
     document.getElementById(`add-events-menu`) || document.createElement("div");
   menu.setAttribute("class", "displayed-menu");
   menu.setAttribute("id", `add-events-menu`);
+  const exitButton = document.createElement("button");
+  exitButton.setAttribute("class", "exit-group");
+  exitButton.innerHTML = "&#x2715";
+  exitButton.addEventListener("mousedown", () =>
+    exitCallback("add-events-menu")
+  );
   if (menu && !backside) {
     let addButton = document.createElement("button");
     addButton.setAttribute("id", "add-event");
@@ -61,6 +67,7 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
     const eventForm = generateForm(day, month, year);
     menu.appendChild(eventForm);
   }
+  menu.appendChild(exitButton);
 
   if (document.getElementById(`${id}`)) {
     document.getElementById(`${id}`).appendChild(menu);
