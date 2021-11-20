@@ -56,6 +56,7 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
       displayMenu(id, day, month, year, dayEvents);
     });
     menu.innerHTML = "";
+
     menu.appendChild(backButton);
     const eventForm = generateForm(day, month, year);
     menu.appendChild(eventForm);
@@ -66,7 +67,7 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
   }
   // Ternary operator to check which side of the menu is being displayed
   let form = backside
-    ? document.getElementById(`form-month-day}-${month}-${year}`)
+    ? document.getElementById(`form-month-${day}-${month}-${year}`)
     : menu;
   // Adding event listener to close menu when clicking outside of it
   // This toggler checks if the event already exists, in which case it doesn't create a new one
