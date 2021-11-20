@@ -1,8 +1,6 @@
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
   if (!id) return;
-  console.log(backside, dayEvents);
-  console.log("menu display function triggered");
   let eventCounter = 0;
   let menu =
     document.getElementById(`add-events-menu`) || document.createElement("div");

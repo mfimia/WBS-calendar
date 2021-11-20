@@ -23,6 +23,9 @@ const exitCallback = (id) => {
 
 // Helper function that lets us submit date input on change
 const triggerDate = () => {
+  STORED_DATE = new dateValues(
+    new Date(document.getElementById("selectedDate").value)
+  );
   getValues(new Date(document.getElementById("selectedDate").value));
 };
 
