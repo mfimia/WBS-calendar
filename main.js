@@ -13,17 +13,21 @@ document.getElementById("input-date").addEventListener("submit", (e) => {
   getValues(INPUT_DATE);
 });
 
-
 // Helper function that lets us exit menu by using a callback function
-const exitCallback = () => {
+const exitCallback = (id) => {
+  if (id) {
+    document.getElementById(id).remove();
+  }
   getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
 };
 
 // Helper function that lets us submit date input on change
 const triggerDate = () => {
+  STORED_DATE = new dateValues(
+    new Date(document.getElementById("selectedDate").value)
+  );
   getValues(new Date(document.getElementById("selectedDate").value));
 };
-
 
 // If no input is given by user, we display the current date
 getValues(INPUT_DATE);
