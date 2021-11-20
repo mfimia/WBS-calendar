@@ -33,7 +33,12 @@ const removeMonthEvent = (dayID, id, day, month, year, dayEvents) => {
   });
   document.getElementById("add-events-menu").remove();
   getValues(new Date(STORED_DATE.year, STORED_DATE.month, STORED_DATE.day));
+  // TOGGLERS.lastEvent
+  //   ? displayMenu(dayID, day, month, year, false)
+  //   :
+  dayEvents = TOGGLERS.lastEvent ? false : true;
   displayMenu(dayID, day, month, year, dayEvents);
+  TOGGLERS.lastEvent = false;
 };
 
 // Function to add events

@@ -1,6 +1,8 @@
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
   if (!id) return;
+  console.log(backside, dayEvents);
+  console.log("menu display function triggered");
   let eventCounter = 0;
   let menu =
     document.getElementById(`add-events-menu`) || document.createElement("div");
@@ -16,13 +18,14 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
     let addButton = document.createElement("button");
     addButton.setAttribute("id", "add-event");
     addButton.innerHTML = "Add event";
-    addButton.addEventListener("click", () => {
+    addButton.addEventListener("click", (e) => {
+      e.stopPropagation();
       menu.remove();
       displayMenu(id, day, month, year, dayEvents, true);
     });
     menu.innerHTML = `${day}.${month}.${year}`;
     menu.appendChild(addButton);
-    if (dayEvents) {
+    if (!backside && dayEvents) {
       const eventsSection = document.createElement("div");
       eventsSection.setAttribute("id", `month-event-${day}-${month}-${year}`);
       EVENTS.forEach((element) => {
@@ -50,6 +53,9 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
               `;
         }
       });
+      if (eventCounter === 1) {
+        TOGGLERS.lastEvent = true;
+      }
       menu.appendChild(eventsSection);
     }
   } else if (menu && backside) {

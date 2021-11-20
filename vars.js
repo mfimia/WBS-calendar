@@ -35,6 +35,7 @@ let EVENTS = JSON.parse(localStorage.getItem("month-events")) || [];
 const TOGGLERS = {
   back: false,
   click: false,
+  lastEvent: false,
 };
 
 // Creating a class that automatically takes the values of a given date
