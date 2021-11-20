@@ -23,9 +23,5 @@ const triggerDate = () => {
   getValues(new Date(document.getElementById("selectedDate").value));
 };
 
-const callbackRemover = (id, unixID, day, numMonth, year, dayEvents) => {
-  removeMonthEvent(id, unixID, day, numMonth, year, dayEvents);
-};
-
 // If no input is given by user, we display the current date
 getValues(INPUT_DATE);

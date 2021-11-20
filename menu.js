@@ -39,7 +39,7 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
               <button
               class="month-remove-button"
               id="month-remove-button-${eventCounter}"
-              onclick="callbackRemover(${id}, ${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year}, ${dayEvents})">
+              onclick="removeMonthEvent(${id}, ${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year}, ${dayEvents})">
               Remove event
               </button>
               `;
