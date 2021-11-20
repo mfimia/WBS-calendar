@@ -163,10 +163,10 @@ const drawMonthCalendar = (
               selectedYear
             )
           : displayMenu(
-              event.target.id,
+              midnightUnix,
               numDay,
-              storedCurrentDay.month,
-              storedCurrentDay.year,
+              selectedMonth + 1,
+              selectedYear,
               withEvent
             );
       }

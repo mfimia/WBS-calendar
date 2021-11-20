@@ -1,6 +1,7 @@
 // Menu takes all info about the day and displays an box in the location where event took place
 const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
   if (!id) return;
+  console.log("trying to display the menu");
   let eventCounter = 0;
   let menu =
     document.getElementById(`add-events-menu`) || document.createElement("div");
@@ -38,7 +39,7 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
               <button
               class="month-remove-button"
               id="month-remove-button-${eventCounter}"
-              onclick="removeMonthEvent(${id}, ${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year}, ${dayEvents})">
+              onclick="callbackRemover(${id}, ${element.unixID}, ${element.day}, ${element.numMonth}, ${element.year}, ${dayEvents})">
               Remove event
               </button>
               `;
@@ -60,8 +61,10 @@ const displayMenu = (id, day, month, year, dayEvents, backside = false) => {
     const eventForm = generateForm(day, month, year);
     menu.appendChild(eventForm);
   }
-  document.getElementById(`${id}`).appendChild(menu);
 
+  if (document.getElementById(`${id}`)) {
+    document.getElementById(`${id}`).appendChild(menu);
+  }
   // Ternary operator to check which side of the menu is being displayed
   let form = backside
     ? document.getElementById(`form-month-day}-${month}-${year}`)

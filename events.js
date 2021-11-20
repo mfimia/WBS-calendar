@@ -27,8 +27,7 @@ const editGroupedEvent = (id) => {
 const removeMonthEvent = (dayID, id, day, month, year, dayEvents) => {
   EVENTS.forEach((item) => {
     if (item.unixID === id) {
-      const itemIndex = EVENTS.indexOf(item);
-      EVENTS.splice(itemIndex, 1);
+      EVENTS.pop(item);
       localStorage.setItem(`month-events`, JSON.stringify(EVENTS));
     }
   });
