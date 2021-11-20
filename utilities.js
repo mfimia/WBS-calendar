@@ -1,4 +1,3 @@
-
 // This function takes chosen month and year as parameters and returns the total days the month has
 // Returns a number
 const getMonthDays = (month, year) => {
@@ -15,7 +14,6 @@ const getPreviousMonthDays = (month, year) => {
   const number = new Date(year, month, 0);
   return number.getDate();
 };
-
 
 // Convert a given time into hours and minutes (number)
 const convertToNumber = (time) => {
